@@ -1,0 +1,38 @@
+.hidden {
+  width: 450px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #0d1321;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.hidden input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.loginbtn {
+  padding: 15px;
+  width: 30%;
+  margin-left: 35%;
+  background-color: #1d2d44;
+  color: #748cab;
+  border-radius: 6px;
+  border: none;
+  font-size: 17px;
+}
+
+.loginbtn:hover {
+  background-color: #3e5c76;
+}

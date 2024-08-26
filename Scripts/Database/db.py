@@ -1,0 +1,258 @@
+from flask_mysqldb import MySQL
+from app import app
+import os
+import uuid
+import bcrypt
+
+
+app.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
+app.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
+app.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
+app.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
+app.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
+app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+
+mysql = MySQL(app)
+
+
+def create_users_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Users (
+        id VARCHAR(32) PRIMARY KEY,
+        name VARCHAR(32) NOT NULL,
+        last_name VARCHAR(32) NOT NULL,
+        username VARCHAR(32) NOT NULL UNIQUE,
+        password VARCHAR(120) NOT NULL,
+        role VARCHAR(32) NOT NULL,
+        status VARCHAR(32) NOT NULL,
+        desgination VARCHAR(32) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    );
+    """
+    idd = uuid.uuid4().hex
+    password = "changeme"
+    passw = password.encode("utf-8")  # Encode password to bytes
+    hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
+    query2 = """
+    INSERT INTO Users (
+        id, name, last_name, username, password, role, status, desgination, verify_token
+        ) VALUES (
+            %s, %s, %s, %s, %s, %s, 'active', 'none', '123'
+            );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        cur.execute(query2, (idd, "Defult", "User", "admin", hashed, "admin"))
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "User TABLE or User Exists"
+
+
+def create_customer_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Customer (
+        customer_id INT PRIMARY KEY AUTO_INCREMENT,
+        customer_name VARCHAR(32) NOT NULL,
+        customer_email VARCHAR(32) NOT NULL,
+        customer_mobile VARCHAR(32) NOT NULL,
+        customer_address TEXT,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_by INT NOT NULL,
+        FOREIGN KEY (created_by) REFERENCES Users(id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "customer Table Already Exists"
+
+
+def create_invoice_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Invoice (
+        invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+        customer_id INT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        invoice_amount INT NOT NULL,
+        payment_status VARCHAR(32) DEFAULT 'Pending',
+        delivery_status VARCHAR(32) DEFAULT 'Pending',
+        delivery_id INT,
+        notes TEXT,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_by INT NOT NULL,
+        FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+        FOREIGN KEY (created_by) REFERENCES Users(id),
+        FOREIGN KEY (delivery_id) REFERENCES Deliveryman(deliveryman_id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Invoice Table Already Exists"
+
+
+def create_deliveryman_table():
+    query = """
+    CREATE TABLE Deliveryman (
+        deliveryman_id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(100) NOT NULL,
+        last_name VARCHAR(100) NOT NULL,
+        email VARCHAR(150),
+        phone_number VARCHAR(20) NOT NULL,
+        status ENUM('Available', 'On Delivery') DEFAULT 'Available',
+        assigned_order_id INT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_by INT NOT NULL,
+        FOREIGN KEY (assigned_order_id) REFERENCES Invoice(invoice_id),
+        FOREIGN KEY (created_by) REFERENCES Users(id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Deliveryman Table Already Exists"
+
+
+def create_payment_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Payment (
+        payment_id INT PRIMARY KEY AUTO_INCREMENT,
+        invoice_id INT NOT NULL,
+        payment_amount INT NOT NULL,
+        payment_method VARCHAR(32) NOT NULL,
+        payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_by INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id),
+        FOREIGN KEY (created_by) REFERENCES Users(id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Payment Table Already Exists"
+
+
+def create_credit_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Credit (
+        credit_id INT AUTO_INCREMENT PRIMARY KEY,
+        invoice_id INT NOT NULL,
+        outstanding_amount INT NOT NULL,
+        assigned_to INT,
+        recovered_amount INT,
+        recovery_date DATETIME,
+        FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id),
+        FOREIGN KEY (assigned_to) REFERENCES Deliveryman(deliveryman_id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "VM_IN Table Already Exists"
+
+
+def create_orderbooker_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS OrderBooker (
+        orderbooker_id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(100) NOT NULL,
+        last_name VARCHAR(100) NOT NULL,
+        phone_number VARCHAR(20) NOT NULL,
+        assigned_credit_id INT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (assigned_credit_id) REFERENCES Invoice(invoice_id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Orderbooker Table Already Exists"
+
+
+def create_deliverylog_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS DeliveryLog (
+        log_id INT AUTO_INCREMENT PRIMARY KEY,
+        invoice_id INT NOT NULL,
+        deliveryman_id INT NOT NULL,
+        delivery_status ENUM('Pending', 'Delivered', 'Returned') DEFAULT 'Pending',
+        payment_status ENUM('Full Payment', 'Partial Payment', 'No Payment') DEFAULT 'No Payment',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id),
+        FOREIGN KEY (deliveryman_id) REFERENCES Deliveryman(deliveryman_id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Deliverylog Table Already Exists"
+
+
+def create_invoice_adj_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS InvoiceAdjustment (
+        adj_id INT AUTO_INCREMENT PRIMARY KEY,
+        invoice_id INT NOT NULL,
+        adjustment_type ENUM('Discount', 'Returned') NOT NULL,
+        adjustment_amount INT NOT NULL,
+        adjustment_reason TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_by INT NOT NULL,
+        FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id),
+        FOREIGN KEY (created_by) REFERENCES OrderBooker(orderbooker_id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Invoice_adj Table Already Exists"
+

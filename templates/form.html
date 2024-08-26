@@ -1,0 +1,282 @@
+{% extends "users.html" %}
+{% block main %}
+<div
+  role="dialog"
+  aria-modal="true"
+  class="offcanvas35 offcanvas offcanvas-end show"
+  tabindex="-1"
+  name="end"
+  style="visibility: visible"
+>
+  <form class="">
+    <div class="offcanvas-header">
+      <div class="width90 offcanvas-title h5">
+        Add New User<button class="btn btn-success float-end" type="submit">
+          Submit
+        </button>
+      </div>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicEmail">First Name</label
+            ><input
+              name="firstname"
+              placeholder="First Name"
+              required=""
+              type="text"
+              id="formBasicEmail"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicPassword">Last Name</label
+            ><input
+              name="lastname"
+              placeholder="Last Name"
+              required=""
+              type="text"
+              id="formBasicPassword"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicEmail">Email</label
+            ><input
+              name="email"
+              placeholder="Email"
+              required=""
+              type="email"
+              id="formBasicEmail"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicEmail">Designation</label
+            ><input
+              name="userDesignation"
+              placeholder="Designation"
+              required=""
+              type="text"
+              id="formBasicEmail"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicPassword">Status</label
+            ><select
+              name="status"
+              required=""
+              class="form-select"
+              id="formBasicPassword"
+            >
+              <option value="">Select</option>
+              <option value="Active">Active</option>
+              <option value="In-Active">In-Active</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicPassword">Role</label
+            ><select
+              name="role"
+              required=""
+              class="form-select"
+              id="formBasicPassword"
+            >
+              <option value="">Select</option>
+              <option value="Orgnization Admin">Orgnization Admin</option>
+              <option value="User">User</option>
+              <option value="Auditor">Auditor</option>
+              <option value="Client Admin">Client Admin</option>
+              <option value="Asset Auditor">Asset Auditor</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicPassword">Company</label>
+            <div class="css-b62m3t-container">
+              <span
+                id="react-select-2-live-region"
+                class="css-1f43avz-a11yText-A11yText"
+              ></span
+              ><span
+                aria-live="polite"
+                aria-atomic="false"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+              ></span>
+              <div class="css-13cymwt-control">
+                <div class="css-1fdsijx-ValueContainer">
+                  <div
+                    class="css-1jqq78o-placeholder"
+                    id="react-select-2-placeholder"
+                  >
+                    Select Company
+                  </div>
+                  <div class="css-qbdosj-Input" data-value="">
+                    <input
+                      class=""
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      id="react-select-2-input"
+                      spellcheck="false"
+                      tabindex="0"
+                      type="text"
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      role="combobox"
+                      aria-describedby="react-select-2-placeholder"
+                      value=""
+                      style="
+                        color: inherit;
+                        background: 0px center;
+                        opacity: 1;
+                        width: 100%;
+                        grid-area: 1 / 2;
+                        font: inherit;
+                        min-width: 2px;
+                        border: 0px;
+                        margin: 0px;
+                        outline: 0px;
+                        padding: 0px;
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="css-1hb7zxy-IndicatorsContainer">
+                  <span class="css-1u9des2-indicatorSeparator"></span>
+                  <div
+                    class="css-1xc3v61-indicatorContainer"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      height="20"
+                      width="20"
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                      focusable="false"
+                      class="css-tj5bde-Svg"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicPassword"
+              >Default Company</label
+            >
+            <div class="css-b62m3t-container">
+              <span
+                id="react-select-3-live-region"
+                class="css-1f43avz-a11yText-A11yText"
+              ></span
+              ><span
+                aria-live="polite"
+                aria-atomic="false"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+              ></span>
+              <div class="css-13cymwt-control">
+                <div class="css-1fdsijx-ValueContainer">
+                  <div
+                    class="css-1jqq78o-placeholder"
+                    id="react-select-3-placeholder"
+                  >
+                    Select Default Company
+                  </div>
+                  <div class="css-qbdosj-Input" data-value="">
+                    <input
+                      class=""
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      id="react-select-3-input"
+                      spellcheck="false"
+                      tabindex="0"
+                      type="text"
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      role="combobox"
+                      aria-describedby="react-select-3-placeholder"
+                      value=""
+                      style="
+                        color: inherit;
+                        background: 0px center;
+                        opacity: 1;
+                        width: 100%;
+                        grid-area: 1 / 2;
+                        font: inherit;
+                        min-width: 2px;
+                        border: 0px;
+                        margin: 0px;
+                        outline: 0px;
+                        padding: 0px;
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="css-1hb7zxy-IndicatorsContainer">
+                  <span class="css-1u9des2-indicatorSeparator"></span>
+                  <div
+                    class="css-1xc3v61-indicatorContainer"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      height="20"
+                      width="20"
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                      focusable="false"
+                      class="css-tj5bde-Svg"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label" for="formBasicPassword">Password</label
+            ><input
+              name="Password"
+              placeholder="Password"
+              required=""
+              type="password"
+              id="formBasicPassword"
+              class="form-control"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
