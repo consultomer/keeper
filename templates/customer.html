@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}User Managment{% endblock %} {% block
+{% extends "base.html" %} {% block title %}Customer{% endblock %} {% block
 main %}
 <div class="container-fluid m-t70">
   <div class="row">
@@ -8,7 +8,7 @@ main %}
         <div class="card-header">
           <h3 class="card-title"></h3>
           <button type="button" class="btn btn-primary float-end">
-            <a href="/add" style="color: inherit; text-decoration: none;">New User</a>
+            <a href="/customer/add" style="color: inherit; text-decoration: none;">New Customer</a>
           </button>
         </div>
         <div class="card-body">
@@ -16,24 +16,26 @@ main %}
             <table class="table table-bordered mb-0 table-centered">
               <thead class="tHead">
                 <tr>
-                  <th>ID</th>
+                  <th>Customer ID</th>
                   <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
-                  <th>Role</th>
-                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>Address</th>
+                  <th>Created By</th>
                   <th class="text-right">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {% for user in data %}
+                {% for customer in data %}
                 <tr>
-                  <td>{{ user['id'] }}</td>
-                  <td>{{ user['name'] }}</td>
-                  <td>{{ user['last_name'] }}</td>
-                  <td>{{ user['username'] }}</td>
-                  <td><strong>{{ user['role'] }}</strong></td>
-                  <td>{{ user['status'] }}
+                  <td>{{ customer['customer_id'] }}</td>
+                  <td>{{ customer['customer_name'] }}</td>
+                  <td>{{ customer['customer_email'] }}</td>
+                  <td>{{ customer['customer_mobile'] }}</td>
+                  <td><strong>{{ customer['customer_address'] }}</strong></td>
+                  <td>{{ customer['created_by'] }}
+                    
+                  </td>
                   <td class="text-center">
                     <button class="btn btn-outline-primary" type="button">
                       View

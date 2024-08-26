@@ -9,19 +9,18 @@ def add_user(data):
     username = data["username"]
     _ = decrypt_ps(data["password"])
     role = data["role"]
-    idd = uuid.uuid4().hex
     hashed = bcrypt.hashpw(_, bcrypt.gensalt())
     query = """
     INSERT INTO Users (
-        id, name, last_name, username, password, role, status, desgination, verify_token
+        name, last_name, username, password, role, status, desgination
         ) VALUES (
-            %s, %s, %s, %s, %s, %s, 'active', 'none', '123'
+            %s, %s, %s, %s, %s, 'active', 'none'
             );
     """
     try:
 
         cur = mysql.connection.cursor()
-        cur.execute(query, (idd, name, lastname, username, hashed, role))
+        cur.execute(query, (name, lastname, username, hashed, role))
         mysql.connection.commit()
         cur.close()
         return "User Added Successfully", 200

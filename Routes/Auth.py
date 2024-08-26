@@ -1,21 +1,22 @@
-from app import app
-from flask import request, jsonify, session
+
+from flask import request, jsonify, session, Blueprint
 from datetime import datetime, timedelta
 import jwt, bcrypt
 
 
-from Scripts.Database.users import (
-    add_user,
-    finduser,
-    list_users,
-    delete_user,
-    edit_user,
-)
+# from Scripts.Database.users import (
+#     add_user,
+#     finduser,
+#     list_users,
+#     delete_user,
+#     edit_user,
+# )
 from Scripts.encryptions import decrypt_ps, password_is_valid
 
+auth_bp = Blueprint("auth", __name__)
 
 # ------------------ Registration -------------------#
-@app.route("/api/register", methods=["POST"])
+@auth_bp.route("/add", methods=["POST"])
 def register():
     if request.method == "POST":
         token = request.headers.get("Authorization").split()[1]
@@ -53,7 +54,7 @@ def register():
 
 
 # ------------------ Login ------------------ #
-@app.route("/api/login", methods=["POST"])
+@auth_bp.route("/login", methods=["POST"])
 def login():
     if request.method == "POST":
         username = request.json["email"]
@@ -88,7 +89,7 @@ def login():
 
 
 # ------------------ Logout ------------------ #
-@app.route("/api/logout", methods=["POST"])
+@auth_bp.route("/logout", methods=["POST"])
 def disconnect():
     if request.method == "POST":
         token = request.headers.get("Authorization").split()[1]
@@ -105,7 +106,7 @@ def disconnect():
 
 
 # ------------------ List-Users Data ------------------ #
-@app.route("/api/listusers")
+@auth_bp.route("/list")
 def listusers():
     token = request.headers.get("Authorization").split()[1]
 
@@ -121,7 +122,7 @@ def listusers():
 
 
 # ------------------ Edit-User Data ------------------ #
-@app.route("/api/editusers", methods=["POST"])
+@auth_bp.route("/edit", methods=["POST"])
 def editusers():
     if request.method == "POST":
         token = request.headers.get("Authorization").split()[1]
@@ -157,7 +158,7 @@ def editusers():
 
 
 # ------------------ Delete-User ------------------ #
-@app.route("/api/deleteuser/<object_id>")
+@auth_bp.route("/delete/<object_id>")
 def deleteuser(object_id):
     token = request.headers.get("Authorization").split()[1]
 
