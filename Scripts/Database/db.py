@@ -18,7 +18,7 @@ mysql = MySQL(app)
 def create_users_table():
     query = """
     CREATE TABLE IF NOT EXISTS Users (
-        id VARCHAR(32) PRIMARY KEY,
+        id INT PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR(32) NOT NULL,
         last_name VARCHAR(32) NOT NULL,
         username VARCHAR(32) NOT NULL UNIQUE,
@@ -26,25 +26,24 @@ def create_users_table():
         role VARCHAR(32) NOT NULL,
         status VARCHAR(32) NOT NULL,
         desgination VARCHAR(32) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """
-    idd = uuid.uuid4().hex
     password = "changeme"
     passw = password.encode("utf-8")  # Encode password to bytes
     hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
     query2 = """
     INSERT INTO Users (
-        id, name, last_name, username, password, role, status, desgination, verify_token
+        name, last_name, username, password, role, status, desgination
         ) VALUES (
-            %s, %s, %s, %s, %s, %s, 'active', 'none', '123'
+            %s, %s, %s, %s, %s, 'active', 'none'
             );
     """
     try:
 
         cur = mysql.connection.cursor()
         cur.execute(query)
-        cur.execute(query2, (idd, "Defult", "User", "admin", hashed, "admin"))
+        cur.execute(query2, ("Defult", "User", "admin", hashed, "admin"))
         mysql.connection.commit()
         cur.close()
         return True
@@ -86,13 +85,11 @@ def create_invoice_table():
         invoice_amount INT NOT NULL,
         payment_status VARCHAR(32) DEFAULT 'Pending',
         delivery_status VARCHAR(32) DEFAULT 'Pending',
-        delivery_id INT,
         notes TEXT,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_by INT NOT NULL,
         FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
-        FOREIGN KEY (created_by) REFERENCES Users(id),
-        FOREIGN KEY (delivery_id) REFERENCES Deliveryman(deliveryman_id)
+        FOREIGN KEY (created_by) REFERENCES Users(id)
     );
     """
     try:
