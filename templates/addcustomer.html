@@ -1,47 +1,85 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}Add New Customer{% endblock %} {%
+block main %}
+<div class="container mt-5">
+  <div class="card p-4">
+    <h3 class="text-center mb-4">Add New Customer</h3>
+    <form id="customerForm" method="post" action="">
+      <!-- Customer Name -->
+      <div class="mb-3">
+        <label for="customer_name" class="form-label">Customer Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="customer_name"
+          name="customer_name"
+          placeholder="Enter Customer Name"
+          required
+        />
+      </div>
 
-{% block title %}Add New Customer{% endblock %}
+      <!-- Customer Email -->
+      <div class="mb-3">
+        <label for="customer_email" class="form-label">Customer Email:</label>
+        <input
+          type="email"
+          class="form-control"
+          id="customer_email"
+          name="customer_email"
+          placeholder="Enter Customer Email"
+          required
+        />
+      </div>
 
-{% block main %}
-  <div class="container mt-5">
-    <div class="card p-4">
-      <h3 class="text-center mb-4">Add New Customer</h3>
-      <form id="customerForm" method="post" action="">
-        <!-- Customer Name -->
-        <div class="mb-3">
-          <label for="customer_name" class="form-label">Customer Name:</label>
-          <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" required>
-        </div>
+      <!-- Customer Mobile -->
+      <div class="mb-3">
+        <label for="customer_mobile" class="form-label">Customer Mobile:</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="customer_mobile"
+          name="customer_mobile"
+          placeholder="Enter Customer Mobile Number"
+          required
+        />
+      </div>
 
-        <!-- Customer Email -->
-        <div class="mb-3">
-          <label for="customer_email" class="form-label">Customer Email:</label>
-          <input type="email" class="form-control" id="customer_email" name="customer_email" placeholder="Enter Customer Email" required>
-        </div>
+      <!-- Customer Address -->
+      <div class="mb-3">
+        <label for="customer_address" class="form-label"
+          >Customer Address:</label
+        >
+        <textarea
+          class="form-control"
+          id="customer_address"
+          name="customer_address"
+          placeholder="Enter Customer Address"
+          rows="3"
+          required
+        ></textarea>
+      </div>
 
-        <!-- Customer Mobile -->
-        <div class="mb-3">
-          <label for="customer_mobile" class="form-label">Customer Mobile:</label>
-          <input type="tel" class="form-control" id="customer_mobile" name="customer_mobile" placeholder="Enter Customer Mobile Number" required>
-        </div>
+      <!-- Created By -->
+      <div class="mb-3">
+        <label for="created_by" class="form-label">Created By:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="created_by"
+          name="created_by"
+          placeholder="Enter Your Name"
+          required
+        />
+      </div>
 
-        <!-- Customer Address -->
-        <div class="mb-3">
-          <label for="customer_address" class="form-label">Customer Address:</label>
-          <textarea class="form-control" id="customer_address" name="customer_address" placeholder="Enter Customer Address" rows="3" required></textarea>
-        </div>
-
-        <!-- Created By -->
-        <div class="mb-3">
-          <label for="created_by" class="form-label">Created By:</label>
-          <input type="text" class="form-control" id="created_by" name="created_by" placeholder="Enter Your Name" required>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="text-center">
-          <input type="submit" class="btn btn-primary w-100" value="Add Customer">
-        </div>
-      </form>
-    </div>
+      <!-- Submit Button -->
+      <div class="text-center">
+        <input
+          type="submit"
+          class="btn btn-primary w-100"
+          value="Add Customer"
+        />
+      </div>
+    </form>
   </div>
+</div>
 {% endblock %}

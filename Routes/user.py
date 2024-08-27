@@ -3,16 +3,16 @@ from flask_login import login_required
 import jwt, random
 
 from Scripts.encryptions import password_is_valid
-from Scripts.Database.users import list_users, finduser,edit_user, delete_user
+from Scripts.Database.users import list_users, finduser, edit_user, delete_user
 
 
-user_bp = Blueprint('user', __name__)
+user_bp = Blueprint("user", __name__)
+
 
 @user_bp.route("/")
 @login_required
 def homee():
     data = list_users()
-    
     return render_template("users.html", data=data)
 
 
@@ -47,18 +47,13 @@ def editusers():
             res = edit_user(data)
             return jsonify({"data": res})
         else:
-            missing_fields = [
-                field for field in mandatory_fields if field not in data
-            ]
+            missing_fields = [field for field in mandatory_fields if field not in data]
             return (
                 jsonify(
-                    {
-                        "error": f"Missing required fields: {', '.join(missing_fields)}"
-                    }
+                    {"error": f"Missing required fields: {', '.join(missing_fields)}"}
                 ),
                 400,
             )
-
 
 
 # ------------------ Delete-User ------------------ #
@@ -66,5 +61,5 @@ def editusers():
 @login_required
 def deleteuser(value):
     res = delete_user(value)
-    flash(res, category='success')
-    return redirect(url_for('user.homee'))
+    flash(res, category="success")
+    return redirect(url_for("user.homee"))

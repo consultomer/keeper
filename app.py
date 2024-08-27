@@ -2,7 +2,7 @@ from flask import Flask
 
 from Scripts.Database.db import init_db
 import os
-from extensions import mysql, login_manager
+from extensions import login_manager
 from Routes.customer import customer_bp
 from Routes.deliveryman import delivery_bp
 from Routes.invoice import invoice_bp
@@ -12,16 +12,15 @@ from Routes.routes import route_bp
 from Routes.user import user_bp
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SCERET_KEY')
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.secret_key = os.environ.get("SCERET_KEY")
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
 
 init_db(app)
 
 
-login_manager.login_view = 'auth.login'
+login_manager.login_view = "auth.login"
 login_manager.init_app(app)
-
 
 
 app.register_blueprint(route_bp, url_prefix="/")
@@ -31,4 +30,3 @@ app.register_blueprint(invoice_bp, url_prefix="/invoice")
 app.register_blueprint(payment_bp, url_prefix="/payment")
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(user_bp, url_prefix="/user")
-

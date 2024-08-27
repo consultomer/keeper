@@ -1,15 +1,16 @@
 from flask_login import UserMixin
 from extensions import mysql
 
+
 class User(UserMixin):
-    def __init__(self, id, name, username, password, role, status, desgination):
+    def __init__(self, id, name, username, password, role, status, designation):
         self.id = id
         self.name = name
         self.username = username
         self.password = password
         self.role = role
         self.status = status
-        self.desgination = desgination
+        self.designation = designation
 
     @classmethod
     def get(cls, user_id):
@@ -20,13 +21,13 @@ class User(UserMixin):
         cursor.close()
         if user:
             return cls(
-                id=user['id'],
-                name=user['name'],
-                username=user['username'],
-                password=user['password'],
-                role=user['role'],
-                status=user['status'],
-                desgination=user['desgination']
+                id=user["id"],
+                name=user["name"],
+                username=user["username"],
+                password=user["password"],
+                role=user["role"],
+                status=user["status"],
+                designation=user["designation"],
             )
         return None
 
@@ -39,12 +40,12 @@ class User(UserMixin):
         cursor.close()
         if user:
             return cls(
-                id=user['id'],
-                name=user['name'],
-                username=user['username'],
-                password=user['password'],
-                role=user['role'],
-                status=user['status'],
-                desgination=user['desgination']
+                id=user["id"],
+                name=user["name"],
+                username=user["username"],
+                password=user["password"],
+                role=user["role"],
+                status=user["status"],
+                designation=user["designation"],
             )
         return None

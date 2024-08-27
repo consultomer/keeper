@@ -1,6 +1,7 @@
 from extensions import mysql
-import uuid
 import bcrypt
+
+
 def add_user(data):
     name = data["name"]
     lastname = data["lastname"]
@@ -10,7 +11,7 @@ def add_user(data):
     hashed = bcrypt.hashpw(_, bcrypt.gensalt())
     query = """
     INSERT INTO Users (
-        name, last_name, username, password, role, status, desgination
+        name, last_name, username, password, role, status, designation
         ) VALUES (
             %s, %s, %s, %s, %s, 'is_active', 'none'
             );
@@ -40,14 +41,6 @@ def finduser(username, user_id):
             return None
         else:
             return data
-            if username:
-                user_id = data["id"]
-                username = data["username"]
-                password = data["password"]
-                return user_id, username, password
-            else:
-                print(data)
-                return data
     except Exception as e:
         return None
 
@@ -72,11 +65,10 @@ def delete_user(value):
         cur.execute("SELECT COUNT(*) AS counts FROM Users")
         user_count = cur.fetchone()["counts"]
 
-        # If there's more than one user, proceed with the deletion
         if user_count > 1:
             query = "DELETE FROM Users WHERE id = %s"
             cur.execute(query, (value,))
-            affected_rows = cur.rowcount  # Get the number of affected rows
+            affected_rows = cur.rowcount  
             mysql.connection.commit()
             cur.close()
 
@@ -100,7 +92,7 @@ def edit_user(value):
     try:
         cur = mysql.connection.cursor()
         cur.execute(query, (hashed, user_id))
-        affected_rows = cur.rowcount  # Get the number of affected rows
+        affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
 

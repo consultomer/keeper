@@ -1,10 +1,9 @@
-from flask import request, Blueprint, render_template, flash, redirect, url_for
-from flask_login import login_user, login_required, logout_user, current_user
+from flask import request, Blueprint, render_template, redirect, url_for
+from flask_login import login_user, login_required, logout_user
 from extensions import login_manager
 from Scripts.Database.some import User
 import bcrypt
- 
-from Scripts.encryptions import password_is_valid
+
 
 
 auth_bp = Blueprint("auth", __name__)
@@ -15,6 +14,7 @@ def load_user(id):
     data = User.get(id)
     return data
 
+
 # ------------------ Login ------------------ #
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -23,7 +23,7 @@ def login():
         password = request.form["password"]
         if not username or not password:
             mess = "username and password are required"
-            return render_template("login.html", message = mess)
+            return render_template("login.html", message=mess)
 
         data = User.get_by_username(username)
         if data:
@@ -31,7 +31,7 @@ def login():
             hashed = data.password.encode("utf-8")
             if bcrypt.checkpw(_, hashed):
                 login_user(data, remember=True)
-                return redirect(url_for('routes.home'))
+                return redirect(url_for("routes.home"))
             else:
                 mess = "Wrong Credentials"
                 return render_template("login.html", message=mess)
@@ -47,4 +47,4 @@ def login():
 @login_required
 def disconnect():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for("auth.login"))

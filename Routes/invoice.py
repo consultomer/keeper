@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import login_required
-from datetime import datetime, timedelta
-import jwt, bcrypt
+
+from Scripts.Database.invoice import list_invoices, delete_invoice
 
 
 invoice_bp = Blueprint("invoice", __name__)
+
 
 @invoice_bp.route("/add")
 @login_required
@@ -21,52 +22,13 @@ def invoiceedit():
 @invoice_bp.route("/")
 @login_required
 def invoicelist():
-    data = [
-        {
-            "invoice_id": 1,
-            "customer_id": 1,
-            "invoice_amount": 123456,
-            "payment_status": "pending",
-            "delivery_status": "pending",
-            "updated_at": datetime.now()
-        },
-        {
-            "invoice_id": 1,
-            "customer_id": 1,
-            "invoice_amount": 123456,
-            "payment_status": "pending",
-            "delivery_status": "pending",
-            "updated_at": datetime.now()
-        },
-        {
-            "invoice_id": 1,
-            "customer_id": 1,
-            "invoice_amount": 123456,
-            "payment_status": "pending",
-            "delivery_status": "pending",
-            "updated_at": datetime.now()
-        },
-        {
-            "invoice_id": 1,
-            "customer_id": 1,
-            "invoice_amount": 123456,
-            "payment_status": "pending",
-            "delivery_status": "pending",
-            "updated_at": datetime.now()
-        },
-        {
-            "invoice_id": 1,
-            "customer_id": 1,
-            "invoice_amount": 123456,
-            "payment_status": "pending",
-            "delivery_status": "pending",
-            "updated_at": datetime.now()
-        }
-    ]
+    data = list_invoices()
     return render_template("invoice.html", data=data)
 
 
-@invoice_bp.route("/delete")
+@invoice_bp.route("/delete/<value>")
 @login_required
-def invoicedelete():
-    return render_template("invoice.html")
+def invoicedelete(value):
+    res = delete_invoice(value)
+    flash(res, category="success")
+    return redirect(url_for("invoice.invoicelist"))

@@ -1,8 +1,8 @@
 import os
-import uuid
 import bcrypt
 
 from extensions import mysql
+
 
 def init_db(app):
     app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST")
@@ -11,9 +11,8 @@ def init_db(app):
     app.config["MYSQL_DB"] = os.getenv("MYSQL_DB")
     app.config["MYSQL_PORT"] = int(os.getenv("MYSQL_PORT", 3306))
     app.config["MYSQL_CURSORCLASS"] = "DictCursor"
-    
-    mysql.init_app(app)
 
+    mysql.init_app(app)
 
 
 def create_users_table():
@@ -26,12 +25,12 @@ def create_users_table():
         password VARCHAR(120) NOT NULL,
         role VARCHAR(32) NOT NULL,
         status VARCHAR(32) NOT NULL,
-        desgination VARCHAR(32) NOT NULL,
+        designation VARCHAR(32) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """
     password = "changeme"
-    passw = password.encode("utf-8")  # Encode password to bytes
+    passw = password.encode("utf-8")
     hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
     query2 = """
     INSERT INTO Users (
@@ -253,4 +252,3 @@ def create_invoice_adj_table():
         return True
     except Exception as e:
         return "Invoice_adj Table Already Exists"
-
