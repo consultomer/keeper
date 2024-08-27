@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block title %}Customer{% endblock %} {% block
+{% extends "base.html" %}
+{% block link %}<link rel="stylesheet" href="{{ url_for('static', filename='/css/table.css') }}"> {% endblock %}
+{% block title %}Customer{% endblock %} {% block
 main %}
 <div class="container-fluid m-t70">
   <div class="row">

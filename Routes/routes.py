@@ -17,43 +17,8 @@ route_bp = Blueprint("routes", __name__)
 def home():
     return render_template("base.html")
 
-@route_bp.route("/login")
-def login():
-    return render_template("login.html")
 
-@route_bp.route("/users")
-def useer():
-    data = [
-        {
-            "id": 1,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"])
-        },
-        {
-            "id": 2,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"])
-        },
-        {
-            "id": 3,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"])
-        }
-    ]
-    return render_template("users.html", data=data)
 
-@route_bp.route("/add")
-def formss():
-    return render_template("new.html")
 
 
 # ------------------ Random ------------------ #

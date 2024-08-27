@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block title %}User Managment{% endblock %} {% block
+{% extends "base.html" %} 
+{% block link %}<link rel="stylesheet" href="{{ url_for('static', filename='/css/table.css') }}"> {% endblock %}
+{% block title %}User Managment{% endblock %} {% block
 main %}
 <div class="container-fluid m-t70">
   <div class="row">
@@ -8,7 +10,7 @@ main %}
         <div class="card-header">
           <h3 class="card-title"></h3>
           <button type="button" class="btn btn-primary float-end">
-            <a href="/add" style="color: inherit; text-decoration: none;">New User</a>
+            <a href="/user/add" style="color: inherit; text-decoration: none;">New User</a>
           </button>
         </div>
         <div class="card-body">
@@ -36,13 +38,13 @@ main %}
                   <td>{{ user['status'] }}
                   <td class="text-center">
                     <button class="btn btn-outline-primary" type="button">
-                      View
+                      <a href="/user/{{ user['id'] }}" style="color: inherit; text-decoration: none;">View</a>
                     </button>
                     <button class="btn btn-outline-success" type="button">
-                      Edit
+                      <a href="/user/edit/{{ user['id'] }}" style="color: inherit; text-decoration: none;">Edit</a>
                     </button>
                     <button class="btn btn-outline-danger" type="button">
-                      Delete
+                      <a href="/user/delete/{{ user['id'] }}" style="color: inherit; text-decoration: none;">Delete</a>
                     </button>
                   </td>
                 </tr>
