@@ -8,15 +8,7 @@ from Scripts.Database.users import finduser
 from Scripts.encryptions import password_is_valid
 
 
-
 auth_bp = Blueprint("auth", __name__)
-
-class User(UserMixin):
-    def __init__(self, id, name, username, password):
-        self.id = id
-        self.name = name
-        self.username = username
-        self.password = password
 
 
 @login_manager.user_loader
@@ -35,21 +27,15 @@ def login():
             mess = "username and password are required"
             return render_template("login.html", message = mess)
 
-        data = finduser(username, user_id=None)
+        data = User.get_by_username(username)
         if data:
             print(data)
             user_data = data[0]
             _ = password.encode("utf-8")
-            hashed = user_data['password'].encode("utf-8")
+            hashed = user_data.password.encode("utf-8")
             if bcrypt.checkpw(_, hashed):
-                user = User(
-                    id=user_data['id'],
-                    name=user_data['name'],
-                    username=user_data['username'],
-                    password=user_data['password']
-                )
                 # login_user(User(id=user_data['id'], name=user_data["name"], username=user_data['username'], password=user_data['password']), remember=True)
-                login_user(user, remember=True)
+                login_user(data, remember=True)
                 return redirect(url_for('routes.home'))
             else:
                 mess = "Wrong Credentials"
