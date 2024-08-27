@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, redirect, flash, url_for, request
 from flask_login import login_required
 import jwt, random
 
@@ -10,7 +10,7 @@ user_bp = Blueprint('user', __name__)
 
 @user_bp.route("/")
 @login_required
-def useer():
+def homee():
     data = list_users()
     
     return render_template("users.html", data=data)
@@ -37,50 +37,34 @@ def formss():
 @login_required
 def editusers():
     if request.method == "POST":
-        token = request.headers.get("Authorization").split()[1]
+        data = request.json
+        mandatory_fields = ["user_id", "password"]
+        if all(field in data for field in mandatory_fields):
+            password_valid, message = password_is_valid(data["password"])
+            if not password_valid:
+                return jsonify({"error": message}), 400
 
-        try:
-            # decoded_token = jwt.decode(token, app.secret_key, algorithms=["HS256"])
-            # user_id = decoded_token["user_id"]
-            data = request.json
-            mandatory_fields = ["user_id", "password"]
-            if all(field in data for field in mandatory_fields):
-                password_valid, message = password_is_valid(data["password"])
-                if not password_valid:
-                    return jsonify({"error": message}), 400
+            res = edit_user(data)
+            return jsonify({"data": res})
+        else:
+            missing_fields = [
+                field for field in mandatory_fields if field not in data
+            ]
+            return (
+                jsonify(
+                    {
+                        "error": f"Missing required fields: {', '.join(missing_fields)}"
+                    }
+                ),
+                400,
+            )
 
-                res = edit_user(data)
-                return jsonify({"data": res})
-            else:
-                missing_fields = [
-                    field for field in mandatory_fields if field not in data
-                ]
-                return (
-                    jsonify(
-                        {
-                            "error": f"Missing required fields: {', '.join(missing_fields)}"
-                        }
-                    ),
-                    400,
-                )
-        except jwt.ExpiredSignatureError:
-            return jsonify({"error": "Token has expired"}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({"error": "Invalid token"}), 401
 
 
 # ------------------ Delete-User ------------------ #
 @user_bp.route("/delete/<value>")
 @login_required
 def deleteuser(value):
-    token = request.headers.get("Authorization").split()[1]
-
-    try:
-        # decoded_token = jwt.decode(token, app.secret_key, algorithms=["HS256"])
-        # user_id = decoded_token["user_id"]
-        res = delete_user(value)
-        return jsonify({"data": res}), 200
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token has expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
+    res = delete_user(value)
+    flash(res, category='success')
+    return redirect(url_for('user.homee'))

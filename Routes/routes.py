@@ -1,6 +1,6 @@
 
 from flask import jsonify, request, render_template, Blueprint
-from flask_login import login_required
+from flask_login import login_required, current_user
 # from Scripts.Database.db import create_credit_table, create_customer_table, create_deliverylog_table, create_deliveryman_table, create_invoice_adj_table, create_invoice_table, create_orderbooker_table, create_payment_table, create_users_table
 import os, jwt, random
 
@@ -15,8 +15,9 @@ route_bp = Blueprint("routes", __name__)
 
 # ------------------ Home ------------------ #
 @route_bp.route("/")
+@login_required
 def home():
-    return render_template("base.html")
+    return render_template("base.html", data=current_user)
 
 
 

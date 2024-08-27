@@ -2,8 +2,9 @@ from flask_login import UserMixin
 from extensions import mysql
 
 class User(UserMixin):
-    def __init__(self, id, username, password, role, status, desgination):
+    def __init__(self, id, name, username, password, role, status, desgination):
         self.id = id
+        self.name = name
         self.username = username
         self.password = password
         self.role = role
@@ -20,6 +21,7 @@ class User(UserMixin):
         if user:
             return cls(
                 id=user['id'],
+                name=user['name'],
                 username=user['username'],
                 password=user['password'],
                 role=user['role'],
@@ -38,6 +40,7 @@ class User(UserMixin):
         if user:
             return cls(
                 id=user['id'],
+                name=user['name'],
                 username=user['username'],
                 password=user['password'],
                 role=user['role'],

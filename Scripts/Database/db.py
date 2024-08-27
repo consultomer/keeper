@@ -35,7 +35,7 @@ def create_users_table():
     hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
     query2 = """
     INSERT INTO Users (
-        name, last_name, username, password, role, status, desgination
+        name, last_name, username, password, role, status, designation
         ) VALUES (
             %s, %s, %s, %s, %s, 'active', 'none'
             );
@@ -44,7 +44,7 @@ def create_users_table():
 
         cur = mysql.connection.cursor()
         cur.execute(query)
-        cur.execute(query2, ("Defult", "User", "admin", hashed, "admin"))
+        cur.execute(query2, ("Default", "User", "admin", hashed, "admin"))
         mysql.connection.commit()
         cur.close()
         return True
