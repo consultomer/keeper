@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_login import login_required
 from datetime import datetime, timedelta
 import jwt, bcrypt
 
@@ -6,16 +7,19 @@ customer_bp = Blueprint("customer", __name__)
 
 
 @customer_bp.route("/add")
+@login_required
 def customeradd():
     return render_template("addcustomer.html")
 
 
 @customer_bp.route("/edit")
+@login_required
 def customeredit():
     return render_template("customer.html")
 
 
 @customer_bp.route("/")
+@login_required
 def customerlist():
     data = [
         {
@@ -47,5 +51,6 @@ def customerlist():
 
 
 @customer_bp.route("/delete")
+@login_required
 def customerdelete():
     return render_template("customer.html")

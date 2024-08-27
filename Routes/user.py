@@ -1,87 +1,40 @@
 from flask import Blueprint, render_template, request, jsonify
+from flask_login import login_required
 import jwt, random
 
 from Scripts.encryptions import password_is_valid
-# from Scripts.Database.users import edit_user, delete_user
+from Scripts.Database.users import list_users, finduser,edit_user, delete_user
 
 
 user_bp = Blueprint('user', __name__)
 
 @user_bp.route("/")
+@login_required
 def useer():
-    data = [
-        {
-            "id": 1,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"]),
-        },
-        {
-            "id": 2,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"]),
-        },
-        {
-            "id": 3,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"]),
-        },
-    ]
+    data = list_users()
     
     return render_template("users.html", data=data)
 
 
 @user_bp.route("/<value>")
+@login_required
 def singleuser(value):
     val = int(value)
-    data = [
-        {
-            "id": 1,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"]),
-        },
-        {
-            "id": 2,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"]),
-        },
-        {
-            "id": 3,
-            "name": random.choice(["Omer", "Ali", "Sara", "Aisha", "Ahmed"]),
-            "last_name": random.choice(["Rehman", "Khan", "Butt", "Hassan", "Shah"]),
-            "username": f"user{random.randint(1000, 9999)}",
-            "role": random.choice(["admin", "user", "guest"]),
-            "status": random.choice(["active", "inactive"]),
-        },
-    ]
-    user = next((item for item in data if item["id"] == val), None)
-
-    if user:
-        return user
+    user = finduser(False, val)
+    print(user)
+    return user
     return render_template("users.html", data=data[val])
 
 
 @user_bp.route("/add")
+@login_required
 def formss():
-    return render_template("new.html")
+    return render_template("adduser.html")
 
 
 # ------------------ Edit-User Data ------------------ #
 @user_bp.route("/edit", methods=["POST"])
+@login_required
 def editusers():
     if request.method == "POST":
         token = request.headers.get("Authorization").split()[1]
@@ -118,6 +71,7 @@ def editusers():
 
 # ------------------ Delete-User ------------------ #
 @user_bp.route("/delete/<value>")
+@login_required
 def deleteuser(value):
     token = request.headers.get("Authorization").split()[1]
 

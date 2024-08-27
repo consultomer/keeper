@@ -11,11 +11,11 @@
   
   <body>
         <div class="hidden">
-        <form id="login" method="GET" action="/">
+        <form id="login" method="POST">
             
 
             <label for="email">Enter Your Username:</label>
-            <input id="email" type="username" class="form-control @error('email') is-invalid @enderror" name="email"
+            <input id="email" type="username" class="form-control @error('email') is-invalid @enderror" name="username"
                 value="" required autocomplete="email" autofocus>
 
             
@@ -27,11 +27,11 @@
             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                 name="password" required autocomplete="current-password">
 
-            
+                {% with messages = get_flashed_messages(with_categories=true) %}
                 <span class="invalid-feedback" role="alert">
-                    <strong></strong>
+                    <strong>{{ message }}</strong>
                 </span>
-            
+                {% endwith %}
             <input class="loginbtn" type="submit" value="Login">
         </form>
     </div>

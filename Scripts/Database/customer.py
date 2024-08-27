@@ -1,4 +1,4 @@
-from .db import mysql
+from extensions import mysql
 
 
 def add_customer(data):

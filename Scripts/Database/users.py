@@ -1,20 +1,18 @@
-from .db import mysql
+from extensions import mysql
 import uuid
 import bcrypt
-from Scripts.encryptions import decrypt_ps
-
 def add_user(data):
     name = data["name"]
     lastname = data["lastname"]
     username = data["username"]
-    _ = decrypt_ps(data["password"])
+    _ = data["password"]
     role = data["role"]
     hashed = bcrypt.hashpw(_, bcrypt.gensalt())
     query = """
     INSERT INTO Users (
         name, last_name, username, password, role, status, desgination
         ) VALUES (
-            %s, %s, %s, %s, %s, 'active', 'none'
+            %s, %s, %s, %s, %s, 'is_active', 'none'
             );
     """
     try:
@@ -36,21 +34,26 @@ def finduser(username, user_id):
     try:
         cur = mysql.connection.cursor()
         cur.execute(query)
-        data = cur.fetchone()
+        data = cur.fetchall()
         cur.close()
         if data is None:
             return None
         else:
-            user_id = data["id"]
-            username = data["username"]
-            password = data["password"]
-            return user_id, username, password
+            return data
+            if username:
+                user_id = data["id"]
+                username = data["username"]
+                password = data["password"]
+                return user_id, username, password
+            else:
+                print(data)
+                return data
     except Exception as e:
         return None
 
 
 def list_users():
-    query = "SELECT id, name, last_name, username, role, status FROM Users"
+    query = "SELECT * FROM Users"
     try:
         cur = mysql.connection.cursor()
         cur.execute(query)
@@ -90,7 +93,7 @@ def delete_user(value):
 
 def edit_user(value):
     user_id = value["user_id"]
-    _ = decrypt_ps(value["password"])
+    _ = value["password"]
     hashed = bcrypt.hashpw(_, bcrypt.gensalt())
 
     query = "UPDATE Users SET password = %s WHERE id = %s"

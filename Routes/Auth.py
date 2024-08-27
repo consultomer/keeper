@@ -1,65 +1,76 @@
-from flask import request, jsonify, session, Blueprint, render_template
-from datetime import datetime, timedelta
-import jwt, bcrypt
+from flask import request, Blueprint, render_template, flash, redirect, url_for
+from flask_login import login_user, login_required, logout_user, current_user, UserMixin
+from extensions import login_manager
+from Scripts.Database.some import User
+import bcrypt
 
-# from Scripts.Database.users import finduser
-from Scripts.encryptions import decrypt_ps, password_is_valid
+from Scripts.Database.users import finduser
+from Scripts.encryptions import password_is_valid
+
+
 
 auth_bp = Blueprint("auth", __name__)
 
+class User(UserMixin):
+    def __init__(self, id, name, username, password):
+        self.id = id
+        self.name = name
+        self.username = username
+        self.password = password
 
 
-
+@login_manager.user_loader
+def load_user(id):
+    data = finduser(username=None, user_id=id)
+    user_data = data[0]
+    return user_data
 
 # ------------------ Login ------------------ #
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.json["email"]
-        paword = request.json["password"]
-        if not username or not paword:
-            return jsonify({"message": "username and password are required"}), 400
+        username = request.form["username"]
+        password = request.form["password"]
+        if not username or not password:
+            mess = "username and password are required"
+            return render_template("login.html", message = mess)
 
         data = finduser(username, user_id=None)
-        lcense_value = "False"
         if data:
-            _ = decrypt_ps(paword)
-
-            hashed = data[2].encode("utf-8")
+            print(data)
+            user_data = data[0]
+            _ = password.encode("utf-8")
+            hashed = user_data['password'].encode("utf-8")
             if bcrypt.checkpw(_, hashed):
-                session["user_id"] = str(data[0])
-                payload = {
-                    "user_id": str(data[0]),
-                    "exp": datetime.utcnow() + timedelta(minutes=600),
-                }
-                # token = jwt.encode(payload, app.secret_key, algorithm="HS256")
-                return jsonify({"token": "token"}), 200
-            else:
-                return (
-                    jsonify({"message": "Wrong Password"}),
-                    401,
+                user = User(
+                    id=user_data['id'],
+                    name=user_data['name'],
+                    username=user_data['username'],
+                    password=user_data['password']
                 )
+                # login_user(User(id=user_data['id'], name=user_data["name"], username=user_data['username'], password=user_data['password']), remember=True)
+                login_user(user, remember=True)
+                return redirect(url_for('routes.home'))
+            else:
+                mess = "Wrong Credentials"
+                return render_template("login.html", message=mess)
         else:
-            return (
-                jsonify({"message": "User Doesn't Exist"}),
-                404,
-            )
+            mess = "User not Available"
+            return render_template("login.html", message=mess)
     else:
-        return render_template("login.html")
+        return render_template("login.html", user=current_user)
 
+@auth_bp.route('/test_user')
+@login_required
+def test_user():
+    user = User(id=1, name="Omer", username="omer123", password="password")
+             # Should return the `id` of the user
+
+    # Return a response for verification
+    return f"is_authenticated: {user.is_authenticated}, is_active: {user.is_active}, is_anonymous: {user.is_anonymous}, get_id: {user.get_id}"
 
 # ------------------ Logout ------------------ #
-@auth_bp.route("/logout", methods=["POST"])
+@auth_bp.route("/logout", methods=["GET", "POST"])
 def disconnect():
-    if request.method == "POST":
-        token = request.headers.get("Authorization").split()[1]
 
-    try:
-        # decoded_token = jwt.decode(token, app.secret_key, algorithms=["HS256"])
-        # user_id = decoded_token["user_id"]
-        session.pop("user_id", None)
-        return jsonify({"Logout": "True"}), 200
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token has expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
+    return f"Hello, {current_user}"

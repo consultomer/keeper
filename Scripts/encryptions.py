@@ -6,30 +6,8 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 
 
-def decrypt_ps(value):
-    key = os.environ.get("KEY_JS")
-    iv = os.environ.get("KEY_IV")
-    keydecode = b64decode(key)
-    ivdecode = b64decode(iv)
-    pawords = value.encode()
-    encrypted_data = b64decode(pawords)
 
-    cipher = Cipher(
-        algorithms.AES(keydecode), modes.CBC(ivdecode), backend=default_backend()
-    )
-    decryptor = cipher.decryptor()
-
-    padded_data = decryptor.update(encrypted_data) + decryptor.finalize()
-
-    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
-    dataenc = unpadder.update(padded_data) + unpadder.finalize()
-    return dataenc
-
-
-
-
-def password_is_valid(paswrd):
-    password = decrypt_ps(paswrd)
+def password_is_valid(password):
     if isinstance(password, bytes):
         password = password.decode("utf-8")
     if len(password) <= 7:
