@@ -1,10 +1,10 @@
-from extensions import mysql
+from Scripts.extensions import mysql
 
 
-def add_invoice(data):
+def add_employee(data):
     query = """
-    INSERT INTO Invoice (
-        customer_id, invoice_amount, payment_status, delivery_status, delivery_id, notes, created_by
+    INSERT INTO Employee (
+        customer_id, employee_amount, payment_status, delivery_status, delivery_id, notes, created_by
     ) VALUES (%s, %s, %s, %s, %s, %s, %s);
     """
     try:
@@ -13,7 +13,7 @@ def add_invoice(data):
             query,
             (
                 data["customer_id"],
-                data["invoice_amount"],
+                data["employee_amount"],
                 data["payment_status"],
                 data["delivery_status"],
                 data["delivery_id"],
@@ -23,13 +23,13 @@ def add_invoice(data):
         )
         mysql.connection.commit()
         cur.close()
-        return "Invoice Added Successfully", 200
+        return "employee Added Successfully", 200
     except Exception as e:
-        return f"Error adding Invoice: {str(e)}", 400
+        return f"Error adding employee: {str(e)}", 400
 
 
-def list_invoices():
-    query = "SELECT * FROM Invoice"
+def list_employees():
+    query = "SELECT * FROM Employee"
     try:
         cur = mysql.connection.cursor()
         cur.execute(query)
@@ -37,52 +37,52 @@ def list_invoices():
         cur.close()
         return data
     except Exception as e:
-        return f"Error listing Invoices: {str(e)}"
+        return f"Error listing employees: {str(e)}"
 
 
-def edit_invoice(data):
+def edit_employee(data):
     query = """
-    UPDATE Invoice SET invoice_amount = %s, payment_status = %s, 
+    UPDATE Employee SET employee_amount = %s, payment_status = %s, 
     delivery_status = %s, delivery_id = %s, notes = %s, updated_at = CURRENT_TIMESTAMP 
-    WHERE invoice_id = %s
+    WHERE employee_id = %s
     """
     try:
         cur = mysql.connection.cursor()
         cur.execute(
             query,
             (
-                data["invoice_amount"],
+                data["employee_amount"],
                 data["payment_status"],
                 data["delivery_status"],
                 data["delivery_id"],
                 data["notes"],
-                data["invoice_id"],
+                data["employee_id"],
             ),
         )
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
         return (
-            "Invoice Edited Successfully",
+            "employee Edited Successfully",
             200 if affected_rows > 0 else "No matching record found for editing",
             404,
         )
     except Exception as e:
-        return f"Error editing Invoice: {str(e)}", 400
+        return f"Error editing employee: {str(e)}", 400
 
 
-def delete_invoice(invoice_id):
-    query = "DELETE FROM Invoice WHERE invoice_id = %s"
+def delete_employee(employee_id):
+    query = "DELETE FROM Employee WHERE employee_id = %s"
     try:
         cur = mysql.connection.cursor()
-        cur.execute(query, (invoice_id,))
+        cur.execute(query, (employee_id,))
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
         return (
-            "Invoice Deleted Successfully",
+            "Employee Deleted Successfully",
             200 if affected_rows > 0 else "No matching record found for deletion",
             404,
         )
     except Exception as e:
-        return f"Error deleting Invoice: {str(e)}", 400
+        return f"Error deleting Employee: {str(e)}", 400

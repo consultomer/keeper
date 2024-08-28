@@ -1,7 +1,7 @@
 import os
 import bcrypt
 
-from extensions import mysql
+from Scripts.extensions import mysql
 
 
 def init_db(app):
@@ -76,47 +76,18 @@ def create_customer_table():
         return "customer Table Already Exists"
 
 
-def create_invoice_table():
+def create_employee_table():
     query = """
-    CREATE TABLE IF NOT EXISTS Invoice (
-        invoice_id INT PRIMARY KEY AUTO_INCREMENT,
-        customer_id INT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        invoice_amount INT NOT NULL,
-        payment_status VARCHAR(32) DEFAULT 'Pending',
-        delivery_status VARCHAR(32) DEFAULT 'Pending',
-        notes TEXT,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_by INT NOT NULL,
-        FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
-        FOREIGN KEY (created_by) REFERENCES Users(id)
-    );
-    """
-    try:
-
-        cur = mysql.connection.cursor()
-        cur.execute(query)
-        mysql.connection.commit()
-        cur.close()
-        return True
-    except Exception as e:
-        return "Invoice Table Already Exists"
-
-
-def create_deliveryman_table():
-    query = """
-    CREATE TABLE Deliveryman (
-        deliveryman_id INT AUTO_INCREMENT PRIMARY KEY,
+    CREATE TABLE Employee (
+        employee_id INT AUTO_INCREMENT PRIMARY KEY,
         first_name VARCHAR(100) NOT NULL,
         last_name VARCHAR(100) NOT NULL,
         email VARCHAR(150),
         phone_number VARCHAR(20) NOT NULL,
-        status ENUM('Available', 'On Delivery') DEFAULT 'Available',
-        assigned_order_id INT,
+        status ENUM('Available', 'Not Available') DEFAULT 'Available',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         created_by INT NOT NULL,
-        FOREIGN KEY (assigned_order_id) REFERENCES Invoice(invoice_id),
         FOREIGN KEY (created_by) REFERENCES Users(id)
     );
     """
@@ -129,6 +100,35 @@ def create_deliveryman_table():
         return True
     except Exception as e:
         return "Deliveryman Table Already Exists"
+
+
+def create_invoice_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Invoice (
+        invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+        customer_id INT NOT NULL,
+        employee_id INT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        invoice_amount INT NOT NULL,
+        payment_status VARCHAR(32) DEFAULT 'Pending',
+        delivery_status VARCHAR(32) DEFAULT 'Pending',
+        notes TEXT,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_by INT NOT NULL,
+        FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+        FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+        FOREIGN KEY (created_by) REFERENCES Users(id)
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "Invoice Table Already Exists"
 
 
 def create_payment_table():
@@ -166,7 +166,7 @@ def create_credit_table():
         recovered_amount INT,
         recovery_date DATETIME,
         FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id),
-        FOREIGN KEY (assigned_to) REFERENCES Deliveryman(deliveryman_id)
+        FOREIGN KEY (assigned_to) REFERENCES Employee(employee_id)
     );
     """
     try:
@@ -209,13 +209,13 @@ def create_deliverylog_table():
     CREATE TABLE IF NOT EXISTS DeliveryLog (
         log_id INT AUTO_INCREMENT PRIMARY KEY,
         invoice_id INT NOT NULL,
-        deliveryman_id INT NOT NULL,
+        employee_id INT NOT NULL,
         delivery_status ENUM('Pending', 'Delivered', 'Returned') DEFAULT 'Pending',
         payment_status ENUM('Full Payment', 'Partial Payment', 'No Payment') DEFAULT 'No Payment',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id),
-        FOREIGN KEY (deliveryman_id) REFERENCES Deliveryman(deliveryman_id)
+        FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
     );
     """
     try:

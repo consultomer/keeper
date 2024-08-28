@@ -1,6 +1,6 @@
 from flask import request, Blueprint, render_template, redirect, url_for
 from flask_login import login_user, login_required, logout_user
-from extensions import login_manager
+from Scripts.extensions import login_manager
 from Scripts.Database.some import User
 import bcrypt
 

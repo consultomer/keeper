@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from extensions import mysql
+from Scripts.extensions import mysql
 
 
 class User(UserMixin):

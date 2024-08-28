@@ -1,10 +1,10 @@
 from flask import Flask
+import os
 
 from Scripts.Database.db import init_db
-import os
-from extensions import login_manager
+from Scripts.extensions import login_manager
 from Routes.customer import customer_bp
-from Routes.deliveryman import delivery_bp
+from Routes.employee import employee_bp
 from Routes.invoice import invoice_bp
 from Routes.payment import payment_bp
 from Routes.Auth import auth_bp
@@ -25,7 +25,7 @@ login_manager.init_app(app)
 
 app.register_blueprint(route_bp, url_prefix="/")
 app.register_blueprint(customer_bp, url_prefix="/customer")
-app.register_blueprint(delivery_bp, url_prefix="/deliveryman")
+app.register_blueprint(employee_bp, url_prefix="/employee")
 app.register_blueprint(invoice_bp, url_prefix="/invoice")
 app.register_blueprint(payment_bp, url_prefix="/payment")
 app.register_blueprint(auth_bp, url_prefix="/auth")

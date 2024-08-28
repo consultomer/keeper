@@ -1,4 +1,4 @@
-from extensions import mysql
+from Scripts.extensions import mysql
 
 
 def add_invoice(data):
