@@ -22,7 +22,7 @@ init_db(app)
 login_manager.login_view = "auth.login"
 login_manager.init_app(app)
 
-
+dropbox = "sl.B71AehdLYDfgEsRAVMqg6uuMU_2DQHCJy-hDxCjT_mpMJGMyUJr72AJiUAO6GaRu4ErK75HcUrdfQ3tcg189g9JPN2DOJ5NvwneToJLf2EBjvjNVg-5gBIhmjid2lpIdO41LmDhCeKWI"
 app.register_blueprint(route_bp, url_prefix="/")
 app.register_blueprint(customer_bp, url_prefix="/customer")
 app.register_blueprint(employee_bp, url_prefix="/employee")

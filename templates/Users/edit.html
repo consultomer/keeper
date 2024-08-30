@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block link %}<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='/css/table.css') }}"
+/>
+{% endblock %} {% block title %}User Managment{% endblock %} {% block main %}
+
+    <!-- Breadcrumb -->
+    <div class="container mt-5">
+      <h2>Edit User Details</h2>
+      <form method="POST" action="/user/edit/{{ data[0]['id'] }}">
+          <div class="mb-3">
+              <label for="name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{ data[0]['name'] }}" required>
+          </div>
+          <div class="mb-3">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="last_name" name="last_name" value="{{ data[0]['last_name'] }}" required>
+          </div>
+          <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username" value="{{ data[0]['username'] }}" readonly>
+          </div>
+          <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" name="password" value="" required>
+          </div>
+          <div class="mb-3">
+              <label for="role" class="form-label">Role</label>
+              <select class="form-select" id="role" name="role" required>
+                  <option value="Admin" {% if data[0]['role'] == 'Admin' %}selected{% endif %}>Admin</option>
+                  <option value="User" {% if data[0]["role"] == 'User' %}selected{% endif %}>User</option>
+                  <!-- Add other roles as needed -->
+              </select>
+          </div>
+          <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" name="status" required>
+                  <option value="Active" {% if data[0]['status'] == 'Active' %}selected{% endif %}>Active</option>
+                  <option value="Inactive" {% if data[0]['status'] == 'Inactive' %}selected{% endif %}>Inactive</option>
+                  <!-- Add other statuses as needed -->
+              </select>
+          </div>
+          <div class="mb-3">
+              <label for="designation" class="form-label">Designation</label>
+              <input type="text" class="form-control" id="designation" name="designation" value="{{ data[0]['designation'] }}" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Update User</button>
+      </form>
+  </div>
+
+{% endblock %}

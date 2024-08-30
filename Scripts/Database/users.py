@@ -4,27 +4,30 @@ import bcrypt
 
 def add_user(data):
     name = data["name"]
-    lastname = data["lastname"]
+    lastname = data["last_name"]
     username = data["username"]
     _ = data["password"]
     role = data["role"]
-    hashed = bcrypt.hashpw(_, bcrypt.gensalt())
+    status = data["status"]
+    desg = data["designation"]
+    hashed = bcrypt.hashpw(_.encode('utf-8'), bcrypt.gensalt())
+    
     query = """
     INSERT INTO Users (
         name, last_name, username, password, role, status, designation
         ) VALUES (
-            %s, %s, %s, %s, %s, 'is_active', 'none'
+            %s, %s, %s, %s, %s, %s, %s
             );
     """
     try:
 
         cur = mysql.connection.cursor()
-        cur.execute(query, (name, lastname, username, hashed, role))
+        cur.execute(query, (name, lastname, username, hashed, role, status, desg))
         mysql.connection.commit()
         cur.close()
-        return "User Added Successfully", 200
+        return True
     except Exception as e:
-        return "User Already Exists", 400
+        return "User Already Exists"
 
 
 def finduser(username, user_id):
@@ -73,32 +76,46 @@ def delete_user(value):
             cur.close()
 
             if affected_rows > 0:
-                return "User Deleted Successfully", 200
+                return True
             else:
-                return "No matching record found for deletion", 404
+                return "No matching record found for deletion"
         else:
             cur.close()
-            return "Cannot delete user. At least one user must remain.", 403
+            return "Cannot delete user. At least one user must remain."
     except Exception as e:
-        return f"Error occurred: {str(e)}", 403
+        return f"Error occurred: {str(e)}"
 
 
 def edit_user(value):
     user_id = value["user_id"]
-    _ = value["password"]
-    hashed = bcrypt.hashpw(_, bcrypt.gensalt())
+    name = value["name"]
+    last_name = value["last_name"]
+    password = value["password"]
+    role = value["role"]
+    status = value["status"]
+    designation = value["designation"]
 
-    query = "UPDATE Users SET password = %s WHERE id = %s"
+    # Hash the password
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    # Update query to include all fields
+    query = """
+    UPDATE Users 
+    SET name = %s, last_name = %s, password = %s, role = %s, status = %s, designation = %s 
+    WHERE id = %s
+    """
+
     try:
         cur = mysql.connection.cursor()
-        cur.execute(query, (hashed, user_id))
+        cur.execute(query, (name, last_name, hashed_password, role, status, designation, user_id))
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
 
         if affected_rows > 0:
-            return "User Edited Successfully", 200
+            return True
         else:
-            return "No matching record found for editing", 404
+            return "No matching record found for editing"
     except Exception as e:
-        return "Error editing User: {}".format(str(e)), 401
+        return "Error editing User: {}".format(str(e))
+

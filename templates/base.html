@@ -57,7 +57,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-2"></i>{{ data.name }}
+                                <i class="fas fa-user me-2"></i>{{ current.name }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -69,14 +69,23 @@
                 </div>
             </nav>
             {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %} {% for mess in messages %}
-      <div class="alert alert-success alter-dismissable fade show" role="alert">
-        {{ mess }}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"></h3>
-          {% endfor %} {% endif %} {% endwith %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Edit User</h3>
+    <!-- Your form or content goes here -->
+  </div>
+</div>
+
             {% block main %}
             <div class="container-fluid px-4">
                 <div class="row g-3 my-2">
@@ -89,7 +98,6 @@
                             <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                         </div>
                     </div>
-
                     <div class="col-md-3">
                         <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
