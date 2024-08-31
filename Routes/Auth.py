@@ -30,6 +30,7 @@ def login():
             _ = password.encode("utf-8")
             hashed = data.password.encode("utf-8")
             if bcrypt.checkpw(_, hashed):
+                data.password = None
                 login_user(data, remember=True)
                 return redirect(url_for("routes.home"))
             else:

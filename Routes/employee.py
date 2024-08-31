@@ -13,6 +13,10 @@ employee_bp = Blueprint("employee", __name__)
 @login_required
 def employeelist():
     data = list_employees()
+    if data == False:
+        mess = "No Data"
+        flash(mess, category="error")
+        data = []
     return render_template("employee.html", current=current_user, data=data)
 
 

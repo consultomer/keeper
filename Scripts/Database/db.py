@@ -53,16 +53,24 @@ def create_users_table():
 
 def create_customer_table():
     query = """
-    CREATE TABLE IF NOT EXISTS Customer (
-        customer_id INT PRIMARY KEY AUTO_INCREMENT,
-        customer_name VARCHAR(32) NOT NULL,
-        customer_email VARCHAR(32) NOT NULL,
-        customer_mobile VARCHAR(32) NOT NULL,
-        customer_address TEXT,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_by INT NOT NULL,
-        FOREIGN KEY (created_by) REFERENCES Users(id)
+    CREATE TABLE Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    business_name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    area VARCHAR(100),
+    route VARCHAR(100),
+    category VARCHAR(100),
+    phone VARCHAR(20),
+    whatsapp VARCHAR(20),
+    shop_ownership ENUM('Yes', 'No') NOT NULL,
+    cnic VARCHAR(15),
+    tax_filer_status ENUM('Filer', 'Non Filer') NOT NULL,
+    
+    channel VARCHAR(100),
+    class VARCHAR(100),
+    business_status ENUM('Active', 'Inactive') NOT NULL,
+    shop_status ENUM('Active', 'Inactive') NOT NULL,
+    business_health ENUM('Gold', 'Platinum', 'Silver', 'Defaulter', 'Blacklist') NOT NULL
     );
     """
     try:

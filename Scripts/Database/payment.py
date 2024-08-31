@@ -34,7 +34,7 @@ def list_payments():
         cur.close()
         return data
     except Exception as e:
-        return f"Error listing Payments: {str(e)}"
+        return False
 
 
 def edit_payment(data):

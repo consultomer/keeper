@@ -27,7 +27,7 @@ def add_user(data):
         cur.close()
         return True
     except Exception as e:
-        return "User Already Exists"
+        return f"Error Adding User: {str(e)}"
 
 
 def finduser(username, user_id):
@@ -40,10 +40,7 @@ def finduser(username, user_id):
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
-        if data is None:
-            return None
-        else:
-            return data
+        return data if data else None
     except Exception as e:
         return None
 
@@ -57,7 +54,7 @@ def list_users():
         cur.close()
         return data
     except Exception as e:
-        return "Table doesn't Exist"
+        return False
 
 
 def delete_user(value):

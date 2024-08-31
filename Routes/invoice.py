@@ -13,6 +13,10 @@ invoice_bp = Blueprint("invoice", __name__)
 @login_required
 def invoicelist():
     data = list_invoices()
+    if data == False:
+        mess = "No Data"
+        flash(mess, category="error")
+        data = []
     return render_template("invoice.html", current=current_user, data=data)
 
 

@@ -37,7 +37,7 @@ def list_invoices():
         cur.close()
         return data
     except Exception as e:
-        return f"Error listing Invoices: {str(e)}"
+        return False
 
 
 def edit_invoice(data):

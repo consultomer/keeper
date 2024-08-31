@@ -1,74 +1,179 @@
-{% extends "base.html" %} {% block title %}Add New Customer{% endblock %} {%
-block main %}
+{% extends "base.html" %} 
+{% block title %}Customer{% endblock %} 
+{% block main %}
 <div class="container mt-5">
   <div class="card p-4">
     <h3 class="text-center mb-4">Add New Customer</h3>
-    <form id="customerForm" method="post" action="">
-      <!-- Customer Name -->
+    <form id="customerForm" method="POST" action="">
+      <!-- Business Name -->
       <div class="mb-3">
-        <label for="customer_name" class="form-label">Customer Name:</label>
+        <label for="business_name" class="form-label">Business Name:</label>
         <input
           type="text"
           class="form-control"
-          id="customer_name"
-          name="customer_name"
-          placeholder="Enter Customer Name"
+          id="business_name"
+          name="business_name"
+          placeholder="Enter Business Name"
           required
         />
       </div>
 
-      <!-- Customer Email -->
+      <!-- Address -->
       <div class="mb-3">
-        <label for="customer_email" class="form-label">Customer Email:</label>
-        <input
-          type="email"
-          class="form-control"
-          id="customer_email"
-          name="customer_email"
-          placeholder="Enter Customer Email"
-          required
-        />
-      </div>
-
-      <!-- Customer Mobile -->
-      <div class="mb-3">
-        <label for="customer_mobile" class="form-label">Customer Mobile:</label>
-        <input
-          type="tel"
-          class="form-control"
-          id="customer_mobile"
-          name="customer_mobile"
-          placeholder="Enter Customer Mobile Number"
-          required
-        />
-      </div>
-
-      <!-- Customer Address -->
-      <div class="mb-3">
-        <label for="customer_address" class="form-label"
-          >Customer Address:</label
-        >
+        <label for="address" class="form-label">Address:</label>
         <textarea
           class="form-control"
-          id="customer_address"
-          name="customer_address"
-          placeholder="Enter Customer Address"
+          id="address"
+          name="address"
+          placeholder="Enter Address"
           rows="3"
           required
         ></textarea>
       </div>
 
-      <!-- Created By -->
+      <!-- Area -->
       <div class="mb-3">
-        <label for="created_by" class="form-label">Created By:</label>
+        <label for="area" class="form-label">Area:</label>
         <input
           type="text"
           class="form-control"
-          id="created_by"
-          name="created_by"
-          placeholder="Enter Your Name"
+          id="area"
+          name="area"
+          placeholder="Enter Area"
+        />
+      </div>
+
+      <!-- Route -->
+      <div class="mb-3">
+        <label for="route" class="form-label">Route:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="route"
+          name="route"
+          placeholder="Enter Route"
+        />
+      </div>
+
+      <!-- Category -->
+      <div class="mb-3">
+        <label for="category" class="form-label">Category:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="category"
+          name="category"
+          placeholder="Enter Category"
+        />
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone:</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="phone"
+          name="phone"
+          placeholder="Enter Phone Number"
           required
         />
+      </div>
+
+      <!-- WhatsApp -->
+      <div class="mb-3">
+        <label for="whatsapp" class="form-label">WhatsApp:</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="whatsapp"
+          name="whatsapp"
+          placeholder="Enter WhatsApp Number"
+        />
+      </div>
+
+      <!-- Shop Ownership -->
+      <div class="mb-3">
+        <label for="shop_ownership" class="form-label">Shop Ownership:</label>
+        <select class="form-select" id="shop_ownership" name="shop_ownership" required>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <!-- CNIC -->
+      <div class="mb-3">
+        <label for="cnic" class="form-label">CNIC:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cnic"
+          name="cnic"
+          placeholder="Enter CNIC"
+        />
+      </div>
+
+      <!-- Tax Filer Status -->
+      <div class="mb-3">
+        <label for="tax_filer_status" class="form-label">Tax Filer Status:</label>
+        <select class="form-select" id="tax_filer_status" name="tax_filer_status" required>
+          <option value="Filer">Filer</option>
+          <option value="Non Filer">Non Filer</option>
+        </select>
+      </div>
+
+      <!-- Channel -->
+      <div class="mb-3">
+        <label for="channel" class="form-label">Channel:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="channel"
+          name="channel"
+          placeholder="Enter Channel"
+        />
+      </div>
+
+      <!-- Class -->
+      <div class="mb-3">
+        <label for="class" class="form-label">Class:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="class"
+          name="class"
+          placeholder="Enter Class"
+        />
+      </div>
+
+      <!-- Business Status -->
+      <div class="mb-3">
+        <label for="business_status" class="form-label">Business Status:</label>
+        <select class="form-select" id="business_status" name="business_status" required>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+
+      <!-- Shop Status -->
+      <div class="mb-3">
+        <label for="shop_status" class="form-label">Shop Status:</label>
+        <select class="form-select" id="shop_status" name="shop_status" required>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+
+      <!-- Business Health -->
+      <div class="mb-3">
+        <label for="business_health" class="form-label">Business Health:</label>
+        <select class="form-select" id="business_health" name="business_health" required>
+          <option value="Gold">Gold</option>
+          <option value="Platinum">Platinum</option>
+          <option value="Silver">Silver</option>
+          <option value="Defaulter">Defaulter</option>
+          <option value="Blacklist">Blacklist</option>
+        </select>
       </div>
 
       <!-- Submit Button -->

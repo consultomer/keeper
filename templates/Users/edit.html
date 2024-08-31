@@ -1,12 +1,10 @@
-{% extends "base.html" %} {% block link %}<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='/css/table.css') }}"
-/>
-{% endblock %} {% block title %}User Managment{% endblock %} {% block main %}
+{% extends "base.html" %}
 
-    <!-- Breadcrumb -->
+{% block title %}User Managment{% endblock %} 
+{% block main %}
     <div class="container mt-5">
-      <h2>Edit User Details</h2>
+        <div class="card p-4">
+      <h3 class="text-center mb-4">Edit User Details</h3>
       <form method="POST" action="/user/edit/{{ data[0]['id'] }}">
           <div class="mb-3">
               <label for="name" class="form-label">First Name</label>
@@ -44,8 +42,11 @@
               <label for="designation" class="form-label">Designation</label>
               <input type="text" class="form-control" id="designation" name="designation" value="{{ data[0]['designation'] }}" required>
           </div>
-          <button type="submit" class="btn btn-primary">Update User</button>
-      </form>
+          <div class="text-center">
+            <input type="submit" class="btn btn-outline-success" value="Save">
+            <a href="/user" class="btn btn-outline-primary">Cancel</a>
+          </div>
+        </form>
   </div>
-
+</div>
 {% endblock %}

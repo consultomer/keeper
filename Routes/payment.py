@@ -13,6 +13,10 @@ payment_bp = Blueprint("payment", __name__)
 @login_required
 def paymentlist():
     data = list_payments()
+    if data == False:
+        mess = "No Data"
+        flash(mess, category="error")
+        data = []
     return render_template("payment.html", current=current_user, data=data)
 
 

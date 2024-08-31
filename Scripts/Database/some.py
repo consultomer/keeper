@@ -3,10 +3,11 @@ from Scripts.extensions import mysql
 
 
 class User(UserMixin):
-    def __init__(self, id, name, username, role, status, designation):
+    def __init__(self, id, name, username, password, role, status, designation):
         self.id = id
         self.name = name
         self.username = username
+        self.password = password
         self.role = role
         self.status = status
         self.designation = designation
@@ -23,6 +24,7 @@ class User(UserMixin):
                 id=user["id"],
                 name=user["name"],
                 username=user["username"],
+                password=user["password"],
                 role=user["role"],
                 status=user["status"],
                 designation=user["designation"],
@@ -41,6 +43,7 @@ class User(UserMixin):
                 id=user["id"],
                 name=user["name"],
                 username=user["username"],
+                password=user["password"],
                 role=user["role"],
                 status=user["status"],
                 designation=user["designation"],

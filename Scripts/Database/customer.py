@@ -3,45 +3,84 @@ from Scripts.extensions import mysql
 
 def add_customer(data):
     query = """
-    INSERT INTO Customer (
-        customer_name, customer_email, customer_mobile, customer_address, created_by
-        ) VALUES (%s, %s, %s, %s, %s);
+    INSERT INTO Customers (
+        business_name, address, area, route, category, phone, whatsapp, shop_ownership, cnic, tax_filer_status, channel, class, business_status, shop_status, business_health
+    ) VALUES (
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+    );
     """
     try:
         cur = mysql.connection.cursor()
         cur.execute(
             query,
             (
-                data["customer_name"],
-                data["customer_email"],
-                data["customer_mobile"],
-                data["customer_address"],
-                data["created_by"],
+                data["business_name"],
+                data["address"],
+                data["area"],
+                data["route"],
+                data["category"],
+                data["phone"],
+                data["whatsapp"],
+                data["shop_ownership"],
+                data["cnic"],
+                data["tax_filer_status"],
+                data["channel"],
+                data["class"],
+                data["business_status"],
+                data["shop_status"],
+                data["business_health"],
             ),
         )
         mysql.connection.commit()
         cur.close()
-        return "Customer Added Successfully", 200
+        return True
     except Exception as e:
-        return f"Error adding Customer: {str(e)}", 400
+        return f"Error adding Customer: {str(e)}"
 
 
-def list_customers():
-    query = "SELECT * FROM Customer"
+def find_customer(cust_id):
+    query = "SELECT * FROM Customers WHERE customer_id = %s"
     try:
         cur = mysql.connection.cursor()
-        cur.execute(query)
+        cur.execute(query, (cust_id,))
         data = cur.fetchall()
         cur.close()
-        return data
+        return data if data else None
     except Exception as e:
-        return f"Error listing Customers: {str(e)}"
+        return f"Error finding Customer: {str(e)}"
+
+
+def list_customers(page, per_page):
+    offset = (page - 1) * per_page
+    query = "SELECT * FROM Customers LIMIT %s OFFSET %s"
+    count_query = "SELECT COUNT(*) AS total FROM Customers"
+
+    try:
+        cur = mysql.connection.cursor()
+        
+        # Fetch paginated results
+        cur.execute(query, (per_page, offset))
+        data = cur.fetchall()
+        
+        # Fetch total count
+        cur.execute(count_query)
+        total_count = cur.fetchone()['total']
+        
+        cur.close()
+        return data, total_count
+    except Exception as e:
+        print(f"Error fetching customers: {str(e)}")
+        return False, 0
+
 
 
 def edit_customer(data):
     query = """
-    UPDATE Customer SET customer_name = %s, customer_email = %s, 
-    customer_mobile = %s, customer_address = %s, updated_at = CURRENT_TIMESTAMP 
+    UPDATE Customers SET business_name = %s, address = %s, area = %s, 
+    route = %s, category = %s, phone = %s, whatsapp = %s, 
+    shop_ownership = %s, cnic = %s, tax_filer_status = %s,
+    channel = %s, class = %s, business_status = %s, 
+    shop_status = %s, business_health = %s
     WHERE customer_id = %s
     """
     try:
@@ -49,37 +88,46 @@ def edit_customer(data):
         cur.execute(
             query,
             (
-                data["customer_name"],
-                data["customer_email"],
-                data["customer_mobile"],
-                data["customer_address"],
+                data["business_name"],
+                data["address"],
+                data["area"],
+                data["route"],
+                data["category"],
+                data["phone"],
+                data["whatsapp"],
+                data["shop_ownership"],
+                data["cnic"],
+                data["tax_filer_status"],
+                data["channel"],
+                data["class"],
+                data["business_status"],
+                data["shop_status"],
+                data["business_health"],
                 data["customer_id"],
             ),
         )
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
-        return (
-            "Customer Edited Successfully",
-            200 if affected_rows > 0 else "No matching record found for editing",
-            404,
-        )
+        if affected_rows > 0:
+            return True
+        else:
+            return "No matching record found for editing"
     except Exception as e:
         return f"Error editing Customer: {str(e)}", 400
 
 
 def delete_customer(customer_id):
-    query = "DELETE FROM Customer WHERE customer_id = %s"
+    query = "DELETE FROM Customers WHERE customer_id = %s"
     try:
         cur = mysql.connection.cursor()
         cur.execute(query, (customer_id,))
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
-        return (
-            "Customer Deleted Successfully",
-            200 if affected_rows > 0 else "No matching record found for deletion",
-            404,
-        )
+        if affected_rows > 0:
+            return True
+        else:
+            return "No matching record found for deletion"
     except Exception as e:
-        return f"Error deleting Customer: {str(e)}", 400
+        return f"Error deleting Customer: {str(e)}"

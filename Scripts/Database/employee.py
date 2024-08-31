@@ -37,7 +37,7 @@ def list_employees():
         cur.close()
         return data
     except Exception as e:
-        return f"Error listing employees: {str(e)}"
+        return False
 
 
 def edit_employee(data):

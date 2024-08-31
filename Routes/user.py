@@ -13,7 +13,11 @@ user_bp = Blueprint("user", __name__)
 @login_required
 def homee():
     data = list_users()
-    return render_template("Users/list.html", current=current_user, data=data)
+    if data == False:
+        mess = "No User in Table"
+        flash(mess, category="error")
+        data = []
+    return render_template("Users/list.html", current=current_user, data=data) 
 
 
 @user_bp.route("/<value>")
@@ -21,7 +25,6 @@ def homee():
 def singleuser(value):
     val = int(value)
     user = finduser(False, val)
-    print(user)
     return render_template("Users/view.html", current=current_user, data=user)
 
 
@@ -110,7 +113,6 @@ def deleteuser(value):
     if res == True:
         mess = "User Deleted Successfully"
         flash(mess, category="success")
-        return redirect(url_for('user.homee'))
     else:
         flash(res, category="error")
-        return redirect(url_for('user.homee'))
+    return redirect(url_for('user.homee'))
