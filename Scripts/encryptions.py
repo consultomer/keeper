@@ -14,15 +14,14 @@ def password_is_valid(password):
         return False, "Password must contain at least one uppercase character."
     if not re.search(r"[a-z]", password):
         return False, "Password must contain at least one lowercase character."
-    if not re.search(
-        r"[@$!%*?&#]", password
-    ):
+    if not re.search(r"[@$!%*?&#]", password):
         return False, "Password must contain at least one special character (@$!%*?&#)."
     return True, ""
 
+
 def process_csv(file_path):
     customer_data_list = []
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
+    with open(file_path, newline="", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             customer_data = {

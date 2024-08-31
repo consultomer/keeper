@@ -57,21 +57,20 @@ def list_customers(page, per_page):
 
     try:
         cur = mysql.connection.cursor()
-        
+
         # Fetch paginated results
         cur.execute(query, (per_page, offset))
         data = cur.fetchall()
-        
+
         # Fetch total count
         cur.execute(count_query)
-        total_count = cur.fetchone()['total']
-        
+        total_count = cur.fetchone()["total"]
+
         cur.close()
         return data, total_count
     except Exception as e:
         print(f"Error fetching customers: {str(e)}")
         return False, 0
-
 
 
 def edit_customer(data):

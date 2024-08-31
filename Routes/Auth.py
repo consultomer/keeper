@@ -5,7 +5,6 @@ from Scripts.Database.some import User
 import bcrypt
 
 
-
 auth_bp = Blueprint("auth", __name__)
 
 

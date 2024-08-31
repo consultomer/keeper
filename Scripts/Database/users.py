@@ -10,8 +10,8 @@ def add_user(data):
     role = data["role"]
     status = data["status"]
     desg = data["designation"]
-    hashed = bcrypt.hashpw(_.encode('utf-8'), bcrypt.gensalt())
-    
+    hashed = bcrypt.hashpw(_.encode("utf-8"), bcrypt.gensalt())
+
     query = """
     INSERT INTO Users (
         name, last_name, username, password, role, status, designation
@@ -68,7 +68,7 @@ def delete_user(value):
         if user_count > 1:
             query = "DELETE FROM Users WHERE id = %s"
             cur.execute(query, (value,))
-            affected_rows = cur.rowcount  
+            affected_rows = cur.rowcount
             mysql.connection.commit()
             cur.close()
 
@@ -93,7 +93,7 @@ def edit_user(value):
     designation = value["designation"]
 
     # Hash the password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
     # Update query to include all fields
     query = """
@@ -104,7 +104,10 @@ def edit_user(value):
 
     try:
         cur = mysql.connection.cursor()
-        cur.execute(query, (name, last_name, hashed_password, role, status, designation, user_id))
+        cur.execute(
+            query,
+            (name, last_name, hashed_password, role, status, designation, user_id),
+        )
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
@@ -115,4 +118,3 @@ def edit_user(value):
             return "No matching record found for editing"
     except Exception as e:
         return "Error editing User: {}".format(str(e))
-

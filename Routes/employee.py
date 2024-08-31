@@ -5,7 +5,6 @@ from flask_login import login_required, current_user
 from Scripts.Database.employee import delete_employee, list_employees
 
 
-
 employee_bp = Blueprint("employee", __name__)
 
 
@@ -38,7 +37,6 @@ def employeeedit(value):
     return render_template("employee.html")
 
 
-
 @employee_bp.route("/delete/<value>", methods=["GET"])
 @login_required
 def employeedelete(value):
@@ -50,4 +48,3 @@ def employeedelete(value):
     else:
         flash(res, category="error")
         return redirect(url_for("employee.employeelist"))
-

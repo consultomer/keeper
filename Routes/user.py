@@ -3,7 +3,13 @@ from flask_login import login_required, current_user
 
 
 from Scripts.encryptions import password_is_valid
-from Scripts.Database.users import list_users, finduser, add_user, edit_user, delete_user
+from Scripts.Database.users import (
+    list_users,
+    finduser,
+    add_user,
+    edit_user,
+    delete_user,
+)
 
 
 user_bp = Blueprint("user", __name__)
@@ -17,7 +23,7 @@ def homee():
         mess = "No User in Table"
         flash(mess, category="error")
         data = []
-    return render_template("Users/list.html", current=current_user, data=data) 
+    return render_template("Users/list.html", current=current_user, data=data)
 
 
 @user_bp.route("/<value>")
@@ -33,12 +39,20 @@ def singleuser(value):
 def adduser():
     if request.method == "POST":
         data = request.form
-        mandatory_fields = ["name", "last_name", "username", "password", "role", "status", "designation"]
+        mandatory_fields = [
+            "name",
+            "last_name",
+            "username",
+            "password",
+            "role",
+            "status",
+            "designation",
+        ]
         if all(field in data for field in mandatory_fields):
             password_valid, message = password_is_valid(data["password"])
             if not password_valid:
                 flash(message, category="error")
-                return redirect(url_for('user.adduser'))
+                return redirect(url_for("user.adduser"))
             user_data = {
                 "name": data.get("name"),
                 "last_name": data.get("last_name"),
@@ -52,15 +66,15 @@ def adduser():
             if res:
                 mess = "User Added Successfully"
                 flash(mess, category="success")
-                return redirect(url_for('user.homee'))
+                return redirect(url_for("user.homee"))
             else:
                 flash(res, category="error")
-                return redirect(url_for('user.adduser'))
+                return redirect(url_for("user.adduser"))
         else:
             missing_fields = [field for field in mandatory_fields if field not in data]
             mess = f"Missing required fields: {', '.join(missing_fields)}"
             flash(mess, category="error")
-            return redirect(url_for('user.adduser'))
+            return redirect(url_for("user.adduser"))
     else:
         return render_template("Users/add.html", current=current_user)
 
@@ -71,12 +85,20 @@ def adduser():
 def editusers(value):
     if request.method == "POST":
         data = request.form
-        mandatory_fields = ["name", "last_name", "username", "password", "role", "status", "designation"]
+        mandatory_fields = [
+            "name",
+            "last_name",
+            "username",
+            "password",
+            "role",
+            "status",
+            "designation",
+        ]
         if all(field in data for field in mandatory_fields):
             password_valid, message = password_is_valid(data["password"])
             if not password_valid:
                 flash(message, category="error")
-                return redirect(url_for('user.editusers', value=value))
+                return redirect(url_for("user.editusers", value=value))
             user_data = {
                 "user_id": value,
                 "name": data.get("name"),
@@ -90,15 +112,15 @@ def editusers(value):
             if res:
                 mess = "User Edit Successfully"
                 flash(mess, category="success")
-                return redirect(url_for('user.singleuser', value=value))
+                return redirect(url_for("user.singleuser", value=value))
             else:
                 flash(res, category="error")
-                return redirect(url_for('user.editusers', value=value))
+                return redirect(url_for("user.editusers", value=value))
         else:
             missing_fields = [field for field in mandatory_fields if field not in data]
             mess = f"Missing required fields: {', '.join(missing_fields)}"
             flash(mess, category="error")
-            return redirect(url_for('user.editusers', value=value))
+            return redirect(url_for("user.editusers", value=value))
     else:
         val = int(value)
         user = finduser(False, val)
@@ -115,4 +137,4 @@ def deleteuser(value):
         flash(mess, category="success")
     else:
         flash(res, category="error")
-    return redirect(url_for('user.homee'))
+    return redirect(url_for("user.homee"))

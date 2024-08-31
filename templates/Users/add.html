@@ -1,58 +1,86 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}User Managment{% endblock %} {% block
+main %}
+<div class="container mt-5">
+  <div class="card p-4">
+    <h3 class="text-center mb-4">Add New User</h3>
+    <form id="query" method="POST" action="/user/add">
+      <div class="mb-3">
+        <label for="name" class="form-label">First Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          placeholder="First Name"
+          required
+        />
+      </div>
 
-{% block title %}User Managment{% endblock %} 
-{% block main %}
- <div class="container mt-5">
-    <div class="card p-4">
-      <h3 class="text-center mb-4">Add New User</h3>
-      <form id="query" method="POST" action="/user/add">
-        <div class="mb-3">
-          <label for="name" class="form-label">First Name:</label>
-          <input type="text" class="form-control" name="name" placeholder="First Name" required>
-        </div>
+      <div class="mb-3">
+        <label for="last_name" class="form-label">Last Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="last_name"
+          placeholder="Last Name"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-          <label for="last_name" class="form-label">Last Name:</label>
-          <input type="text" class="form-control" name="last_name" placeholder="Last Name" required>
-        </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          placeholder="Username"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-          <label for="username" class="form-label">Username:</label>
-          <input type="text" class="form-control" name="username" placeholder="Username" required>
-        </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          placeholder="Password"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-          <label for="password" class="form-label">Password:</label>
-          <input type="password" class="form-control" name="password" placeholder="Password" required>
-        </div>
+      <div class="mb-3">
+        <label for="role" class="form-label">Role:</label>
+        <select class="form-select" name="role" required>
+          <option selected disabled>Choose a role</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+      </div>
 
-        <div class="mb-3">
-          <label for="role" class="form-label">Role:</label>
-          <select class="form-select" name="role" required>
-            <option selected disabled>Choose a role</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </select>
-        </div>
+      <div class="mb-3">
+        <label for="status" class="form-label">Status:</label>
+        <select class="form-select" name="status" required>
+          <option selected disabled>Choose a Status</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
 
-        <div class="mb-3">
-          <label for="status" class="form-label">Status:</label>
-          <select class="form-select" name="status" required>
-            <option selected disabled>Choose a Status</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
+      <div class="mb-3">
+        <label for="designation" class="form-label">Designation:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="designation"
+          placeholder="Designation"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-          <label for="designation" class="form-label">Designation:</label>
-          <input type="text" class="form-control" name="designation" placeholder="Designation" required>
-        </div>
-
-        <div class="text-center">
-          <input type="submit" class="btn btn-primary w-100" value="Add User">
-        </div>
-      </form>
-    </div>
+      <div class="text-center">
+        <input type="submit" class="btn btn-primary w-100" value="Add User" />
+      </div>
+    </form>
   </div>
+</div>
 {% endblock %}

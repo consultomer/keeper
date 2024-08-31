@@ -1,6 +1,5 @@
-{% extends "base.html" %} 
-{% block title %}Customer{% endblock %} 
-{% block main %}
+{% extends "base.html" %} {% block title %}Customer{% endblock %} {% block main
+%}
 <div class="container mt-5">
   <div class="card p-4">
     <h3 class="text-center mb-4">Add New Customer</h3>
@@ -95,7 +94,12 @@
       <!-- Shop Ownership -->
       <div class="mb-3">
         <label for="shop_ownership" class="form-label">Shop Ownership:</label>
-        <select class="form-select" id="shop_ownership" name="shop_ownership" required>
+        <select
+          class="form-select"
+          id="shop_ownership"
+          name="shop_ownership"
+          required
+        >
           <option value="Yes">Yes</option>
           <option value="No">No</option>
         </select>
@@ -115,8 +119,15 @@
 
       <!-- Tax Filer Status -->
       <div class="mb-3">
-        <label for="tax_filer_status" class="form-label">Tax Filer Status:</label>
-        <select class="form-select" id="tax_filer_status" name="tax_filer_status" required>
+        <label for="tax_filer_status" class="form-label"
+          >Tax Filer Status:</label
+        >
+        <select
+          class="form-select"
+          id="tax_filer_status"
+          name="tax_filer_status"
+          required
+        >
           <option value="Filer">Filer</option>
           <option value="Non Filer">Non Filer</option>
         </select>
@@ -149,7 +160,12 @@
       <!-- Business Status -->
       <div class="mb-3">
         <label for="business_status" class="form-label">Business Status:</label>
-        <select class="form-select" id="business_status" name="business_status" required>
+        <select
+          class="form-select"
+          id="business_status"
+          name="business_status"
+          required
+        >
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
@@ -158,7 +174,12 @@
       <!-- Shop Status -->
       <div class="mb-3">
         <label for="shop_status" class="form-label">Shop Status:</label>
-        <select class="form-select" id="shop_status" name="shop_status" required>
+        <select
+          class="form-select"
+          id="shop_status"
+          name="shop_status"
+          required
+        >
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
@@ -167,7 +188,12 @@
       <!-- Business Health -->
       <div class="mb-3">
         <label for="business_health" class="form-label">Business Health:</label>
-        <select class="form-select" id="business_health" name="business_health" required>
+        <select
+          class="form-select"
+          id="business_health"
+          name="business_health"
+          required
+        >
           <option value="Gold">Gold</option>
           <option value="Platinum">Platinum</option>
           <option value="Silver">Silver</option>

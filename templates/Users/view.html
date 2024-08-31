@@ -33,7 +33,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="col-md-8">
         <div class="card mb-3">
@@ -42,14 +41,18 @@
               <div class="col-sm-3">
                 <h6 class="mb-0">Full Name</h6>
               </div>
-              <div class="col-sm-9 text-secondary">{{ data[0]["name"] }} {{ data[0]["last_name"] }}</div>
+              <div class="col-sm-9 text-secondary">
+                {{ data[0]["name"] }} {{ data[0]["last_name"] }}
+              </div>
             </div>
             <hr />
             <div class="row">
               <div class="col-sm-3">
                 <h6 class="mb-0">Username</h6>
               </div>
-              <div class="col-sm-9 text-secondary">{{ data[0]["username"] }}</div>
+              <div class="col-sm-9 text-secondary">
+                {{ data[0]["username"] }}
+              </div>
             </div>
             <hr />
             <div class="row">
@@ -77,9 +80,7 @@
             <hr />
             <div class="row">
               <div class="col-sm-12">
-                <a
-                  class="btn btn-info"
-                  href="/user/edit/{{ data[0]['id'] }}"
+                <a class="btn btn-info" href="/user/edit/{{ data[0]['id'] }}"
                   >Edit</a
                 >
               </div>
@@ -87,4 +88,8 @@
           </div>
         </div>
 
-{% endblock %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>

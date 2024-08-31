@@ -5,7 +5,6 @@ from flask_login import login_required, current_user
 from Scripts.Database.invoice import list_invoices, delete_invoice
 
 
-
 invoice_bp = Blueprint("invoice", __name__)
 
 
@@ -36,7 +35,6 @@ def invoiceadd():
 @login_required
 def invoiceedit(value):
     return render_template("invoice.html")
-
 
 
 @invoice_bp.route("/delete/<value>", methods=["GET"])

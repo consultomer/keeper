@@ -4,8 +4,6 @@ from flask_login import login_required, current_user
 from Scripts.Database.payment import list_payments, delete_payment
 
 
-
-
 payment_bp = Blueprint("payment", __name__)
 
 
@@ -38,8 +36,6 @@ def paymentedit():
     return render_template("payment.html")
 
 
-
-
 @payment_bp.route("/delete/<value>", methods=["GET"])
 @login_required
 def paymentdelete(value):
@@ -47,7 +43,7 @@ def paymentdelete(value):
     if res == True:
         mess = "Bill Deleted Successfully"
         flash(mess, category="success")
-        return redirect(url_for('payment.paymentlist'))
+        return redirect(url_for("payment.paymentlist"))
     else:
         flash(res, category="error")
-        return redirect(url_for('payment.paymentlist'))
+        return redirect(url_for("payment.paymentlist"))
