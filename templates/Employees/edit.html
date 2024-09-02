@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Employee{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="card p-4">
+        <h3 class="text-center mb-4">Edit Employee Details</h3>
+        <form method="POST" action="/employee/edit/{{ data[0]["employee_id"] }}">
+            <!-- Employee Name -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Employee Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ data[0]["name"] }}" required>
+            </div>
+
+            <!-- Role -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select class="form-select" id="role" name="role" required>
+                    <option value="Booker" {% if data[0]['role'] == 'Booker' %}selected{% endif %}>Booker</option>
+                    <option value="Delivery Man" {% if data[0]['role'] == 'Delivery Man' %}selected{% endif %}>Delivery Man</option>
+                </select>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+                <label for="phone_number" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone_number" name="phone_number" value="{{ data[0]["phone_number"] }}">
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div class="mb-3">
+                <label for="whatsapp_number" class="form-label">WhatsApp Number</label>
+                <input type="tel" class="form-control" id="whatsapp_number" name="whatsapp_number" value="{{ data[0]["whatsapp_number"] }}">
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" name="address" value="{{ data[0]["address"] }}" required>
+            </div>
+
+            <!-- Company -->
+            <div class="mb-3">
+                <label for="company" class="form-label">Company</label>
+                <select class="form-select" id="company" name="company" required>
+                    <option value="CP" {% if data[0]["company"] == 'CP' %}selected{% endif %}>CP</option>
+                    <option value="RB" {% if data[0]["company"] == 'RB' %}selected{% endif %}>RB</option>
+                    <option value="JR" {% if data[0]["company"] == 'JR' %}selected{% endif %}>JR</option>
+                    <option value="GP" {% if data[0]["company"] == 'GP' %}selected{% endif %}>GP</option>
+                    <option value="Other" {% if data[0]["company"] == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+
+
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="text-center">
+                <input type="submit" class="btn btn-outline-success" value="Save">
+                <a href="/employee" class="btn btn-outline-primary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,104 +1,82 @@
-{% extends "base.html" %} {% block title %}Add New Invoice{% endblock %} {%
-block main %}
+{% extends "base.html" %}
+{% block title %}Add Employee{% endblock %}
+{% block main %}
 <div class="container mt-5">
   <div class="card p-4">
     <h3 class="text-center mb-4">Add New Employee</h3>
-    <form id="invoiceForm" method="post" action="">
-      <!-- Customer ID -->
+    <form id="employeeForm" method="post" action="">
+      <!-- Name -->
       <div class="mb-3">
-        <label for="customer_id" class="form-label">Customer ID:</label>
+        <label for="name" class="form-label">Name:</label>
         <input
           type="text"
           class="form-control"
-          id="customer_id"
-          name="customer_id"
-          placeholder="Enter Customer ID"
+          id="name"
+          name="name"
+          placeholder="Enter Employee Name"
           required
         />
       </div>
 
-      <!-- Invoice Amount -->
+      <!-- Role -->
       <div class="mb-3">
-        <label for="invoice_amount" class="form-label">Invoice Amount:</label>
-        <input
-          type="number"
-          class="form-control"
-          id="invoice_amount"
-          name="invoice_amount"
-          placeholder="Enter Invoice Amount"
-          step="0.01"
-          required
-        />
-      </div>
-
-      <!-- Payment Status -->
-      <div class="mb-3">
-        <label for="payment_status" class="form-label">Payment Status:</label>
-        <select
-          class="form-select"
-          id="payment_status"
-          name="payment_status"
-          required
-        >
-          <option selected disabled>Choose Payment Status</option>
-          <option value="paid">Paid</option>
-          <option value="unpaid">Unpaid</option>
-          <option value="pending">Pending</option>
+        <label for="role" class="form-label">Role:</label>
+        <select class="form-select" id="role" name="role" required>
+          <option selected disabled>Choose Role</option>
+          <option value="Booker">Booker</option>
+          <option value="Delivery Man">Delivery Man</option>
         </select>
       </div>
 
-      <!-- Delivery Status -->
+      <!-- Phone Number -->
       <div class="mb-3">
-        <label for="delivery_status" class="form-label">Delivery Status:</label>
-        <select
-          class="form-select"
-          id="delivery_status"
-          name="delivery_status"
-          required
-        >
-          <option selected disabled>Choose Delivery Status</option>
-          <option value="delivered">Delivered</option>
-          <option value="in_transit">In Transit</option>
-          <option value="pending">Pending</option>
-        </select>
-      </div>
-
-      <!-- Delivery ID -->
-      <div class="mb-3">
-        <label for="delivery_id" class="form-label">Delivery ID:</label>
+        <label for="phone_number" class="form-label">Phone Number:</label>
         <input
-          type="text"
+          type="tel"
           class="form-control"
-          id="delivery_id"
-          name="delivery_id"
-          placeholder="Enter Delivery ID"
+          id="phone_number"
+          name="phone_number"
+          placeholder="Enter Phone Number"
           required
         />
       </div>
 
-      <!-- Notes -->
+      <!-- WhatsApp Number -->
       <div class="mb-3">
-        <label for="notes" class="form-label">Notes:</label>
+        <label for="whatsapp_number" class="form-label">WhatsApp Number:</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="whatsapp_number"
+          name="whatsapp_number"
+          placeholder="Enter WhatsApp Number"
+        />
+      </div>
+
+      <!-- Address -->
+      <div class="mb-3">
+        <label for="address" class="form-label">Address:</label>
         <textarea
           class="form-control"
-          id="notes"
-          name="notes"
-          placeholder="Enter any notes..."
-          rows="4"
+          id="address"
+          name="address"
+          placeholder="Enter Address"
+          rows="3"
+          required
         ></textarea>
       </div>
 
-      <!-- Created By -->
+      <!-- Company -->
       <div class="mb-3">
-        <label for="created_by" class="form-label">Created By:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="created_by"
-          name="created_by"
-          placeholder="Enter Your Name"
-          required
-        />
+        <label for="company" class="form-label">Company:</label>
+        <select class="form-select" id="company" name="company" required>
+          <option selected disabled>Choose Company</option>
+          <option value="CP">CP</option>
+          <option value="RB">RB</option>
+          <option value="JR">JR</option>
+          <option value="GP">GP</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
 
       <!-- Submit Button -->
@@ -106,7 +84,7 @@ block main %}
         <input
           type="submit"
           class="btn btn-primary w-100"
-          value="Add Invoice"
+          value="Add Employee"
         />
       </div>
     </form>

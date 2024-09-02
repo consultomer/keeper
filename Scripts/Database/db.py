@@ -88,26 +88,22 @@ def create_employee_table():
     query = """
     CREATE TABLE Employee (
         employee_id INT AUTO_INCREMENT PRIMARY KEY,
-        first_name VARCHAR(100) NOT NULL,
-        last_name VARCHAR(100) NOT NULL,
-        email VARCHAR(150),
+        name VARCHAR(100) NOT NULL,
+        role ENUM('Booker', 'Delivery Man'),
         phone_number VARCHAR(20) NOT NULL,
-        status ENUM('Available', 'Not Available') DEFAULT 'Available',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        created_by INT NOT NULL,
-        FOREIGN KEY (created_by) REFERENCES Users(id)
+        whatsapp_number VARCHAR(20),
+        address VARCHAR(255) NOT NULL,
+        company ENUM('CP', 'RB', 'JR', 'GP', 'Other')
     );
     """
     try:
-
         cur = mysql.connection.cursor()
         cur.execute(query)
         mysql.connection.commit()
         cur.close()
         return True
     except Exception as e:
-        return "Deliveryman Table Already Exists"
+        return "Employee Table Already Exists"
 
 
 def create_invoice_table():

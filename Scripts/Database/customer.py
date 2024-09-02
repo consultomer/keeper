@@ -113,7 +113,7 @@ def edit_customer(data):
         else:
             return "No matching record found for editing"
     except Exception as e:
-        return f"Error editing Customer: {str(e)}", 400
+        return f"Error editing Customer: {str(e)}"
 
 
 def delete_customer(customer_id):

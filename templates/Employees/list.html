@@ -2,14 +2,28 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='/css/table.css') }}"
 />
-{% endblock %} {% block title %}Delivery Man{% endblock %} {% block main %}
+{% endblock %} {% block title %}Employees{% endblock %} {% block main %}
+<div class="container-fluid px-4">
+  <div class="row g-3 my-2">
+      <div class="col-md-2">
+          <div class="dbbg p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+              <div>
+                  <h4 class="fs-4">{{ total_count }}</h4>
+                  <p class="fs-6">Employees</p>
+              </div>
+              <i class="fas fa-user fs-3 primary-text border rounded-full secondary-bg p-2"></i>
+          </div>
+      </div>
+  </div>
+</div>
+
 <div class="container-fluid m-t70">
   <div class="row">
     <div class="col-md-12">
       <br />
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"></h3>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="card-title">Employee List</h3>
           <button type="button" class="btn btn-primary float-end">
             <a
               href="/employee/add"
@@ -23,34 +37,34 @@
             <table class="table table-bordered mb-0 table-centered">
               <thead class="tHead">
                 <tr>
-                  <th>Delivery ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Mobile</th>
-                  <th>Status</th>
+                  <th>Employee ID</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>WhatsApp</th>
+                  <th>Role</th>
+                  <th>Company</th>
                   <th class="text-right">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {% for user in data %}
                 <tr>
-                  <td>{{ user['deliveryman_id'] }}</td>
-                  <td>{{ user['first_name'] }}</td>
-                  <td>{{ user['last_name'] }}</td>
-                  <td>{{ user['email'] }}</td>
+                  <td>{{ user['employee_id'] }}</td>
+                  <td>{{ user['name'] }}</td>
                   <td>{{ user['phone_number'] }}</td>
-                  <td>{{ user['status'] }}</td>
+                  <td>{{ user['whatsapp_number'] }}</td>
+                  <td>{{ user['role'] }}</td>
+                  <td>{{ user['company'] }}</td>
                   <td class="text-center">
-                    <button class="btn btn-outline-primary" type="button">
+                    <a href="/employee/{{ user['employee_id'] }}" class="btn btn-outline-primary btn-sm">
                       View
-                    </button>
-                    <button class="btn btn-outline-success" type="button">
+                  </a>
+                  <a href="/employee/edit/{{ user['employee_id'] }}" class="btn btn-outline-success btn-sm">
                       Edit
-                    </button>
-                    <button class="btn btn-outline-danger" type="button">
+                  </a>
+                  <a href="/employee/delete/{{ user['employee_id'] }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?');">
                       Delete
-                    </button>
+                  </a>
                   </td>
                 </tr>
                 {% endfor %}

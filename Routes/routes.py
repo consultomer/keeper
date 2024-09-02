@@ -30,11 +30,10 @@ def home():
 # ------------------ Random ------------------ #
 @route_bp.route("/createtable", methods=["GET"])
 def ct():
-    res = create_users_table()
-    res1 = create_customer_table()
-    return jsonify({"data": res1})
-
-
+    # res = create_users_table()
+    # res1 = create_customer_table()
+    res2 = create_employee_table()
+    return jsonify({"data":res2})
 #     res2 = create_employee_table()
 #     res3 = create_invoice_table()
 #     res4 = create_payment_table()
