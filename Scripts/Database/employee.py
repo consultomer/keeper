@@ -18,7 +18,12 @@ def add_employee(data):
         cur.execute(
             query,
             (
-                name, role, phone_number, whatsapp_number, address, company,
+                name,
+                role,
+                phone_number,
+                whatsapp_number,
+                address,
+                company,
             ),
         )
         mysql.connection.commit()
@@ -51,7 +56,7 @@ def list_employees(page, per_page):
         data = cur.fetchall()
 
         cur.execute(count_query)
-        total_count = cur.fetchone()['total']
+        total_count = cur.fetchone()["total"]
 
         cur.close()
         return data, total_count

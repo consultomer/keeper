@@ -85,13 +85,20 @@ def adduser():
 def editusers(value):
     if request.method == "POST":
         data = request.form
-        mandatory_fields = ["name", "last_name", "username", "role", "status", "designation"]
+        mandatory_fields = [
+            "name",
+            "last_name",
+            "username",
+            "role",
+            "status",
+            "designation",
+        ]
         if all(field in data for field in mandatory_fields):
             if data.get("password"):
                 password_valid, message = password_is_valid(data["password"])
                 if not password_valid:
                     flash(message, category="error")
-                    return redirect(url_for('user.editusers', value=value))
+                    return redirect(url_for("user.editusers", value=value))
             user_data = {
                 "user_id": value,
                 "name": data.get("name"),
