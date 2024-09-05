@@ -90,7 +90,10 @@ def employeeedit(value):
             return redirect(url_for("employee.employeelist"))
         else:
             flash(res, category="error")
-            return redirect(url_for("employee.employeeadd"))
+            val = int(value)
+            emplo = find_employee(val)
+            return render_template("Employees/edit.html", current=current_user, data=emplo)
+
     else:
         val = int(value)
         emplo = find_employee(val)

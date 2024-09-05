@@ -153,7 +153,11 @@ def customeredit(value):
             return redirect(url_for("customer.customerlist"))
         else:
             flash(res, category="error")
-            return redirect(url_for("customer.customeradd"))
+            val = int(value)
+            customer = find_customer(val)
+            return render_template(
+                "Customers/edit.html", current=current_user, data=customer
+            )
     else:
         val = int(value)
         customer = find_customer(val)

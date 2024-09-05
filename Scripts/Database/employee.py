@@ -122,7 +122,6 @@ def employee():
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
-        print(data)
         return data
     except Exception as e:
         print(f"An error occurred: {e}")

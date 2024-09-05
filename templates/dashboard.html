@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block link %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/table.css') }}"
+/>
+{% endblock %} {% block title %}Invoices{% endblock %} {% block main %}
+
+<div class="container-fluid px-4">
+    <div class="row g-3 my-2">
+        <div class="col-md-3">
+            <div class="dbbg p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2">{{ total['Invoice'] }}</h3>
+                    <p class="fs-5">Invoices</p>
+                </div>
+                <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dbbg p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2">{{ total['Employee'] }}</h3>
+                    <p class="fs-5">Employees</p>
+                </div>
+                <i
+                    class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="dbbg p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2">{{ total['Customers'] }}</h3>
+                    <p class="fs-5">Customers</p>
+                </div>
+                <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+
+    </div>
+    {% endblock %}

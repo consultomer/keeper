@@ -58,6 +58,70 @@ def list_invoices():
         return False
 
 
+def single_invoice(value):
+    query = "SELECT * FROM Invoice WHERE invoice_id = %s"
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(query, (value,))
+        data = cur.fetchall()
+        cur.close()
+        return data if data else None
+    except Exception as e:
+        return f"Error finding Customer: {str(e)}"
+
+
+def edit_invoice(data):
+    query = """
+        UPDATE Invoice 
+        SET booker = %s, delivery_man = %s, dsr = %s, customer_id = %s, total = %s, paid = %s, company = %s, revision = %s, delivery_status = %s, payment_status = %s, notes = %s
+        WHERE invoice_id = %s
+        """
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(
+            query,
+            (
+                data["booker"],
+                data["delivery_man"],
+                data["dsr"],
+                data["customer_id"],
+                data["total"],
+                data["paid"],
+                data["company"],
+                data["revision"],
+                data["delivery_status"],
+                data["payment_status"],
+                data["notes"],
+                data["invoice_id"],
+            ),
+        )
+        affected_rows = cur.rowcount
+        mysql.connection.commit()
+        cur.close()
+        if affected_rows > 0:
+            return True
+        else:
+            return "No matching record found for editing"
+    except Exception as e:
+        return f"Error editing Invoice: {str(e)}"
+
+
+def delete_invoice(invoice_id):
+    query = "DELETE FROM Invoice WHERE invoice_id = %s"
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(query, (invoice_id,))
+        affected_rows = cur.rowcount
+        mysql.connection.commit()
+        cur.close()
+        if affected_rows > 0:
+            return True
+        else:
+            return "No Matching Record Found"
+    except Exception as e:
+        return f"Error deleting Invoice: {str(e)}"
+
+
 def sininvoice(value):
     query = """
     SELECT 
@@ -91,50 +155,3 @@ def sininvoice(value):
         return data
     except Exception as e:
         return False
-
-
-def edit_invoice(data):
-    query = """
-    UPDATE Invoice SET invoice_amount = %s, payment_status = %s, 
-    delivery_status = %s, delivery_id = %s, notes = %s, updated_at = CURRENT_TIMESTAMP 
-    WHERE invoice_id = %s
-    """
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute(
-            query,
-            (
-                data["invoice_amount"],
-                data["payment_status"],
-                data["delivery_status"],
-                data["delivery_id"],
-                data["notes"],
-                data["invoice_id"],
-            ),
-        )
-        affected_rows = cur.rowcount
-        mysql.connection.commit()
-        cur.close()
-        return (
-            "Invoice Edited Successfully",
-            200 if affected_rows > 0 else "No matching record found for editing",
-            404,
-        )
-    except Exception as e:
-        return f"Error editing Invoice: {str(e)}", 400
-
-
-def delete_invoice(invoice_id):
-    query = "DELETE FROM Invoice WHERE invoice_id = %s"
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute(query, (invoice_id,))
-        affected_rows = cur.rowcount
-        mysql.connection.commit()
-        cur.close()
-        if affected_rows > 0:
-            return True
-        else:
-            return "No Matching Record Found"
-    except Exception as e:
-        return f"Error deleting Invoice: {str(e)}"

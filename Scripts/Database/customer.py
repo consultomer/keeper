@@ -138,12 +138,10 @@ def customer():
     FROM Customers;
     """
     try:
-        # Assuming `mysql` is your connection object, replace this with your actual connection method if different
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
-        print(data)
         return data
     except Exception as e:
         print(f"An error occurred: {e}")

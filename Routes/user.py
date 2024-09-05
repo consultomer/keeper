@@ -114,7 +114,9 @@ def editusers(value):
                 return redirect(url_for("user.singleuser", value=value))
             else:
                 flash(res, category="error")
-                return redirect(url_for("user.editusers", value=value))
+                val = int(value)
+                user = finduser(False, val)
+                return render_template("Users/edit.html", current=current_user, data=user)
         else:
             missing_fields = [field for field in mandatory_fields if field not in data]
             mess = f"Missing required fields: {', '.join(missing_fields)}"

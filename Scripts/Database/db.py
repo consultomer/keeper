@@ -138,3 +138,17 @@ def create_invoice_table():
     except Exception as e:
         return f"Invoice Table Already Exists {e}"
 
+
+def find_total():
+    totals = {}
+    # Example for three tables: invoices, customers, employees
+    tables = ["Invoice", "Customers", "Employee"]
+    for table in tables:
+        query = f"SELECT COUNT(*) AS total FROM {table}"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        result = cur.fetchone()["total"]
+
+        cur.close()
+        totals[table] = result
+    return totals

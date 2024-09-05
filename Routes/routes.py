@@ -6,6 +6,7 @@ from Scripts.Database.db import (
     create_employee_table,
     create_invoice_table,
     create_users_table,
+    find_total
 )
 
 
@@ -19,7 +20,8 @@ route_bp = Blueprint("routes", __name__)
 @route_bp.route("/")
 @login_required
 def home():
-    return render_template("base.html", current=current_user)
+    data = find_total()
+    return render_template("dashboard.html", current=current_user, total=data)
 
 
 # ------------------ Random ------------------ #

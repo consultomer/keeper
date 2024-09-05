@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 
 
-from Scripts.Database.invoice import list_invoices, add_invoice, sininvoice, delete_invoice
+from Scripts.Database.invoice import list_invoices, add_invoice, sininvoice, single_invoice, edit_invoice, delete_invoice
 from Scripts.Database.employee import employee
 from Scripts.Database.customer import customer
 
@@ -58,10 +58,43 @@ def invoiceadd():
         return render_template("Invoices/add.html", current=current_user, employee=list, customer=cust)
 
 
-@invoice_bp.route("/edit/<value>", methods=["GET", "POST"])
+@invoice_bp.route("/edit/<int:value>", methods=["GET", "POST"])
 @login_required
 def invoiceedit(value):
-    return render_template("Invoices/edit.html")
+    if request.method == "POST":
+        data = request.form
+        invoice_data = {
+            "invoice_id": value,
+            "booker": data.get("booker"),
+            "delivery_man": data.get("delivery_man"),
+            "dsr": data.get("dsr"),
+            "customer_id": data.get("customer"),
+            "total": data.get("total"),
+            "paid": data.get("paid"),
+            "company": data.get("company"),
+            "revision": data.get("revision"),
+            "delivery_status": data.get("delivery_status"),
+            "payment_status": data.get("payment_status"),
+            "notes": data.get("notes")
+        }
+        res = edit_invoice(invoice_data)
+        if res == True:
+            flash("Invoice edit Successfully", category="success")
+            return redirect(url_for("invoice.invoicelist"))
+        else:
+            flash(res, category="error")
+            inv = invoice_data
+            list = employee()
+            cust = customer()
+            return render_template("Invoices/edit.html", current=current_user, invoice=inv, customer=cust, employee=list)
+    
+    else:
+        val = int(value)
+        inv = single_invoice(val)[0]
+        list = employee()
+        cust = customer()
+        
+        return render_template("Invoices/edit.html", current=current_user, invoice=inv, customer=cust, employee=list)
 
 
 @invoice_bp.route("/delete/<value>", methods=["GET"])
