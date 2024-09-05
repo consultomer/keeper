@@ -3,52 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Keeper</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='/css/login.css') }}"
-    />
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='/css/bootstrap.min.css') }}"
     />
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='/css/login.css') }}"
+    />
   </head>
-
   <body>
-    <div class="hidden">
-      <form id="login" method="POST">
-        <label for="email">Enter Your Username:</label>
-        <input
-          id="email"
-          type="username"
-          class="form-control @error('email') is-invalid @enderror"
-          name="username"
-          value=""
-          required
-          autocomplete="email"
-          autofocus
-        />
-
-        <span class="invalid-feedback" role="alert">
-          <strong></strong>
-        </span>
-
-        <label for="password">Enter Your Password:</label>
-        <input
-          id="password"
-          type="password"
-          class="form-control @error('password') is-invalid @enderror"
-          name="password"
-          required
-          autocomplete="current-password"
-        />
-
+    <div class="login-container">
+      <h3>Login</h3>
+      <form method="POST">
+        <div class="mb-3">
+          <input
+            type="username"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Username"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="rememberMe" />
+          <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
         <span class="invalid-feedback" role="alert">
           <strong>{{ message }}</strong>
         </span>
         {% endwith %}
-        <input class="loginbtn" type="submit" value="Login" />
+        <button type="submit" class="btn btn-custom btn-block w-100">
+          Login
+        </button>
       </form>
     </div>
   </body>

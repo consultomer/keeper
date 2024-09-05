@@ -169,7 +169,7 @@ def customerdelete(value):
     if res == True:
         mess = "Customer Deleted Successfully"
         flash(mess, category="success")
-        return redirect(url_for("customer.costumerlist"))
+        return redirect(url_for("customer.customerlist"))
     else:
         flash(res, category="error")
-        return redirect(url_for("customer.costumerlist"))
+        return redirect(url_for("customer.customerlist"))

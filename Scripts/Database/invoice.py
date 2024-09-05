@@ -4,35 +4,88 @@ from Scripts.extensions import mysql
 def add_invoice(data):
     query = """
     INSERT INTO Invoice (
-        customer_id, invoice_amount, payment_status, delivery_status, delivery_id, notes, created_by
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s);
+        booker, delivery_man, dsr, customer_id, total, company
+    ) VALUES (%s, %s, %s, %s, %s, %s);
     """
     try:
         cur = mysql.connection.cursor()
         cur.execute(
             query,
             (
+                data["booker"],
+                data["delivery_man"],
+                data["dsr"],
                 data["customer_id"],
-                data["invoice_amount"],
-                data["payment_status"],
-                data["delivery_status"],
-                data["delivery_id"],
-                data["notes"],
-                data["created_by"],
+                data["total"],
+                data["company"],
             ),
         )
         mysql.connection.commit()
         cur.close()
-        return "Invoice Added Successfully", 200
+        return True
     except Exception as e:
-        return f"Error adding Invoice: {str(e)}", 400
+        return f"Error adding Invoice: {str(e)}"
 
 
 def list_invoices():
-    query = "SELECT * FROM Invoice"
+    query = """
+    SELECT 
+        i.invoice_id,
+        e1.name AS booker_name,
+        e2.name AS delivery_man,
+        i.dsr,
+        c.business_name AS customer_name,
+        i.total,
+        i.company,
+        i.revision,
+        i.delivery_status,
+        i.payment_status,
+        i.notes,
+        DATE(i.created_at) AS created_at,
+        DATEDIFF(CURDATE(), i.created_at) AS age
+    FROM Invoice i
+    JOIN Employee e1 ON i.booker = e1.employee_id
+    JOIN Employee e2 ON i.delivery_man = e2.employee_id
+    JOIN Customers c ON i.customer_id = c.customer_id;
+    """
     try:
         cur = mysql.connection.cursor()
         cur.execute(query)
+        data = cur.fetchall()
+        cur.close()
+        return data
+    except Exception as e:
+        return False
+
+
+def sininvoice(value):
+    query = """
+    SELECT 
+        i.invoice_id,
+        e1.name AS booker_name,
+        e2.name AS delivery_man,
+        i.dsr,
+        c.business_name AS customer_name,
+        c.address AS customer_add,
+        c.phone AS customer_phone,
+        i.total,
+        i.paid,
+        i.company,
+        i.revision,
+        i.delivery_status,
+        i.payment_status,
+        i.notes,
+        DATE(i.created_at) AS created_at,
+        DATEDIFF(CURDATE(), i.created_at) AS age
+    FROM Invoice i
+    JOIN Employee e1 ON i.booker = e1.employee_id
+    JOIN Employee e2 ON i.delivery_man = e2.employee_id
+    JOIN Customers c ON i.customer_id = c.customer_id
+    WHERE i.invoice_id = %s;
+    """
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(query, (value,))
         data = cur.fetchall()
         cur.close()
         return data
@@ -79,10 +132,9 @@ def delete_invoice(invoice_id):
         affected_rows = cur.rowcount
         mysql.connection.commit()
         cur.close()
-        return (
-            "Invoice Deleted Successfully",
-            200 if affected_rows > 0 else "No matching record found for deletion",
-            404,
-        )
+        if affected_rows > 0:
+            return True
+        else:
+            return "No Matching Record Found"
     except Exception as e:
-        return f"Error deleting Invoice: {str(e)}", 400
+        return f"Error deleting Invoice: {str(e)}"

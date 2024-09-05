@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Customer Details{% endblock %} {%
+    block main %}
+    <div class="card">
+        <div class="card-body">
+          <div class="container mb-5 mt-3">
+            <div class="row d-flex align-items-baseline">
+              <div class="col-xl-9">
+                <p style="color: #7e8d9f;font-size: 20px;">Invoice ID: <strong>#{{ invoice["invoice_id"]}}</strong></p>
+            </div>
+            <div class="col-xl-3 float-end">
+                  <a id="printButton" data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
+                      class="fas fa-print text-primary"></i> Print</a>
+              </div>
+              <hr>
+            </div>
+      
+            <div class="container">
+              </div>      
+              <div class="row">
+                <div class="col-xl-8">
+                  <ul class="list-unstyled">
+                    <li class="text-muted">To: <span style="color:#5d9fc5 ;">{{ invoice["customer_name"] }}</span></li>
+                    <li class="text-muted">Address: {{ invoice["customer_add"] }}</li>
+                    <li class="text-muted">Phone: # +92{{ invoice["customer_phone"] }}</li>
+                  </ul>
+                </div>
+                <div class="col-xl-4">
+                  <ul class="list-unstyled">
+                    <li class="text-muted"><span
+                        class="fw-bold">ID:</span>#{{ invoice["invoice_id"]}}</li>
+                    <li class="text-muted"><span
+                        class="fw-bold">Creation Date: </span>#{{ invoice["created_at"]}}</li>
+                    <li class="text-muted"><span
+                        class="me-1 fw-bold">Delivery Status:</span>
+                            {{ invoice["delivery_status"] }}</li>
+                    <li class="text-muted"><span
+                        class="me-1 fw-bold">Payment Status:</span>
+                            {{ invoice["payment_status"] }}</li>
+                  </ul>
+                </div>
+              </div>
+      
+              <div class="row my-2 mx-1 justify-content-center">
+                <table class="table table-striped table-borderless">
+                  <thead style="background-color:#84B0CA ;" class="text-white">
+                    <tr>
+                      <th scope="col">Description</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Paid</th>
+                      <th scope="col">Remaining</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Bill</td>
+                      <td>{{ invoice["total"] }}</td>
+                      <td>{{ invoice["paid"] }}</td>
+                      <td>{{ invoice['remaining'] }}</td>
+                    </tr>
+                  </tbody>
+      
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-xl-8">
+                    <ul class="list-unstyled">
+                        <li class="text-muted ms-3">Booker: <strong>{{ invoice["booker_name"] }}</strong></li>
+                        <li class="text-muted ms-3 mt-2">Delivery Man: <strong>{{ invoice["delivery_man"] }}</strong></li>
+                      </ul>
+                </div>
+                <div class="col-xl-3">
+
+                  <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span><span
+                      style="font-size: 25px;"></span>{{ invoice['remaining'] }}</p>
+                </div>
+              </div>
+
+      
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        document.getElementById('printButton').addEventListener('click', function () {
+            window.print();
+        });
+    </script>
+{% endblock %}

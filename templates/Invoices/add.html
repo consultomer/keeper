@@ -1,114 +1,56 @@
 {% extends "base.html" %} {% block title %}Add New Invoice{% endblock %} {%
 block main %}
 <div class="container mt-5">
-  <div class="card p-4">
-    <h3 class="text-center mb-4">Add New Invoice</h3>
-    <form id="invoiceForm" method="post" action="">
-      <!-- Customer ID -->
-      <div class="mb-3">
-        <label for="customer_id" class="form-label">Customer ID:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="customer_id"
-          name="customer_id"
-          placeholder="Enter Customer ID"
-          required
-        />
-      </div>
-
-      <!-- Invoice Amount -->
-      <div class="mb-3">
-        <label for="invoice_amount" class="form-label">Invoice Amount:</label>
-        <input
-          type="number"
-          class="form-control"
-          id="invoice_amount"
-          name="invoice_amount"
-          placeholder="Enter Invoice Amount"
-          required
-        />
-      </div>
-
-      <!-- Payment Status -->
-      <div class="mb-3">
-        <label for="payment_status" class="form-label">Payment Status:</label>
-        <select
-          class="form-select"
-          id="payment_status"
-          name="payment_status"
-          required
-        >
-          <option selected disabled>Choose Payment Status</option>
-          <option value="paid">Paid</option>
-          <option value="unpaid">Unpaid</option>
-          <option value="pending">Pending</option>
-        </select>
-      </div>
-
-      <!-- Delivery Status -->
-      <div class="mb-3">
-        <label for="delivery_status" class="form-label">Delivery Status:</label>
-        <select
-          class="form-select"
-          id="delivery_status"
-          name="delivery_status"
-          required
-        >
-          <option selected disabled>Choose Delivery Status</option>
-          <option value="delivered">Delivered</option>
-          <option value="in_transit">In Transit</option>
-          <option value="pending">Pending</option>
-        </select>
-      </div>
-
-      <!-- Delivery ID -->
-      <div class="mb-3">
-        <label for="delivery_id" class="form-label">Delivery ID:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="delivery_id"
-          name="delivery_id"
-          placeholder="Enter Delivery ID"
-          required
-        />
-      </div>
-
-      <!-- Notes -->
-      <div class="mb-3">
-        <label for="notes" class="form-label">Notes:</label>
-        <textarea
-          class="form-control"
-          id="notes"
-          name="notes"
-          placeholder="Enter any notes..."
-          rows="4"
-        ></textarea>
-      </div>
-
-      <!-- Created By -->
-      <div class="mb-3">
-        <label for="created_by" class="form-label">Created By:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="created_by"
-          name="created_by"
-          placeholder="Enter Creator's Name"
-          required
-        />
-      </div>
-
-      <!-- Submit Button -->
-      <div class="text-center">
-        <input
-          type="submit"
-          class="btn btn-primary w-100"
-          value="Add Invoice"
-        />
-      </div>
-    </form>
-  </div>
+  <h2>Add Invoice</h2>
+  <form action="" method="POST">
+    <div class="mb-3">
+      <label for="booker" class="form-label">Booker</label>
+      <select class="form-select" id="booker" name="booker" required>
+        {% for emp in employee %}
+        {% if emp["role"] == "Booker" %}
+            <option value="{{ emp['employee_id'] }}">{{ emp['name'] }}</option>
+        {% endif %}
+    {% endfor %}
+    
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="dsr" class="form-label">DSR</label>
+      <input type="text" class="form-control" id="dsr" name="dsr" required>
+    </div>  
+    <div class="mb-3">
+      <label for="customer" class="form-label">Customer</label>
+      <select class="form-select" id="customer" name="customer" required>
+        {% for cust in customer %}
+        <option value="{{ cust["customer_id"] }}">{{ cust["business_name"] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="value" class="form-label">Value</label>
+      <input type="number" step="0.01" class="form-control" id="value" name="value" required>
+    </div>
+    <div class="mb-3">
+      <label for="company" class="form-label">Company</label>
+      <select class="form-select" id="company" name="company" required>
+        <option value="CP">CP</option>
+        <option value="RB">RB</option>
+        <option value="JR">JR</option>
+        <option value="GP">GP</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="delivery_man" class="form-label">Delivery Man</label>
+      <select class="form-select" id="delivery_man" name="delivery_man" required>
+        {% for emp in employee %}
+        {% if emp["role"] == "Delivery Man" %}
+            <option value="{{ emp['employee_id'] }}">{{ emp['name'] }}</option>
+        {% endif %}
+    {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Invoice</button>
+  </form>
 </div>
 {% endblock %}

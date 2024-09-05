@@ -130,3 +130,21 @@ def delete_customer(customer_id):
             return "No matching record found for deletion"
     except Exception as e:
         return f"Error deleting Customer: {str(e)}"
+
+
+def customer():
+    query = """
+    SELECT customer_id, business_name
+    FROM Customers;
+    """
+    try:
+        # Assuming `mysql` is your connection object, replace this with your actual connection method if different
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        cur.close()
+        print(data)
+        return data
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
