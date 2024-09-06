@@ -92,7 +92,9 @@ def employeeedit(value):
             flash(res, category="error")
             val = int(value)
             emplo = find_employee(val)
-            return render_template("Employees/edit.html", current=current_user, data=emplo)
+            return render_template(
+                "Employees/edit.html", current=current_user, data=emplo
+            )
 
     else:
         val = int(value)

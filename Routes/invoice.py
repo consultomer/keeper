@@ -2,7 +2,14 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 
 
-from Scripts.Database.invoice import list_invoices, add_invoice, sininvoice, single_invoice, edit_invoice, delete_invoice
+from Scripts.Database.invoice import (
+    list_invoices,
+    add_invoice,
+    sininvoice,
+    single_invoice,
+    edit_invoice,
+    delete_invoice,
+)
 from Scripts.Database.employee import employee
 from Scripts.Database.customer import customer
 
@@ -26,10 +33,10 @@ def singleinv(value):
     val = int(value)
     inv = sininvoice(value)[0]
     if inv:
-        total = inv['total'] or 0
-        paid = inv['paid'] or 0
-        inv['remaining'] = total - paid
-    return render_template("Invoices/view.html", current=current_user, invoice=inv )
+        total = inv["total"] or 0
+        paid = inv["paid"] or 0
+        inv["remaining"] = total - paid
+    return render_template("Invoices/view.html", current=current_user, invoice=inv)
 
 
 @invoice_bp.route("/add", methods=["GET", "POST"])
@@ -43,7 +50,7 @@ def invoiceadd():
             "customer_id": data.get("customer"),
             "total": data.get("value"),
             "company": data.get("company"),
-            "delivery_man": data.get("delivery_man")
+            "delivery_man": data.get("delivery_man"),
         }
         res = add_invoice(inv_data)
         if res == True:
@@ -55,7 +62,9 @@ def invoiceadd():
     else:
         list = employee()
         cust = customer()
-        return render_template("Invoices/add.html", current=current_user, employee=list, customer=cust)
+        return render_template(
+            "Invoices/add.html", current=current_user, employee=list, customer=cust
+        )
 
 
 @invoice_bp.route("/edit/<int:value>", methods=["GET", "POST"])
@@ -75,7 +84,7 @@ def invoiceedit(value):
             "revision": data.get("revision"),
             "delivery_status": data.get("delivery_status"),
             "payment_status": data.get("payment_status"),
-            "notes": data.get("notes")
+            "notes": data.get("notes"),
         }
         res = edit_invoice(invoice_data)
         if res == True:
@@ -86,15 +95,27 @@ def invoiceedit(value):
             inv = invoice_data
             list = employee()
             cust = customer()
-            return render_template("Invoices/edit.html", current=current_user, invoice=inv, customer=cust, employee=list)
-    
+            return render_template(
+                "Invoices/edit.html",
+                current=current_user,
+                invoice=inv,
+                customer=cust,
+                employee=list,
+            )
+
     else:
         val = int(value)
         inv = single_invoice(val)[0]
         list = employee()
         cust = customer()
-        
-        return render_template("Invoices/edit.html", current=current_user, invoice=inv, customer=cust, employee=list)
+
+        return render_template(
+            "Invoices/edit.html",
+            current=current_user,
+            invoice=inv,
+            customer=cust,
+            employee=list,
+        )
 
 
 @invoice_bp.route("/delete/<value>", methods=["GET"])

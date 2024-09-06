@@ -116,7 +116,9 @@ def editusers(value):
                 flash(res, category="error")
                 val = int(value)
                 user = finduser(False, val)
-                return render_template("Users/edit.html", current=current_user, data=user)
+                return render_template(
+                    "Users/edit.html", current=current_user, data=user
+                )
         else:
             missing_fields = [field for field in mandatory_fields if field not in data]
             mess = f"Missing required fields: {', '.join(missing_fields)}"

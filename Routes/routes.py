@@ -6,7 +6,7 @@ from Scripts.Database.db import (
     create_employee_table,
     create_invoice_table,
     create_users_table,
-    find_total
+    find_total,
 )
 
 
