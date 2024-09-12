@@ -1,96 +1,112 @@
-{% extends "base.html" %}
-
-{% block title %}Dispatch{% endblock %}
-
-{% block main %}
+{% extends "base.html" %} {% block title %}Dispatch{% endblock %} {% block main
+%}
 <form method="POST" action="/dispatch/added">
-    <div class="card">
-        <div class="card-body">
-            <div class="container mb-5 mt-3">
-                <div class="row">
-                    <div class="col-xl-8">
-                        <ul class="list-unstyled">
-                            <li class="text-muted">Address: 
-                                <select id="customer" name="address" required>
-                                    {% for cust in main['address'] %}
-                                    <option value="{{ cust }}">{{ cust }}</option>
-                                    {% endfor %}
-                                </select>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-4">
-                        <ul class="list-unstyled">
-                            <li class="text-muted m-2"><span class="fw-bold">ID:</span># ________</li>
-                            <li class="text-muted m-2"><span class="fw-bold">Creation Date: </span>#{{ main["date"] }}</li>
-                            <li class="text-muted m-2"><span class="me-1 fw-bold">Delivery Status:</span>
-                                <select id="delivery_status" name="delivery_status">
-                                    {% for status in main['deli_status'] %}
-                                    <option value="{{ status }}">{{ status }}</option>
-                                    {% endfor %}
-                                </select>
-                            </li>
-                            <li class="text-muted m-2"><span class="me-1 fw-bold">Payment Status:</span>
-                                <select id="payment_status" name="payment_status">
-                                    {% for status in main['pay_status'] %}
-                                        <option value="{{ status }}">{{ status }}</option>
-                                    {% endfor %}
-                                </select>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="row my-2 mx-1 justify-content-center">
-                    <table class="table table-striped table-borderless">
-                        <thead style="background-color:#84B0CA ;" class="text-white">
-                            <tr>
-                                <th scope="col">Customer</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Paid</th>
-                                <th scope="col">Remaining</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in data %}
-                            <tr>
-                                <td>{{ item["customer_name"]}}</td>
-                                <td>{{ item["total"] }}</td>
-                                <td>{{ item["paid"] }}</td>
-                                <td>{{ item['remaining'] }}</td>
-                                <input type="hidden" name="invoice_ids[]" value="{{ item['invoice_id'] }}">
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="row">
-                    <div class="col-xl-8">
-                        <ul class="list-unstyled">
-                            <li class="text-muted m-3">Delivery Man: 
-                                <select id="delivery_man" name="delivery_man">
-                                    {% for man in main['delivery_man'] %}
-                                    <option value="{{ man }}" >{{ man }}</option>
-                                    {% endfor %}
-                                </select>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-3">
-                        <p class="text-black float-start"><span class="text-black me-3">Total Amount</span><span style="font-size: 25px;"></span>{{ main['total'] }}</p>
-                        <input type="hidden" name="total_amount" value="{{ main['total'] }}">
-                        <input type="hidden" name="paid" value="{{ main['paid'] }}">
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-xl-12 text-end">
-                        <button type="submit" class="btn btn-primary">Save Dispatch</button>
-                    </div>
-                </div>
-            </form>
+  <div class="card">
+    <div class="card-body">
+      <div class="container mb-5 mt-3">
+        <div class="row">
+          <div class="col-xl-8">
+            <ul class="list-unstyled">
+              <li class="text-muted">
+                Address:
+                <select id="customer" name="address" required>
+                  {% for cust in main['address'] %}
+                  <option value="{{ cust }}">{{ cust }}</option>
+                  {% endfor %}
+                </select>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xl-4">
+            <ul class="list-unstyled">
+              <li class="text-muted m-2">
+                <span class="fw-bold">ID:</span># ________
+              </li>
+              <li class="text-muted m-2">
+                <span class="fw-bold">Creation Date: </span>#{{ main["date"] }}
+              </li>
+              <li class="text-muted m-2">
+                <span class="me-1 fw-bold">Delivery Status:</span>
+                <select id="delivery_status" name="delivery_status">
+                  {% for status in main['deli_status'] %}
+                  <option value="{{ status }}">{{ status }}</option>
+                  {% endfor %}
+                </select>
+              </li>
+              <li class="text-muted m-2">
+                <span class="me-1 fw-bold">Payment Status:</span>
+                <select id="payment_status" name="payment_status">
+                  {% for status in main['pay_status'] %}
+                  <option value="{{ status }}">{{ status }}</option>
+                  {% endfor %}
+                </select>
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <div class="row my-2 mx-1 justify-content-center">
+          <table class="table table-striped table-borderless">
+            <thead style="background-color: #84b0ca" class="text-white">
+              <tr>
+                <th scope="col">Customer</th>
+                <th scope="col">Total</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Remaining</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+              <tr>
+                <td>{{ item["customer_name"]}}</td>
+                <td>{{ item["total"] }}</td>
+                <td>{{ item["paid"] }}</td>
+                <td>{{ item['remaining'] }}</td>
+                <input
+                  type="hidden"
+                  name="invoice_ids[]"
+                  value="{{ item['invoice_id'] }}"
+                />
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-8">
+            <ul class="list-unstyled">
+              <li class="text-muted m-3">
+                Delivery Man:
+                <select id="delivery_man" name="delivery_man">
+                  {% for man in main['delivery_man'] %}
+                  <option value="{{ man }}">{{ man }}</option>
+                  {% endfor %}
+                </select>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xl-3">
+            <p class="text-black float-start">
+              <span class="text-black me-3">Total Amount</span
+              ><span style="font-size: 25px"></span>{{ main['total'] }}
+            </p>
+            <input
+              type="hidden"
+              name="total_amount"
+              value="{{ main['total'] }}"
+            />
+            <input type="hidden" name="paid" value="{{ main['paid'] }}" />
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-xl-12 text-end">
+            <button type="submit" class="btn btn-primary">Save Dispatch</button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+</form>
 {% endblock %}
