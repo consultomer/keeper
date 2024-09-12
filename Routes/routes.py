@@ -6,6 +6,8 @@ from Scripts.Database.db import (
     create_employee_table,
     create_invoice_table,
     create_users_table,
+    create_dispatch_table,
+    create_disinvoice_table,
     find_total,
 )
 
@@ -30,8 +32,10 @@ def ct():
     # res = create_users_table()
     # res1 = create_customer_table()
     # res2 = create_employee_table()
-    res3 = create_invoice_table()
-    return jsonify({"data": res3})
+    # res3 = create_invoice_table()
+    # res4 = create_dispatch_table()
+    res5 = create_disinvoice_table()
+    return jsonify({"data": res5})
 
 
 #     res2 = create_employee_table()

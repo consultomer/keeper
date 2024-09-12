@@ -55,7 +55,7 @@ def create_customer_table():
     query = """
     CREATE TABLE Customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
-    business_name VARCHAR(255) NOT NULL,
+    business_name VARCHAR(255) NOT NULL UNIQUE,
     address VARCHAR(255) NOT NULL,
     area VARCHAR(100),
     route VARCHAR(100),
@@ -88,7 +88,7 @@ def create_employee_table():
     query = """
     CREATE TABLE Employee (
         employee_id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
+        name VARCHAR(100) NOT NULL UNIQUE,
         role ENUM('Booker', 'Delivery Man'),
         phone_number VARCHAR(20) NOT NULL,
         whatsapp_number VARCHAR(20),
@@ -139,6 +139,51 @@ def create_invoice_table():
         return f"Invoice Table Already Exists {e}"
 
 
+def create_dispatch_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Dispatch (
+        dispatch_id INT PRIMARY KEY AUTO_INCREMENT,
+        delivery_man VARCHAR(40) NOT NULL,
+        total DECIMAL(30),
+        paid DECIMAL(30),
+        delivery_status ENUM('Pending', 'Delivered', 'Returned') DEFAULT 'Pending',
+        payment_status ENUM('Full Payment', 'Partial Payment', 'No Payment') DEFAULT 'No Payment',
+        notes TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return f"Dispatch Table Already Exists {e}"
+
+
+def create_disinvoice_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS DispatchInvoice (
+        dispatch_id INT,
+        invoice_id INT,
+        PRIMARY KEY (dispatch_id, invoice_id),
+        FOREIGN KEY (dispatch_id) REFERENCES Dispatch(dispatch_id),
+        FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
+    );
+    """
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return f"DispatchInvoice Table Already Exists {e}"
+
+
 def find_total():
     totals = {}
     # Example for three tables: invoices, customers, employees
@@ -152,3 +197,4 @@ def find_total():
         cur.close()
         totals[table] = result
     return totals
+

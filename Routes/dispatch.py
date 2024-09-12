@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 
@@ -12,13 +13,14 @@ from Scripts.Database.invoice import (
 )
 from Scripts.Database.employee import employee
 from Scripts.Database.customer import customer
+from Scripts.Database.dispatch import add_dispatch
 
-invoice_bp = Blueprint("invoice", __name__)
+dispatch_bp = Blueprint("dispatch", __name__)
 
 
-@invoice_bp.route("/")
+@dispatch_bp.route("/")
 @login_required
-def invoicelist():
+def dispatchlist():
     if request.args.get("sort_by") and request.args.get("sort_order"):
         sort_order = request.args.get("sort_order").upper()
     else:
@@ -34,7 +36,7 @@ def invoicelist():
     return render_template("Invoices/list.html", current=current_user, data=data, sort_by=sort_by, sort_order=sort_order.lower())
 
 
-@invoice_bp.route("/<value>", methods=["GET", "POST"])
+@dispatch_bp.route("/<value>", methods=["GET", "POST"])
 @login_required
 def singleinv(value):
     val = int(value)
@@ -46,35 +48,58 @@ def singleinv(value):
     return render_template("Invoices/view.html", current=current_user, invoice=inv)
 
 
-@invoice_bp.route("/add", methods=["GET", "POST"])
+@dispatch_bp.route("/add", methods=["POST"])
 @login_required
 def invoiceadd():
     if request.method == "POST":
         data = request.form
-        inv_data = {
-            "booker": data.get("booker"),
-            "dsr": data.get("dsr"),
-            "customer_id": data.get("customer"),
-            "total": data.get("value"),
-            "company": data.get("company"),
-            "delivery_man": data.get("delivery_man"),
+        inv_data = []
+        main_data = {
+            "total": 0,
+            "paid": 0,
+            "deli_status": ['Pending', 'Delivered', 'Returned'],
+            "pay_status": ['Full Payment', 'Partial Payment', 'No Payment'],
+            "date": datetime.now().date(),
+            "delivery_man": [],
+            "address": []
         }
-        res = add_invoice(inv_data)
-        if res == True:
-            flash("Invoice Added Successfully", category="success")
-            return redirect(url_for("invoice.invoicelist"))
-        else:
-            flash(res, category="error")
-            return redirect(url_for("invoice.invoiceadd"))
-    else:
-        emp = employee()
-        cust = customer()
+
+        for d in data.values():
+            inv_daa = sininvoice(int(d))[0]
+            if inv_daa:  # Ensure inv_daa is not None
+                total = inv_daa.get("total", 0) or 0
+                paid = inv_daa.get("paid", 0) or 0
+                deli = inv_daa.get("delivery_man")
+                addr = inv_daa.get("customer_add")
+                rem = total - paid
+                inv_daa["remaining"] = rem
+                main_data["total"] += rem
+                main_data["paid"] += paid
+
+                main_data["delivery_man"].append(deli)
+                main_data["address"].append(addr)
+
+                inv_data.append(inv_daa)
+
+        main_data["delivery_man"] = list(set(main_data["delivery_man"]))
+        main_data["address"] = list(set(main_data["address"]))
+
         return render_template(
-            "Invoices/add.html", current=current_user, employee=emp, customer=cust
+            "Dispatch/add.html", current=current_user, data=inv_data, main=main_data
         )
 
 
-@invoice_bp.route("/edit/<int:value>", methods=["GET", "POST"])
+@dispatch_bp.route("/added", methods=["POST"])
+@login_required
+def dispatchadd():
+    if request.method == "POST":
+        data = request.form
+        invoice_ids = request.form.getlist('invoice_ids[]')
+        res = add_dispatch(data, invoice_ids)
+        return res
+
+
+@dispatch_bp.route("/edit/<int:value>", methods=["GET", "POST"])
 @login_required
 def invoiceedit(value):
     if request.method == "POST":
@@ -125,7 +150,7 @@ def invoiceedit(value):
         )
 
 
-@invoice_bp.route("/delete/<value>", methods=["GET"])
+@dispatch_bp.route("/delete/<value>", methods=["GET"])
 @login_required
 def invoicedelete(value):
     res = delete_invoice(value)

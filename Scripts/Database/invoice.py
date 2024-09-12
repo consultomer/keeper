@@ -27,8 +27,17 @@ def add_invoice(data):
         return f"Error adding Invoice: {str(e)}"
 
 
-def list_invoices():
-    query = """
+def list_invoices(sort_by="created_at", sort_order="ASC"):
+    # Validate sort_by and sort_order to prevent SQL injection
+    valid_sort_by = ["invoice_id", "booker_name", "delivery_man", "dsr", "customer_name", "total", "company", "revision", "delivery_status", "payment_status", "notes", "created_at", "age"]
+    valid_sort_order = ["ASC", "DESC"]
+
+    if sort_by not in valid_sort_by:
+        sort_by = "created_at"
+    if sort_order not in valid_sort_order:
+        sort_order = "ASC"
+
+    query = f"""
     SELECT 
         i.invoice_id,
         e1.name AS booker_name,
@@ -46,7 +55,8 @@ def list_invoices():
     FROM Invoice i
     JOIN Employee e1 ON i.booker = e1.employee_id
     JOIN Employee e2 ON i.delivery_man = e2.employee_id
-    JOIN Customers c ON i.customer_id = c.customer_id;
+    JOIN Customers c ON i.customer_id = c.customer_id
+    ORDER BY {sort_by} {sort_order};
     """
     try:
         cur = mysql.connection.cursor()
@@ -55,7 +65,9 @@ def list_invoices():
         cur.close()
         return data
     except Exception as e:
+        print(f"Error fetching invoices: {e}")
         return False
+
 
 
 def single_invoice(value):
