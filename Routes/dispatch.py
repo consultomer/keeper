@@ -4,16 +4,13 @@ from flask_login import login_required, current_user
 
 
 from Scripts.Database.invoice import (
-    list_invoices,
-    add_invoice,
     sininvoice,
     single_invoice,
     edit_invoice,
-    delete_invoice,
 )
 from Scripts.Database.employee import employee
 from Scripts.Database.customer import customer
-from Scripts.Database.dispatch import add_dispatch
+from Scripts.Database.dispatch import add_dispatch, list_dispatch, view_dispatch, delete_dispatch
 
 dispatch_bp = Blueprint("dispatch", __name__)
 
@@ -26,26 +23,24 @@ def dispatchlist():
     else:
         sort_order = "asc"
     sort_by = request.args.get("sort_by")
-    data = list_invoices(sort_by, sort_order)
+    data = list_dispatch(sort_by, sort_order)
     if data == False:
         mess = "No Data"
         flash(mess, category="error")
         data = []
         sort_by = ""
         sort_order = ""
-    return render_template("Invoices/list.html", current=current_user, data=data, sort_by=sort_by, sort_order=sort_order.lower())
+    print(data)
+    return render_template("Dispatch/list.html", current=current_user, data=data, sort_by=sort_by, sort_order=sort_order.lower())
 
 
 @dispatch_bp.route("/<value>", methods=["GET", "POST"])
 @login_required
-def singleinv(value):
+def singledis(value):
     val = int(value)
-    inv = sininvoice(val)[0]
-    if inv:
-        total = inv["total"] or 0
-        paid = inv["paid"] or 0
-        inv["remaining"] = total - paid
-    return render_template("Invoices/view.html", current=current_user, invoice=inv)
+    dispatch_data, invoice_data = view_dispatch(val)
+    return render_template('Dispatch/view.html', current=current_user, data=dispatch_data, invoices=invoice_data)
+
 
 
 @dispatch_bp.route("/add", methods=["POST"])
@@ -96,7 +91,13 @@ def dispatchadd():
         data = request.form
         invoice_ids = request.form.getlist('invoice_ids[]')
         res = add_dispatch(data, invoice_ids)
-        return res
+        if res == True:
+            flash("Dispatch Created Successfully", category="success")
+            return redirect(url_for("dispatch.dispatchlist"))
+        else:
+            flash(res, category="error")
+            return redirect(url_for("invoice.invoicelist"))
+
 
 
 @dispatch_bp.route("/edit/<int:value>", methods=["GET", "POST"])
@@ -152,12 +153,12 @@ def invoiceedit(value):
 
 @dispatch_bp.route("/delete/<value>", methods=["GET"])
 @login_required
-def invoicedelete(value):
-    res = delete_invoice(value)
+def disdelete(value):
+    res = delete_dispatch(value)
     if res == True:
-        mess = "Invoice Deleted Successfully"
+        mess = "Dispatch Deleted Successfully"
         flash(mess, category="success")
-        return redirect(url_for("invoice.invoicelist"))
+        return redirect(url_for("dispatch.dispatchlist"))
     else:
         flash(res, category="error")
-        return redirect(url_for("invoice.invoicelist"))
+        return redirect(url_for("dispatch.dispatchlist"))

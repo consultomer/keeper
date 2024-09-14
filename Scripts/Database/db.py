@@ -144,8 +144,6 @@ def create_dispatch_table():
     CREATE TABLE IF NOT EXISTS Dispatch (
         dispatch_id INT PRIMARY KEY AUTO_INCREMENT,
         delivery_man VARCHAR(40) NOT NULL,
-        total DECIMAL(30),
-        paid DECIMAL(30),
         delivery_status ENUM('Pending', 'Delivered', 'Returned') DEFAULT 'Pending',
         payment_status ENUM('Full Payment', 'Partial Payment', 'No Payment') DEFAULT 'No Payment',
         notes TEXT,

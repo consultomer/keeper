@@ -73,32 +73,22 @@
           </table>
         </div>
 
-        <div class="row">
-          <div class="col-xl-8">
-            <ul class="list-unstyled">
-              <li class="text-muted m-3">
-                Delivery Man:
-                <select id="delivery_man" name="delivery_man">
-                  {% for man in main['delivery_man'] %}
-                  <option value="{{ man }}">{{ man }}</option>
-                  {% endfor %}
-                </select>
-              </li>
-            </ul>
-          </div>
-          <div class="col-xl-3">
-            <p class="text-black float-start">
-              <span class="text-black me-3">Total Amount</span
-              ><span style="font-size: 25px"></span>{{ main['total'] }}
-            </p>
-            <input
-              type="hidden"
-              name="total_amount"
-              value="{{ main['total'] }}"
-            />
-            <input type="hidden" name="paid" value="{{ main['paid'] }}" />
-          </div>
-        </div>
+                <div class="row">
+                    <div class="col-xl-8">
+                        <ul class="list-unstyled">
+                            <li class="text-muted m-3">Delivery Man: 
+                                <select id="delivery_man" name="delivery_man">
+                                    {% for man in main['delivery_man'] %}
+                                    <option value="{{ man }}" >{{ man }}</option>
+                                    {% endfor %}
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xl-3">
+                        <p class="text-black float-start"><span class="text-black me-3">Total Amount</span><span style="font-size: 25px;"></span>{{ main['total'] }}</p>
+                    </div>
+                </div>
 
         <div class="row mt-3">
           <div class="col-xl-12 text-end">

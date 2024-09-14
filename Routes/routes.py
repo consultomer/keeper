@@ -33,7 +33,7 @@ def ct():
     # res1 = create_customer_table()
     # res2 = create_employee_table()
     # res3 = create_invoice_table()
-    # res4 = create_dispatch_table()
+    res4 = create_dispatch_table()
     res5 = create_disinvoice_table()
     return jsonify({"data": res5})
 

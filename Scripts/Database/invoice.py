@@ -120,8 +120,10 @@ def edit_invoice(data):
 
 def delete_invoice(invoice_id):
     query = "DELETE FROM Invoice WHERE invoice_id = %s"
+    delete_query = "DELETE FROM DispatchInvoice WHERE invoice_id = %s"
     try:
         cur = mysql.connection.cursor()
+        cur.execute(delete_query, (invoice_id,))
         cur.execute(query, (invoice_id,))
         affected_rows = cur.rowcount
         mysql.connection.commit()
