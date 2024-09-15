@@ -9,6 +9,7 @@ from Scripts.Database.db import (
     create_dispatch_table,
     create_disinvoice_table,
     find_total,
+    c_user,
 )
 
 
@@ -20,9 +21,9 @@ route_bp = Blueprint("routes", __name__)
 
 # ------------------ Home ------------------ #
 @route_bp.route("/")
-@login_required
 def home():
-    data = find_total()
+    data = c_user()
+    return data
     return render_template("dashboard.html", current=current_user, total=data)
 
 

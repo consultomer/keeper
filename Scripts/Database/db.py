@@ -193,3 +193,23 @@ def find_total():
         totals[table] = result
     return totals
 
+def c_user():
+    password = "peWag0$efow17y6PrUXA"
+    passw = password.encode("utf-8")
+    hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
+    query2 = """
+    INSERT INTO Users (
+        name, last_name, username, password, role, status, designation
+        ) VALUES (
+            %s, %s, %s, %s, %s, 'active', 'none'
+            );
+    """
+    try:
+
+        cur = mysql.connection.cursor()
+        cur.execute(query2, ("Default", "User", "admin", hashed, "admin"))
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return "User TABLE or User Exists"
