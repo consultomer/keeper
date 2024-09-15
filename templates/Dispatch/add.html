@@ -5,18 +5,6 @@
     <div class="card-body">
       <div class="container mb-5 mt-3">
         <div class="row">
-          <div class="col-xl-8">
-            <ul class="list-unstyled">
-              <li class="text-muted">
-                Address:
-                <select id="customer" name="address" required>
-                  {% for cust in main['address'] %}
-                  <option value="{{ cust }}">{{ cust }}</option>
-                  {% endfor %}
-                </select>
-              </li>
-            </ul>
-          </div>
           <div class="col-xl-4">
             <ul class="list-unstyled">
               <li class="text-muted m-2">
@@ -26,20 +14,7 @@
                 <span class="fw-bold">Creation Date: </span>#{{ main["date"] }}
               </li>
               <li class="text-muted m-2">
-                <span class="me-1 fw-bold">Delivery Status:</span>
-                <select id="delivery_status" name="delivery_status">
-                  {% for status in main['deli_status'] %}
-                  <option value="{{ status }}">{{ status }}</option>
-                  {% endfor %}
-                </select>
-              </li>
-              <li class="text-muted m-2">
-                <span class="me-1 fw-bold">Payment Status:</span>
-                <select id="payment_status" name="payment_status">
-                  {% for status in main['pay_status'] %}
-                  <option value="{{ status }}">{{ status }}</option>
-                  {% endfor %}
-                </select>
+                <span class="me-1 fw-bold">Delivery Status:</span>Processing
               </li>
             </ul>
           </div>
@@ -51,8 +26,6 @@
               <tr>
                 <th scope="col">Customer</th>
                 <th scope="col">Total</th>
-                <th scope="col">Paid</th>
-                <th scope="col">Remaining</th>
               </tr>
             </thead>
             <tbody>
@@ -60,8 +33,6 @@
               <tr>
                 <td>{{ item["customer_name"]}}</td>
                 <td>{{ item["total"] }}</td>
-                <td>{{ item["paid"] }}</td>
-                <td>{{ item['remaining'] }}</td>
                 <input
                   type="hidden"
                   name="invoice_ids[]"
@@ -78,8 +49,10 @@
                         <ul class="list-unstyled">
                             <li class="text-muted m-3">Delivery Man: 
                                 <select id="delivery_man" name="delivery_man">
-                                    {% for man in main['delivery_man'] %}
-                                    <option value="{{ man }}" >{{ man }}</option>
+                                    {% for man in employee %}
+                                    {% if man["role"] == "Delivery Man" %}
+                                    <option value="{{ man["employee_id"] }}" >{{ man["name"] }}</option>
+                                    {% endif %}
                                     {% endfor %}
                                 </select>
                             </li>

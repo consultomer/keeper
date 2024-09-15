@@ -4,8 +4,8 @@ from Scripts.extensions import mysql
 def add_invoice(data):
     query = """
     INSERT INTO Invoice (
-        booker, delivery_man, dsr, customer_id, total, company
-    ) VALUES (%s, %s, %s, %s, %s, %s);
+        booker, dsr, customer_id, total, created_at
+    ) VALUES (%s, %s, %s, %s, %s);
     """
     try:
         cur = mysql.connection.cursor()
@@ -13,11 +13,10 @@ def add_invoice(data):
             query,
             (
                 data["booker"],
-                data["delivery_man"],
                 data["dsr"],
                 data["customer_id"],
                 data["total"],
-                data["company"],
+                data["date"],
             ),
         )
         mysql.connection.commit()
@@ -41,7 +40,7 @@ def list_invoices(sort_by="created_at", sort_order="ASC"):
     SELECT 
         i.invoice_id,
         e1.name AS booker_name,
-        e2.name AS delivery_man,
+        e2.name AS delivery_man, -- Updated alias to reflect nulls properly
         i.dsr,
         c.business_name AS customer_name,
         i.total,
@@ -54,7 +53,7 @@ def list_invoices(sort_by="created_at", sort_order="ASC"):
         DATEDIFF(CURDATE(), i.created_at) AS age
     FROM Invoice i
     JOIN Employee e1 ON i.booker = e1.employee_id
-    JOIN Employee e2 ON i.delivery_man = e2.employee_id
+    LEFT JOIN Employee e2 ON i.delivery_man = e2.employee_id
     JOIN Customers c ON i.customer_id = c.customer_id
     ORDER BY {sort_by} {sort_order};
     """
@@ -63,6 +62,7 @@ def list_invoices(sort_by="created_at", sort_order="ASC"):
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
+        print(data)
         return data
     except Exception as e:
         print(f"Error fetching invoices: {e}")
@@ -141,10 +141,10 @@ def sininvoice(value):
     SELECT 
         i.invoice_id,
         e1.name AS booker_name,
-        e2.name AS delivery_man,
+        e2.name AS delivery_man_name, -- Updated alias to handle NULL values properly
         i.dsr,
         c.business_name AS customer_name,
-        c.address AS customer_add,
+        c.address AS customer_address, -- Updated alias for consistency
         c.phone AS customer_phone,
         i.total,
         i.paid,
@@ -157,7 +157,7 @@ def sininvoice(value):
         DATEDIFF(CURDATE(), i.created_at) AS age
     FROM Invoice i
     JOIN Employee e1 ON i.booker = e1.employee_id
-    JOIN Employee e2 ON i.delivery_man = e2.employee_id
+    LEFT JOIN Employee e2 ON i.delivery_man = e2.employee_id -- Use LEFT JOIN to handle NULL values
     JOIN Customers c ON i.customer_id = c.customer_id
     WHERE i.invoice_id = %s;
     """

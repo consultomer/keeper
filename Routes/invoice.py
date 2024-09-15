@@ -51,21 +51,30 @@ def singleinv(value):
 def invoiceadd():
     if request.method == "POST":
         data = request.form
-        inv_data = {
-            "booker": data.get("booker"),
-            "dsr": data.get("dsr"),
-            "customer_id": data.get("customer"),
-            "total": data.get("value"),
-            "company": data.get("company"),
-            "delivery_man": data.get("delivery_man"),
-        }
-        res = add_invoice(inv_data)
-        if res == True:
-            flash("Invoice Added Successfully", category="success")
-            return redirect(url_for("invoice.invoicelist"))
-        else:
-            flash(res, category="error")
-            return redirect(url_for("invoice.invoiceadd"))
+        
+        # Extract data from form
+        bookers = data.getlist("booker[]")
+        dsrs = data.getlist("dsr[]")
+        customers = data.getlist("customer[]")
+        values = data.getlist("value[]")
+        dates = data.getlist("date[]")
+
+        # Iterate through the data and process each invoice
+        for booker, dsr, custom, value, date in zip(bookers, dsrs, customers, values, dates):
+            inv_data = {
+                "booker": booker,
+                "dsr": dsr,
+                "customer_id": custom,
+                "total": value,
+                "date": date
+            }
+            res = add_invoice(inv_data)
+            if res is not True:
+                flash(res, category="error")
+                return redirect(url_for("invoice.invoiceadd"))
+
+        flash("Invoice(s) Added Successfully", category="success")
+        return redirect(url_for("invoice.invoicelist"))
     else:
         emp = employee()
         cust = customer()

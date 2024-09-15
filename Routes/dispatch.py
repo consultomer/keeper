@@ -10,7 +10,7 @@ from Scripts.Database.invoice import (
 )
 from Scripts.Database.employee import employee
 from Scripts.Database.customer import customer
-from Scripts.Database.dispatch import add_dispatch, list_dispatch, view_dispatch, delete_dispatch
+from Scripts.Database.dispatch import add_dispatch, list_dispatches, view_dispatch, delete_dispatch
 
 dispatch_bp = Blueprint("dispatch", __name__)
 
@@ -23,7 +23,7 @@ def dispatchlist():
     else:
         sort_order = "asc"
     sort_by = request.args.get("sort_by")
-    data = list_dispatch(sort_by, sort_order)
+    data = list_dispatches(sort_by, sort_order)
     if data == False:
         mess = "No Data"
         flash(mess, category="error")
@@ -51,36 +51,18 @@ def invoiceadd():
         inv_data = []
         main_data = {
             "total": 0,
-            "paid": 0,
-            "deli_status": ['Pending', 'Delivered', 'Returned'],
-            "pay_status": ['Full Payment', 'Partial Payment', 'No Payment'],
             "date": datetime.now().date(),
-            "delivery_man": [],
-            "address": []
         }
 
         for d in data.values():
             inv_daa = sininvoice(int(d))[0]
             if inv_daa:  # Ensure inv_daa is not None
                 total = inv_daa.get("total", 0) or 0
-                paid = inv_daa.get("paid", 0) or 0
-                deli = inv_daa.get("delivery_man")
-                addr = inv_daa.get("customer_add")
-                rem = total - paid
-                inv_daa["remaining"] = rem
-                main_data["total"] += rem
-                main_data["paid"] += paid
-
-                main_data["delivery_man"].append(deli)
-                main_data["address"].append(addr)
-
+                main_data["total"] += total
                 inv_data.append(inv_daa)
-
-        main_data["delivery_man"] = list(set(main_data["delivery_man"]))
-        main_data["address"] = list(set(main_data["address"]))
-
+        emp = employee()
         return render_template(
-            "Dispatch/add.html", current=current_user, data=inv_data, main=main_data
+            "Dispatch/add.html", current=current_user, data=inv_data, main=main_data, employee=emp
         )
 
 
@@ -88,9 +70,9 @@ def invoiceadd():
 @login_required
 def dispatchadd():
     if request.method == "POST":
-        data = request.form
+        delivery_man = request.form.get('delivery_man')
         invoice_ids = request.form.getlist('invoice_ids[]')
-        res = add_dispatch(data, invoice_ids)
+        res = add_dispatch(delivery_man, invoice_ids)
         if res == True:
             flash("Dispatch Created Successfully", category="success")
             return redirect(url_for("dispatch.dispatchlist"))

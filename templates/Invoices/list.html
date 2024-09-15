@@ -155,7 +155,7 @@
                     <td>{{ user['revision'] }}</td>
                     <td>{{ user['age'] }} days</td>
                     <td>{{ user['delivery_status'] }}</td>
-                    <td>{{ user['delivery_man'] }}</td>
+                    <td>{% if user['delivery_man'] %}{{ user['delivery_man'] }}{% else %}Un-Assigned{% endif %}</td>
                     <td class="text-center">
                       <a
                         href="/invoice/{{ user['invoice_id'] }}"

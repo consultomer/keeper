@@ -111,14 +111,14 @@ def create_invoice_table():
     CREATE TABLE IF NOT EXISTS Invoice (
         invoice_id INT PRIMARY KEY AUTO_INCREMENT,
         booker INT NOT NULL,
-        delivery_man INT NOT NULL,
+        delivery_man INT NULL,
         dsr VARCHAR(255),
         customer_id INT NOT NULL,
         total DECIMAL(10, 2),
         paid DECIMAL(10, 2),
         company VARCHAR(255),
         revision VARCHAR(255),
-        delivery_status ENUM('Pending', 'Delivered', 'Returned') DEFAULT 'Pending',
+        delivery_status ENUM('Un-delivered', 'Delivered', 'Returned', 'Processing') DEFAULT 'Un-delivered',
         payment_status ENUM('Full Payment', 'Partial Payment', 'No Payment') DEFAULT 'No Payment',
         notes TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -143,12 +143,9 @@ def create_dispatch_table():
     query = """
     CREATE TABLE IF NOT EXISTS Dispatch (
         dispatch_id INT PRIMARY KEY AUTO_INCREMENT,
-        delivery_man VARCHAR(40) NOT NULL,
-        delivery_status ENUM('Pending', 'Delivered', 'Returned') DEFAULT 'Pending',
-        payment_status ENUM('Full Payment', 'Partial Payment', 'No Payment') DEFAULT 'No Payment',
-        notes TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        delivery_man INT NOT NULL,
+        dispatch_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (delivery_man) REFERENCES Employee(employee_id)
     );
     """
     try:
@@ -165,9 +162,9 @@ def create_dispatch_table():
 def create_disinvoice_table():
     query = """
     CREATE TABLE IF NOT EXISTS DispatchInvoice (
-        dispatch_id INT,
-        invoice_id INT,
-        PRIMARY KEY (dispatch_id, invoice_id),
+        dispatch_invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+        dispatch_id INT NOT NULL,
+        invoice_id INT NOT NULL,
         FOREIGN KEY (dispatch_id) REFERENCES Dispatch(dispatch_id),
         FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
     );
