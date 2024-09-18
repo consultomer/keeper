@@ -102,7 +102,7 @@ def dispatchadd():
 
 @dispatch_bp.route("/edit/<int:value>", methods=["GET", "POST"])
 @login_required
-def invoiceedit(value):
+def dispatchedit(value):
     if request.method == "POST":
         data = request.form
         invoice_data = {
@@ -119,6 +119,7 @@ def invoiceedit(value):
             "payment_status": data.get("payment_status"),
             "notes": data.get("notes"),
         }
+        return data
         res = edit_invoice(invoice_data)
         if res == True:
             flash("Invoice edit Successfully", category="success")
