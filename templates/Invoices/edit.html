@@ -37,6 +37,7 @@
         <div class="mb-3">
             <label for="company" class="form-label">Company</label>
             <select class="form-select" id="company" name="company" required>
+                <option value="None" {% if invoice['company'] == 'None' %}selected{% endif %}>None</option>
                 <option value="CP" {% if invoice['company'] == 'CP' %}selected{% endif %}>CP</option>
                 <option value="RB" {% if invoice['company'] == 'RB' %}selected{% endif %}>RB</option>
                 <option value="JR" {% if invoice['company'] == 'JR' %}selected{% endif %}>JR</option>
@@ -59,7 +60,8 @@
         <div class="mb-3">
             <label for="delivery_status" class="form-label">Delivery Status</label>
             <select class="form-select" id="delivery_status" name="delivery_status" required>
-                <option value="Pending" {% if invoice['delivery_status'] == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Processing" {% if invoice['delivery_status'] == 'Processing' %}selected{% endif %}>Processing</option>
+                <option value="Un-delivered" {% if invoice['delivery_status'] == 'Un-delivered' %}selected{% endif %}>Un-delivered</option>
                 <option value="Delivered" {% if invoice['delivery_status'] == 'Delivered' %}selected{% endif %}>Delivered</option>
                 <option value="Returned" {% if invoice['delivery_status'] == 'Returned' %}selected{% endif %}>Returned</option>
             </select>

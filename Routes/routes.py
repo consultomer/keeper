@@ -22,8 +22,7 @@ route_bp = Blueprint("routes", __name__)
 # ------------------ Home ------------------ #
 @route_bp.route("/")
 def home():
-    data = c_user()
-    return data
+    data = find_total()
     return render_template("dashboard.html", current=current_user, total=data)
 
 

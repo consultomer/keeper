@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
+import json
 
 
 from Scripts.Database.invoice import (
@@ -24,13 +25,18 @@ def dispatchlist():
         sort_order = "asc"
     sort_by = request.args.get("sort_by")
     data = list_dispatches(sort_by, sort_order)
+    for dispatch in data:
+        if isinstance(dispatch['invoices'], str):
+            dispatch['invoices'] = json.loads(dispatch['invoices'])
+        total = sum(invoice['total'] for invoice in dispatch['invoices'])
+        dispatch['total'] = total
     if data == False:
         mess = "No Data"
         flash(mess, category="error")
         data = []
         sort_by = ""
         sort_order = ""
-    print(data)
+
     return render_template("Dispatch/list.html", current=current_user, data=data, sort_by=sort_by, sort_order=sort_order.lower())
 
 
@@ -38,8 +44,20 @@ def dispatchlist():
 @login_required
 def singledis(value):
     val = int(value)
-    dispatch_data, invoice_data = view_dispatch(val)
-    return render_template('Dispatch/view.html', current=current_user, data=dispatch_data, invoices=invoice_data)
+    dispatch_data = view_dispatch(val)
+    
+    if isinstance(dispatch_data['invoices'], str):
+        dispatch_data['invoices'] = json.loads(dispatch_data['invoices'])
+    total = 0
+    for invoice in dispatch_data['invoices']:
+        total_amount = invoice['total'] if invoice['total'] is not None else 0
+        paid_amount = invoice['paid'] if invoice['paid'] is not None else 0
+        remain = total_amount - paid_amount
+        invoice['remaining'] = remain
+        total += remain
+    dispatch_data['total'] = total
+    # return dispatch_data
+    return render_template('Dispatch/view.html', current=current_user, data=dispatch_data)
 
 
 
@@ -111,7 +129,7 @@ def invoiceedit(value):
             emp = employee()
             cust = customer()
             return render_template(
-                "Invoices/edit.html",
+                "Dispatch/edit.html",
                 current=current_user,
                 invoice=inv,
                 customer=cust,
@@ -120,17 +138,20 @@ def invoiceedit(value):
 
     else:
         val = int(value)
-        inv = single_invoice(val)[0]
-        emp = employee()
-        cust = customer()
-
-        return render_template(
-            "Invoices/edit.html",
-            current=current_user,
-            invoice=inv,
-            customer=cust,
-            employee=emp,
-        )
+        dispatch_data = view_dispatch(val)
+        
+        if isinstance(dispatch_data['invoices'], str):
+            dispatch_data['invoices'] = json.loads(dispatch_data['invoices'])
+        total = 0
+        for invoice in dispatch_data['invoices']:
+            total_amount = invoice['total'] if invoice['total'] is not None else 0
+            paid_amount = invoice['paid'] if invoice['paid'] is not None else 0
+            remain = total_amount - paid_amount
+            invoice['remaining'] = remain
+            total += remain
+        dispatch_data['total'] = total
+        # return dispatch_data
+        return render_template('Dispatch/edit.html', current=current_user, data=dispatch_data)
 
 
 @dispatch_bp.route("/delete/<value>", methods=["GET"])
