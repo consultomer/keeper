@@ -88,9 +88,9 @@
                     </th>
                     <th scope="col">
                       <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='company', sort_order='desc' if sort_by == 'company' and sort_order == 'asc' else 'asc') }}"
+                        href="{{ url_for('invoice.invoicelist', sort_by='paid', sort_order='desc' if sort_by == 'paid' and sort_order == 'asc' else 'asc') }}"
                       >
-                        Company {% if sort_by == 'company' %} {% if sort_order
+                        Paid {% if sort_by == 'paid' %} {% if sort_order
                         == 'asc' %} &#9650; {% else %} &#9660; {% endif %} {%
                         endif %}
                       </a>
@@ -151,7 +151,7 @@
                     <td>{{ user['invoice_id'] }}</td>
                     <td>{{ user['customer_name'] }}</td>
                     <td>{{ user['total'] }}</td>
-                    <td>{{ user['company'] }}</td>
+                    <td>{{ user['paid'] }}</td>
                     <td>{{ user['revision'] }}</td>
                     <td>{{ user['age'] }} days</td>
                     <td>{{ user['delivery_status'] }}</td>

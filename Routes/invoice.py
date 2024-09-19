@@ -42,7 +42,8 @@ def singleinv(value):
     if inv:
         total = inv["total"] or 0
         paid = inv["paid"] or 0
-        inv["remaining"] = total - paid
+        revision = inv["revision"] or 0
+        inv["remaining"] = total - paid + revision
     return render_template("Invoices/view.html", current=current_user, invoice=inv)
 
 

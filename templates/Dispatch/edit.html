@@ -43,6 +43,7 @@
                         <td>{{ invoice['age'] }} days</td>
                         <td class="total" data-total="{{ invoice['total'] }}" id="total_{{ invoice['invoice_id'] }}">{{ invoice['total'] }}</td>
                         <td>
+                            <input type="hidden" name="invoice_id" value="{{ invoice['invoice_id'] }}">
                             <input type="number" name="paid_{{ invoice['invoice_id'] }}" value="{{ invoice['paid'] }}" class="paid-field" data-invoice-id="{{ invoice['invoice_id'] }}">
                         </td>
                         <td>
@@ -84,8 +85,6 @@
             const revision = parseFloat(document.querySelector(`input[name="revision_${invoiceId}"]`).value) || 0;
 
             const credit = initialTotal - paid + revision;
-
-            // document.getElementById(`total_${invoiceId}`).textContent = adjustedTotal.toFixed(2);
             document.getElementById(`credit_${invoiceId}`).textContent = credit.toFixed(2);
 
             updateGrandTotal();

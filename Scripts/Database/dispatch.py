@@ -60,7 +60,7 @@ def list_dispatches(sort_by="dispatch_date", sort_order="ASC"):
     SELECT 
         d.dispatch_id,
         e.name AS delivery_man,
-        d.dispatch_date,
+        DATE(d.dispatch_date) AS dispatch_date,
         JSON_ARRAYAGG(
             JSON_OBJECT(
                 'invoice_id', i.invoice_id,
@@ -103,7 +103,7 @@ def view_dispatch(dispatch_id):
         SELECT 
             d.dispatch_id,
             e.name AS delivery_man,
-            d.dispatch_date,
+            DATE(d.dispatch_date) AS dispatch_date,
             JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'invoice_id', i.invoice_id,

@@ -6,8 +6,7 @@ import json
 
 from Scripts.Database.invoice import (
     sininvoice,
-    single_invoice,
-    edit_invoice,
+    edit_invoices,
 )
 from Scripts.Database.employee import employee
 from Scripts.Database.customer import customer
@@ -29,7 +28,12 @@ def dispatchlist():
         if isinstance(dispatch['invoices'], str):
             dispatch['invoices'] = json.loads(dispatch['invoices'])
         total = sum(invoice['total'] for invoice in dispatch['invoices'])
+        paid = sum(invoice['paid'] for invoice in dispatch['invoices'])
+        revision = sum(invoice['revision'] for invoice in dispatch['invoices'])
         dispatch['total'] = total
+        dispatch['paid'] = paid
+        dispatch['revision'] = revision
+        dispatch['remaining'] = total - paid + revision
     if data == False:
         mess = "No Data"
         flash(mess, category="error")
@@ -104,37 +108,47 @@ def dispatchadd():
 @login_required
 def dispatchedit(value):
     if request.method == "POST":
-        data = request.form
-        invoice_data = {
-            "invoice_id": value,
-            "booker": data.get("booker"),
-            "delivery_man": data.get("delivery_man"),
-            "dsr": data.get("dsr"),
-            "customer_id": data.get("customer"),
-            "total": data.get("total"),
-            "paid": data.get("paid"),
-            "company": data.get("company"),
-            "revision": data.get("revision"),
-            "delivery_status": data.get("delivery_status"),
-            "payment_status": data.get("payment_status"),
-            "notes": data.get("notes"),
-        }
-        return data
-        res = edit_invoice(invoice_data)
+        form_data = request.form
+        
+        # Iterate through the form data to get updated values for each invoice
+        invoices = []
+        for invoice_id in form_data.getlist('invoice_id'):
+            paid = float(form_data.get(f'paid_{invoice_id}', 0))
+            revision = float(form_data.get(f'revision_{invoice_id}', 0))
+            notes = form_data.get(f'notes_{invoice_id}', '')
+
+            invoices.append({
+                'invoice_id': int(invoice_id),
+                'paid': paid,
+                'revision': revision,
+                'notes': notes
+            })
+
+        # Assuming you have a function to update the invoices in the database
+        res = edit_invoices(invoices)
         if res == True:
-            flash("Invoice edit Successfully", category="success")
-            return redirect(url_for("invoice.invoicelist"))
+            flash("Hisaab edit Successfully", category="success")
+            return redirect(url_for("dispatch.dispatchlist"))
         else:
             flash(res, category="error")
-            inv = invoice_data
-            emp = employee()
-            cust = customer()
+            val = int(value)
+            dispatch_data = view_dispatch(val)
+            
+            if isinstance(dispatch_data['invoices'], str):
+                dispatch_data['invoices'] = json.loads(dispatch_data['invoices'])
+            total = 0
+            for invoice in dispatch_data['invoices']:
+                total_amount = invoice['total'] if invoice['total'] is not None else 0
+                paid_amount = invoice['paid'] if invoice['paid'] is not None else 0
+                remain = total_amount - paid_amount
+                invoice['remaining'] = remain
+                total += remain
+            dispatch_data['total'] = total
+
             return render_template(
                 "Dispatch/edit.html",
                 current=current_user,
-                invoice=inv,
-                customer=cust,
-                employee=emp,
+                data=dispatch_data
             )
 
     else:
