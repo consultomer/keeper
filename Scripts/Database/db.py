@@ -182,7 +182,7 @@ def create_disinvoice_table():
 def find_total():
     totals = {}
     # Example for three tables: invoices, customers, employees
-    tables = ["Invoice", "Customers", "Employee"]
+    tables = ["Invoice", "Customers", "Employee", "Dispatch"]
     for table in tables:
         query = f"SELECT COUNT(*) AS total FROM {table}"
         cur = mysql.connection.cursor()

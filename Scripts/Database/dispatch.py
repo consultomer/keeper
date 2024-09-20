@@ -3,8 +3,6 @@ from Scripts.extensions import mysql
 
 def add_dispatch(data, invoice_ids):
     try:
-        print(f"data: {data}, type: {type(data)}")
-        print(f"invoice_ids: {invoice_ids}, type: {type(invoice_ids)}")
         delivery_man = int(data)
         
         # Insert into Dispatch
@@ -91,7 +89,6 @@ def list_dispatches(sort_by="dispatch_date", sort_order="ASC"):
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
-        print(data)
         return data
     except Exception as e:
         print(f"Error fetching dispatches: {e}")
