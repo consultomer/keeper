@@ -1,6 +1,5 @@
-{% extends "base.html" %}
-{% block title %}Add New Invoice{% endblock %}
-{% block main %}
+{% extends "base.html" %} {% block title %}Add New Invoice{% endblock %} {%
+block main %}
 <div class="container mt-5">
   <h2>Add Invoice</h2>
   <form action="" method="POST" id="invoiceForm">
@@ -19,15 +18,13 @@
         <tr>
           <td>
             <select class="form-select" name="booker[]" required>
-              {% for emp in employee %}
-              {% if emp["role"] == "Booker" %}
+              {% for emp in employee %} {% if emp["role"] == "Booker" %}
               <option value="{{ emp['employee_id'] }}">{{ emp['name'] }}</option>
-              {% endif %}
-              {% endfor %}
+              {% endif %} {% endfor %}
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" name="dsr[]" required>
+            <input type="text" class="form-control" name="dsr[]" required />
           </td>
           <td>
             <select class="form-select" name="customer[]" required>
@@ -37,13 +34,25 @@
             </select>
           </td>
           <td>
-            <input type="number" step="0.01" class="form-control" name="value[]" required>
+            <input
+              type="number"
+              step="0.01"
+              class="form-control"
+              name="value[]"
+              required
+            />
           </td>
           <td>
-            <input type="date" class="form-control" name="date[]" required>
+            <input type="date" class="form-control" name="date[]" required />
           </td>
           <td>
-            <button type="button" class="btn btn-primary" onclick="addInvoiceRow()">+</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addInvoiceRow()"
+            >
+              +
+            </button>
           </td>
         </tr>
       </tbody>
@@ -54,8 +63,8 @@
 
 <script>
   function addInvoiceRow() {
-    const tableBody = document.getElementById('invoiceTableBody');
-    const newRow = document.createElement('tr');
+    const tableBody = document.getElementById("invoiceTableBody");
+    const newRow = document.createElement("tr");
 
     newRow.innerHTML = `
       <td>

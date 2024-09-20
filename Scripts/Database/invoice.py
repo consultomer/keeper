@@ -28,7 +28,21 @@ def add_invoice(data):
 
 def list_invoices(sort_by="created_at", sort_order="ASC"):
     # Validate sort_by and sort_order to prevent SQL injection
-    valid_sort_by = ["invoice_id", "booker_name", "delivery_man", "dsr", "customer_name", "total", "paid", "revision", "delivery_status", "payment_status", "notes", "created_at", "age"]
+    valid_sort_by = [
+        "invoice_id",
+        "booker_name",
+        "delivery_man",
+        "dsr",
+        "customer_name",
+        "total",
+        "paid",
+        "revision",
+        "delivery_status",
+        "payment_status",
+        "notes",
+        "created_at",
+        "age",
+    ]
     valid_sort_order = ["ASC", "DESC"]
 
     if sort_by not in valid_sort_by:
@@ -66,7 +80,6 @@ def list_invoices(sort_by="created_at", sort_order="ASC"):
     except Exception as e:
         print(f"Error fetching invoices: {e}")
         return False
-
 
 
 def single_invoice(value):
@@ -182,14 +195,14 @@ def edit_invoices(invoice_data):
             WHERE invoice_id = %s
         """
         cur = mysql.connection.cursor()
-        
+
         for invoice in invoice_data:
-            paid = invoice.get('paid', 0)
-            revision = invoice.get('revision', 0)
-            notes = invoice.get('notes', '')
-            delivery_status = invoice.get('delivery_status', 'Processed')
-            invoice_id = invoice['invoice_id']
-            
+            paid = invoice.get("paid", 0)
+            revision = invoice.get("revision", 0)
+            notes = invoice.get("notes", "")
+            delivery_status = invoice.get("delivery_status", "Processed")
+            invoice_id = invoice["invoice_id"]
+
             cur.execute(query, (paid, revision, notes, delivery_status, invoice_id))
 
         mysql.connection.commit()

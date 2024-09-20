@@ -1,125 +1,223 @@
-{% extends "base.html" %}
-
-{% block title %}Customer Management{% endblock %}
-
-{% block main %}
+{% extends "base.html" %} {% block title %}Customer Management{% endblock %} {%
+block main %}
 <div class="container mt-5">
-    <div class="card p-4">
-        <h3 class="text-center mb-4">Edit Customer Details</h3>
-        <form method="POST" action="/customer/edit/{{ data[0]['customer_id'] }}">
-            <!-- Business Name -->
-            <div class="mb-3">
-                <label for="business_name" class="form-label">Business Name</label>
-                <input type="text" class="form-control" id="business_name" name="business_name" value="{{ data[0]['business_name'] }}" required>
-            </div>
+  <div class="card p-4">
+    <h3 class="text-center mb-4">Edit Customer Details</h3>
+    <form method="POST" action="/customer/edit/{{ data[0]['customer_id'] }}">
+      <!-- Business Name -->
+      <div class="mb-3">
+        <label for="business_name" class="form-label">Business Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="business_name"
+          name="business_name"
+          value="{{ data[0]['business_name'] }}"
+          required
+        />
+      </div>
 
-            <!-- Address -->
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ data[0]['address'] }}" required>
-            </div>
+      <!-- Address -->
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          id="address"
+          name="address"
+          value="{{ data[0]['address'] }}"
+          required
+        />
+      </div>
 
-            <!-- Area -->
-            <div class="mb-3">
-                <label for="area" class="form-label">Area</label>
-                <input type="text" class="form-control" id="area" name="area" value="{{ data[0]['area'] }}">
-            </div>
+      <!-- Area -->
+      <div class="mb-3">
+        <label for="area" class="form-label">Area</label>
+        <input
+          type="text"
+          class="form-control"
+          id="area"
+          name="area"
+          value="{{ data[0]['area'] }}"
+        />
+      </div>
 
-            <!-- Route -->
-            <div class="mb-3">
-                <label for="route" class="form-label">Route</label>
-                <input type="text" class="form-control" id="route" name="route" value="{{ data[0]['route'] }}">
-            </div>
+      <!-- Route -->
+      <div class="mb-3">
+        <label for="route" class="form-label">Route</label>
+        <input
+          type="text"
+          class="form-control"
+          id="route"
+          name="route"
+          value="{{ data[0]['route'] }}"
+        />
+      </div>
 
-            <!-- Category -->
-            <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
-                <input type="text" class="form-control" id="category" name="category" value="{{ data[0]['category'] }}">
-            </div>
+      <!-- Category -->
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input
+          type="text"
+          class="form-control"
+          id="category"
+          name="category"
+          value="{{ data[0]['category'] }}"
+        />
+      </div>
 
-            <!-- Phone -->
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="tel" class="form-control" id="phone" name="phone" value="{{ data[0]['phone'] }}">
-            </div>
+      <!-- Phone -->
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="phone"
+          name="phone"
+          value="{{ data[0]['phone'] }}"
+        />
+      </div>
 
-            <!-- WhatsApp -->
-            <div class="mb-3">
-                <label for="whatsapp" class="form-label">WhatsApp</label>
-                <input type="tel" class="form-control" id="whatsapp" name="whatsapp" value="{{ data[0]['whatsapp'] }}">
-            </div>
+      <!-- WhatsApp -->
+      <div class="mb-3">
+        <label for="whatsapp" class="form-label">WhatsApp</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="whatsapp"
+          name="whatsapp"
+          value="{{ data[0]['whatsapp'] }}"
+        />
+      </div>
 
-            <!-- Shop Ownership -->
-            <div class="mb-3">
-                <label for="shop_ownership" class="form-label">Shop Ownership</label>
-                <select class="form-select" id="shop_ownership" name="shop_ownership" required>
-                    <option value="Yes" {% if data[0]['shop_ownership'] == 'Yes' %}selected{% endif %}>Yes</option>
-                    <option value="No" {% if data[0]['shop_ownership'] == 'No' %}selected{% endif %}>No</option>
-                </select>
-            </div>
+      <!-- Shop Ownership -->
+      <div class="mb-3">
+        <label for="shop_ownership" class="form-label">Shop Ownership</label>
+        <select
+          class="form-select"
+          id="shop_ownership"
+          name="shop_ownership"
+          required
+        >
+          <option value="Yes" {% if data[0]['shop_ownership'] == 'Yes' %}selected{% endif %}>Yes</option>
+          <option value="No" {% if data[0]['shop_ownership'] == 'No' %}selected{% endif %}>No</option>
+         
+        </select>
+      </div>
 
-            <!-- CNIC -->
-            <div class="mb-3">
-                <label for="cnic" class="form-label">CNIC</label>
-                <input type="text" class="form-control" id="cnic" name="cnic" value="{{ data[0]['cnic'] }}">
-            </div>
+      <!-- CNIC -->
+      <div class="mb-3">
+        <label for="cnic" class="form-label">CNIC</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cnic"
+          name="cnic"
+          value="{{ data[0]['cnic'] }}"
+        />
+      </div>
 
-            <!-- Tax Filer Status -->
-            <div class="mb-3">
-                <label for="tax_filer_status" class="form-label">Tax Filer Status</label>
-                <select class="form-select" id="tax_filer_status" name="tax_filer_status" required>
-                    <option value="Filer" {% if data[0]['tax_filer_status'] == 'Filer' %}selected{% endif %}>Filer</option>
-                    <option value="Non Filer" {% if data[0]['tax_filer_status'] == 'Non Filer' %}selected{% endif %}>Non Filer</option>
-                </select>
-            </div>
+      <!-- Tax Filer Status -->
+      <div class="mb-3">
+        <label for="tax_filer_status" class="form-label"
+          >Tax Filer Status</label
+        >
+        <select
+          class="form-select"
+          id="tax_filer_status"
+          name="tax_filer_status"
+          required
+        >
+          <option value="Filer" {% if data[0]['tax_filer_status'] == 'Filer' %}selected{% endif %}>Filer</option>
+         
+          <option value="Non Filer" {% if data[0]['tax_filer_status'] == 'Non Filer' %}selected{% endif %}>Non Filer</option>
+         
+        </select>
+      </div>
 
-            <!-- Channel -->
-            <div class="mb-3">
-                <label for="channel" class="form-label">Channel</label>
-                <input type="text" class="form-control" id="channel" name="channel" value="{{ data[0]['channel'] }}">
-            </div>
+      <!-- Channel -->
+      <div class="mb-3">
+        <label for="channel" class="form-label">Channel</label>
+        <input
+          type="text"
+          class="form-control"
+          id="channel"
+          name="channel"
+          value="{{ data[0]['channel'] }}"
+        />
+      </div>
 
-            <!-- Class -->
-            <div class="mb-3">
-                <label for="class" class="form-label">Class</label>
-                <input type="text" class="form-control" id="class" name="class" value="{{ data[0]['class'] }}">
-            </div>
+      <!-- Class -->
+      <div class="mb-3">
+        <label for="class" class="form-label">Class</label>
+        <input
+          type="text"
+          class="form-control"
+          id="class"
+          name="class"
+          value="{{ data[0]['class'] }}"
+        />
+      </div>
 
-            <!-- Business Status -->
-            <div class="mb-3">
-                <label for="business_status" class="form-label">Business Status</label>
-                <select class="form-select" id="business_status" name="business_status" required>
-                    <option value="Active" {% if data[0]['business_status'] == 'Active' %}selected{% endif %}>Active</option>
-                    <option value="Inactive" {% if data[0]['business_status'] == 'Inactive' %}selected{% endif %}>Inactive</option>
-                </select>
-            </div>
+      <!-- Business Status -->
+      <div class="mb-3">
+        <label for="business_status" class="form-label">Business Status</label>
+        <select
+          class="form-select"
+          id="business_status"
+          name="business_status"
+          required
+        >
+          <option value="Active" {% if data[0]['business_status'] == 'Active' %}selected{% endif %}>Active</option>
+         
+          <option value="Inactive" {% if data[0]['business_status'] == 'Inactive' %}selected{% endif %}>Inactive</option>
+         
+        </select>
+      </div>
 
-            <!-- Shop Status -->
-            <div class="mb-3">
-                <label for="shop_status" class="form-label">Shop Status</label>
-                <select class="form-select" id="shop_status" name="shop_status" required>
-                    <option value="Active" {% if data[0]['shop_status'] == 'Active' %}selected{% endif %}>Active</option>
-                    <option value="Inactive" {% if data[0]['shop_status'] == 'Inactive' %}selected{% endif %}>Inactive</option>
-                </select>
-            </div>
+      <!-- Shop Status -->
+      <div class="mb-3">
+        <label for="shop_status" class="form-label">Shop Status</label>
+        <select
+          class="form-select"
+          id="shop_status"
+          name="shop_status"
+          required
+        >
+          <option value="Active" {% if data[0]['shop_status'] == 'Active' %}selected{% endif %}>Active</option>
+         
+          <option value="Inactive" {% if data[0]['shop_status'] == 'Inactive' %}selected{% endif %}>Inactive</option>
+         
+        </select>
+      </div>
 
-            <!-- Business Health -->
-            <div class="mb-3">
-                <label for="business_health" class="form-label">Business Health</label>
-                <select class="form-select" id="business_health" name="business_health" required>
-                    <option value="Gold" {% if data[0]['business_health'] == 'Gold' %}selected{% endif %}>Gold</option>
-                    <option value="Platinum" {% if data[0]['business_health'] == 'Platinum' %}selected{% endif %}>Platinum</option>
-                    <option value="Silver" {% if data[0]['business_health'] == 'Silver' %}selected{% endif %}>Silver</option>
-                    <option value="Defaulter" {% if data[0]['business_health'] == 'Defaulter' %}selected{% endif %}>Defaulter</option>
-                    <option value="Blacklist" {% if data[0]['business_health'] == 'Blacklist' %}selected{% endif %}>Blacklist</option>
-                </select>
-            </div>
+      <!-- Business Health -->
+      <div class="mb-3">
+        <label for="business_health" class="form-label">Business Health</label>
+        <select
+          class="form-select"
+          id="business_health"
+          name="business_health"
+          required
+        >
+          <option value="Gold" {% if data[0]['business_health'] == 'Gold' %}selected{% endif %}>Gold</option>
+         
+          <option value="Platinum" {% if data[0]['business_health'] == 'Platinum' %}selected{% endif %}>Platinum</option>
+         
+          <option value="Silver" {% if data[0]['business_health'] == 'Silver' %}selected{% endif %}>Silver</option>
+         
+          <option value="Defaulter" {% if data[0]['business_health'] == 'Defaulter' %}selected{% endif %}>Defaulter</option>
+         
+          <option value="Blacklist" {% if data[0]['business_health'] == 'Blacklist' %}selected{% endif %}>Blacklist</option>
+         
+        </select>
+      </div>
 
-            <div class="text-center">
-                <input type="submit" class="btn btn-outline-success" value="Save">
-                <a href="/customer" class="btn btn-outline-primary">Cancel</a>
-            </div>
-        </form>
-    </div>
+      <div class="text-center">
+        <input type="submit" class="btn btn-outline-success" value="Save" />
+        <a href="/customer" class="btn btn-outline-primary">Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

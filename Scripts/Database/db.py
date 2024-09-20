@@ -193,6 +193,7 @@ def find_total():
         totals[table] = result
     return totals
 
+
 def c_user():
     password = "peWag0$efow17y6PrUXA"
     passw = password.encode("utf-8")

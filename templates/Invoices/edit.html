@@ -1,88 +1,136 @@
-{% extends "base.html" %}
-{% block title %}Edit Invoice{% endblock %}
-{% block main %}
+{% extends "base.html" %} {% block title %}Edit Invoice{% endblock %} {% block
+main %}
 <div class="container mt-5">
-    <h2>Edit Invoice</h2>
-    <form action="" method="POST">
-        <div class="mb-3">
-            <label for="booker" class="form-label">Booker</label>
-            <select class="form-select" id="booker" name="booker" required>
-                {% for emp in employee %}
-                {% if emp["role"] == "Booker" %}
-                <option value="{{ emp['employee_id'] }}" {% if emp['employee_id'] == invoice['booker'] %}selected{% endif %}>
-                    {{ emp['name'] }}
-                </option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="dsr" class="form-label">DSR</label>
-            <input type="text" class="form-control" id="dsr" name="dsr" value="{{ invoice['dsr'] }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="customer" class="form-label">Customer</label>
-            <select class="form-select" id="customer" name="customer" required>
-                {% for cust in customer %}
-                <option value="{{ cust["customer_id"] }}" {% if cust['customer_id'] == invoice['customer_id'] %}selected{% endif %}>
-                    {{ cust["business_name"] }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="value" class="form-label">Value</label>
-            <input type="number" step="0.01" class="form-control" id="value" name="total" value="{{ invoice['total'] }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="company" class="form-label">Company</label>
-            <select class="form-select" id="company" name="company" required>
-                <option value="None" {% if invoice['company'] == 'None' %}selected{% endif %}>None</option>
-                <option value="CP" {% if invoice['company'] == 'CP' %}selected{% endif %}>CP</option>
-                <option value="RB" {% if invoice['company'] == 'RB' %}selected{% endif %}>RB</option>
-                <option value="JR" {% if invoice['company'] == 'JR' %}selected{% endif %}>JR</option>
-                <option value="GP" {% if invoice['company'] == 'GP' %}selected{% endif %}>GP</option>
-                <option value="Other" {% if invoice['company'] == 'Other' %}selected{% endif %}>Other</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="delivery_man" class="form-label">Delivery Man</label>
-            <select class="form-select" id="delivery_man" name="delivery_man" required>
-                {% for emp in employee %}
-                {% if emp["role"] == "Delivery Man" %}
-                <option value="{{ emp['employee_id'] }}" {% if emp['employee_id'] == invoice['delivery_man'] %}selected{% endif %}>
-                    {{ emp['name'] }}
-                </option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="delivery_status" class="form-label">Delivery Status</label>
-            <select class="form-select" id="delivery_status" name="delivery_status" required>
-                <option value="Processing" {% if invoice['delivery_status'] == 'Processing' %}selected{% endif %}>Processing</option>
-                <option value="Un-delivered" {% if invoice['delivery_status'] == 'Un-delivered' %}selected{% endif %}>Un-delivered</option>
-                <option value="Delivered" {% if invoice['delivery_status'] == 'Delivered' %}selected{% endif %}>Delivered</option>
-                <option value="Returned" {% if invoice['delivery_status'] == 'Returned' %}selected{% endif %}>Returned</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="payment_status" class="form-label">Payment Status</label>
-            <select class="form-select" id="payment_status" name="payment_status" required>
-                <option value="Full Payment" {% if invoice['payment_status'] == 'Full Payment' %}selected{% endif %}>Full Payment</option>
-                <option value="Partial Payment" {% if invoice['payment_status'] == 'Partial Payment' %}selected{% endif %}>Partial Payment</option>
-                <option value="No Payment" {% if invoice['payment_status'] == 'No Payment' %}selected{% endif %}>No Payment</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="paid" class="form-label">Paid</label>
-            <input type="number" step="0.01" class="form-control" id="paid" name="paid" value="{{ invoice['paid'] }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="notes" class="form-label">Notes</label>
-            <textarea class="form-control" id="notes" name="notes">{{ invoice['notes'] }}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Edit Invoice</button>
-    </form>
+  <h2>Edit Invoice</h2>
+  <form action="" method="POST">
+    <div class="mb-3">
+      <label for="booker" class="form-label">Booker</label>
+      <select class="form-select" id="booker" name="booker" required>
+        {% for emp in employee %} {% if emp["role"] == "Booker" %}
+        <option value="{{ emp['employee_id'] }}" {% if emp['employee_id'] == invoice['booker'] %}selected{% endif %}>
+        {{ emp['name'] }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="dsr" class="form-label">DSR</label>
+      <input
+        type="text"
+        class="form-control"
+        id="dsr"
+        name="dsr"
+        value="{{ invoice['dsr'] }}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="customer" class="form-label">Customer</label>
+      <select class="form-select" id="customer" name="customer" required>
+        {% for cust in customer %}
+        <option value="{{ cust["customer_id"] }}" {% if cust['customer_id'] == invoice['customer_id'] %}selected{% endif %}>
+        {{ cust["business_name"] }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="value" class="form-label">Value</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="value"
+        name="total"
+        value="{{ invoice['total'] }}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="company" class="form-label">Company</label>
+      <select class="form-select" id="company" name="company" required>
+        <option value="None" {% if invoice['company'] == 'None' %}selected{% endif %}>None</option>
+       
+        <option value="CP" {% if invoice['company'] == 'CP' %}selected{% endif %}>CP</option>
+       
+        <option value="RB" {% if invoice['company'] == 'RB' %}selected{% endif %}>RB</option>
+       
+        <option value="JR" {% if invoice['company'] == 'JR' %}selected{% endif %}>JR</option>
+       
+        <option value="GP" {% if invoice['company'] == 'GP' %}selected{% endif %}>GP</option>
+       
+        <option value="Other" {% if invoice['company'] == 'Other' %}selected{% endif %}>Other</option>
+       
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="delivery_man" class="form-label">Delivery Man</label>
+      <select
+        class="form-select"
+        id="delivery_man"
+        name="delivery_man"
+        required
+      >
+        {% for emp in employee %} {% if emp["role"] == "Delivery Man" %}
+        <option value="{{ emp['employee_id'] }}" {% if emp['employee_id'] == invoice['delivery_man'] %}selected{% endif %}>
+        {{ emp['name'] }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="delivery_status" class="form-label">Delivery Status</label>
+      <select
+        class="form-select"
+        id="delivery_status"
+        name="delivery_status"
+        required
+      >
+        <option value="Processing" {% if invoice['delivery_status'] == 'Processing' %}selected{% endif %}>Processing</option>
+       
+        <option value="Un-delivered" {% if invoice['delivery_status'] == 'Un-delivered' %}selected{% endif %}>Un-delivered</option>
+       
+        <option value="Delivered" {% if invoice['delivery_status'] == 'Delivered' %}selected{% endif %}>Delivered</option>
+       
+        <option value="Returned" {% if invoice['delivery_status'] == 'Returned' %}selected{% endif %}>Returned</option>
+       
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="payment_status" class="form-label">Payment Status</label>
+      <select
+        class="form-select"
+        id="payment_status"
+        name="payment_status"
+        required
+      >
+        <option value="Full Payment" {% if invoice['payment_status'] == 'Full Payment' %}selected{% endif %}>Full Payment</option>
+       
+        <option value="Partial Payment" {% if invoice['payment_status'] == 'Partial Payment' %}selected{% endif %}>Partial Payment</option>
+       
+        <option value="No Payment" {% if invoice['payment_status'] == 'No Payment' %}selected{% endif %}>No Payment</option>
+       
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="paid" class="form-label">Paid</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="paid"
+        name="paid"
+        value="{{ invoice['paid'] }}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="notes" class="form-label">Notes</label>
+      <textarea class="form-control" id="notes" name="notes">
+{{ invoice['notes'] }}</textarea
+      >
+    </div>
+    <button type="submit" class="btn btn-primary">Edit Invoice</button>
+  </form>
 </div>
 {% endblock %}

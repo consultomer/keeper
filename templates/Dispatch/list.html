@@ -1,9 +1,9 @@
-{% extends "base.html" %}
-{% block link %}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/table.css') }}" />
-{% endblock %}
-{% block title %}Dispatches{% endblock %}
-{% block main %}
+{% extends "base.html" %} {% block link %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='/css/table.css') }}"
+/>
+{% endblock %} {% block title %}Dispatches{% endblock %} {% block main %}
 <div class="container-fluid m-t70">
   <div class="row">
     <div class="col-md-12">
@@ -16,15 +16,15 @@
                 <tr>
                   <th scope="col">Dispatch ID</th>
                   <th scope="col">
-                    <a href="{{ url_for('dispatch.dispatchlist', sort_by='dispatch_date', sort_order='desc' if sort_by == 'dispatch_date' and sort_order == 'asc' else 'asc') }}">
-                      Dispatch Date
-                      {% if sort_by == 'dispatch_date' %}
-                        {% if sort_order == 'asc' %}
-                          &#9650; <!-- Up arrow -->
-                        {% else %}
-                          &#9660; <!-- Down arrow -->
-                        {% endif %}
-                      {% endif %}
+                    <a
+                      href="{{ url_for('dispatch.dispatchlist', sort_by='dispatch_date', sort_order='desc' if sort_by == 'dispatch_date' and sort_order == 'asc' else 'asc') }}"
+                    >
+                      Dispatch Date {% if sort_by == 'dispatch_date' %} {% if
+                      sort_order == 'asc' %} &#9650;
+                      <!-- Up arrow -->
+                      {% else %} &#9660;
+                      <!-- Down arrow -->
+                      {% endif %} {% endif %}
                     </a>
                   </th>
                   <th scope="col">Delivery Man</th>
@@ -33,22 +33,68 @@
                   <th scope="col">Paid</th>
                   <th scope="col">Revision</th>
                   <th scope="col">Credit</th>
-                  <th scope="col" class="text-center">Hisaab Kro </th>
+                  <th scope="col" class="text-center">Hisaab Kro</th>
                 </tr>
               </thead>
               <tbody>
                 {% for dispatch in data %}
                 <tr>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['dispatch_id'] }}</td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['dispatch_date'].strftime('%a, %d %b %Y') }}</td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['delivery_man'] }}</td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['dispatch_id'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['dispatch_date'].strftime('%a, %d %b %Y') }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['delivery_man'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
                     {{ dispatch['invoices'] | length }} invoices
                   </td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['total'] }}</td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['paid'] }}</td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['revision'] }}</td>
-                  <td class="clickable-row" data-toggle="collapse" data-target="#collapse{{ dispatch['dispatch_id'] }}">{{ dispatch['remaining'] }}</td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['total'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['paid'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['revision'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
+                  >
+                    {{ dispatch['remaining'] }}
+                  </td>
                   <td class="text-center">
                     <button class="btn btn-outline-primary" type="button">
                       <a
@@ -124,8 +170,8 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var clickableRows = document.querySelectorAll(".clickable-row");
-    clickableRows.forEach(function(row) {
-      row.addEventListener("click", function() {
+    clickableRows.forEach(function (row) {
+      row.addEventListener("click", function () {
         var target = this.getAttribute("data-target");
         var collapseElement = document.querySelector(target);
         if (collapseElement) {

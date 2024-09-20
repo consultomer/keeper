@@ -31,7 +31,13 @@ def invoicelist():
         data = []
         sort_by = ""
         sort_order = ""
-    return render_template("Invoices/list.html", current=current_user, data=data, sort_by=sort_by, sort_order=sort_order.lower())
+    return render_template(
+        "Invoices/list.html",
+        current=current_user,
+        data=data,
+        sort_by=sort_by,
+        sort_order=sort_order.lower(),
+    )
 
 
 @invoice_bp.route("/<value>", methods=["GET", "POST"])
@@ -52,7 +58,7 @@ def singleinv(value):
 def invoiceadd():
     if request.method == "POST":
         data = request.form
-        
+
         # Extract data from form
         bookers = data.getlist("booker[]")
         dsrs = data.getlist("dsr[]")
@@ -61,13 +67,15 @@ def invoiceadd():
         dates = data.getlist("date[]")
 
         # Iterate through the data and process each invoice
-        for booker, dsr, custom, value, date in zip(bookers, dsrs, customers, values, dates):
+        for booker, dsr, custom, value, date in zip(
+            bookers, dsrs, customers, values, dates
+        ):
             inv_data = {
                 "booker": booker,
                 "dsr": dsr,
                 "customer_id": custom,
                 "total": value,
-                "date": date
+                "date": date,
             }
             res = add_invoice(inv_data)
             if res is not True:
