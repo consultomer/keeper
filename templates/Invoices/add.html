@@ -1,116 +1,113 @@
-{% extends "base.html" %}
-{% block title %}Add New Invoice{% endblock %}
-{% block main %}
-<div class="container mt-5">
-  <h2>Add Invoice</h2>
-  <form action="" method="POST" id="invoiceForm">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Booker</th>
-          <th>DSR</th>
-          <th>Customer</th>
-          <th>Value</th>
-          <th>Date</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="invoiceTableBody">
-        <tr>
-          <td>
-            <select class="form-select" name="booker[]" required>
-              {% for emp in employee %}
-              {% if emp["role"] == "Booker" %}
-              <option value="{{ emp['employee_id'] }}">{{ emp['name'] }}</option>
-              {% endif %}
-              {% endfor %}
-            </select>
-          </td>
-          <td>
-            <input type="text" class="form-control" name="dsr[]" required />
-          </td>
-          <td>
-            <select class="form-select" name="customer[]" required>
-              {% for cust in customer %}
-              <option value="{{ cust["customer_id"] }}">{{ cust["business_name"] }}</option>
-              {% endfor %}
-            </select>
-          </td>
-          <td>
-            <input
-              type="number"
-              step="0.01"
-              class="form-control"
-              name="value[]"
-              required
-            />
-          </td>
-          <td>
-            <input type="date" class="form-control" name="date[]" required />
-          </td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-primary"
-              onclick="addInvoiceRow()"
-            >
-              +
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button type="submit" class="btn btn-primary">Add Invoice</button>
-  </form>
-</div>
-
-<script>
-  function addInvoiceRow() {
-    const tableBody = document.getElementById("invoiceTableBody");
-    const lastRow = tableBody.lastElementChild;
-    const bookerValue = lastRow.querySelector('select[name="booker[]"]').value;
-    const dsrValue = lastRow.querySelector('input[name="dsr[]"]').value;
-    const dateValue = lastRow.querySelector('input[name="date[]"]').value;
-
-    const newRow = document.createElement("tr");
-
-    newRow.innerHTML = `
-      <td>
-        <select class="form-select" name="booker[]" required>
-          {% for emp in employee %}
-          {% if emp["role"] == "Booker" %}
-          <option value="{{ emp['employee_id'] }}" ${emp['employee_id'] == bookerValue ? 'selected' : ''}>{{ emp['name'] }}</option>
-          {% endif %}
-          {% endfor %}
-        </select>
-      </td>
-      <td>
-        <input type="text" class="form-control" name="dsr[]" value="${dsrValue}" required>
-      </td>
-      <td>
-        <select class="form-select" name="customer[]" required>
-          {% for cust in customer %}
-          <option value="{{ cust["customer_id"] }}">{{ cust["business_name"] }}</option>
-          {% endfor %}
-        </select>
-      </td>
-      <td>
-        <input type="number" step="0.01" class="form-control" name="value[]" required>
-      </td>
-      <td>
-        <input type="date" class="form-control" name="date[]" value="${dateValue}" required>
-      </td>
-      <td>
-        <button type="button" class="btn btn-primary" onclick="addInvoiceRow()">+</button>
-        <button type="button" class="btn btn-danger" onclick="removeInvoiceRow(this)">-</button>
-      </td>
-    `;
-
-    tableBody.insertBefore(newRow, tableBody.firstChild);
-  }
-
-  function removeInvoiceRow(button) {
-    button.parentElement.parentElement.remove();
-  }
-</script>
-{% endblock %}
+{% extends "base.html" %} {% block title %}Add New Invoice{% endblock %} {%
+  block main %}
+  <div class="container mt-5">
+    <h2>Add Invoice</h2>
+    <form action="" method="POST" id="invoiceForm">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Booker</th>
+            <th>DSR</th>
+            <th>Customer</th>
+            <th>Value</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="invoiceTableBody">
+          <tr>
+            <td>
+              <select class="form-select" name="booker[]" required>
+                {% for emp in employee %} {% if emp["role"] == "Booker" %}
+                <option value="{{ emp['employee_id'] }}">{{ emp['name'] }}</option>
+                {% endif %} {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input type="number" class="form-control" name="dsr[]" required />
+            </td>
+            <td>
+              <select class="form-select" name="customer[]" required>
+                {% for cust in customer %}
+                <option value="{{ cust["customer_id"] }}">{{ cust["business_name"] }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input
+                type="number"
+                class="form-control"
+                name="value[]"
+                required
+              />
+            </td>
+            <td>
+              <input type="date" class="form-control" name="date[]" required />
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="addInvoiceRow()"
+              >
+                +
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="submit" class="btn btn-primary">Add Invoice</button>
+    </form>
+  </div>
+  
+  <script>
+    function addInvoiceRow() {
+      const tableBody = document.getElementById("invoiceTableBody");
+      const lastRow = tableBody.firstElementChild;
+      const bookerValue = lastRow.querySelector('select[name="booker[]"]').value;
+      const dsrv = lastRow.querySelector('input[name="dsr[]"]').value;
+      const datev = lastRow.querySelector('input[name="date[]"]').value;
+      const newRow = document.createElement("tr");
+  
+      newRow.innerHTML = `
+        <td>
+          <select class="form-select" name="booker[]" required>
+            {% for emp in employee %}
+            {% if emp["role"] == "Booker" %}
+            <option value="{{ emp['employee_id'] }}">{{ emp['name'] }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </td>
+        <td>
+          <input type="number" class="form-control" name="dsr[]" value="${dsrv}" required>
+        </td>
+        <td>
+          <select class="form-select" name="customer[]" required>
+            {% for cust in customer %}
+            <option value="{{ cust["customer_id"] }}">{{ cust["business_name"] }}</option>
+            {% endfor %}
+          </select>
+        </td>
+        <td>
+          <input type="number" step="0.01" class="form-control" name="value[]" required>
+        </td>
+        <td>
+          <input type="date" class="form-control" name="date[]" value="${datev}" required>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" onclick="addInvoiceRow(this)">+</button>
+          <button type="button" class="btn btn-danger" onclick="removeInvoiceRow(this)">-</button>
+        </td>
+      `;
+  
+      tableBody.insertBefore(newRow, tableBody.firstChild);
+      newRow.querySelector('select[name="booker[]"]').value = bookerValue;
+    }
+  
+    function removeInvoiceRow(button) {
+      button.parentElement.parentElement.remove();
+    }
+  </script>
+  {% endblock %}
+  
