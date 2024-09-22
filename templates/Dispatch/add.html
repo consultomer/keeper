@@ -19,6 +19,21 @@
             </ul>
           </div>
         </div>
+        <div class="row">
+          <div class="col-xl-8">
+                        <ul class="list-unstyled">
+                            <li class="text-muted m-3">Delivery Man: 
+                                <select id="delivery_man" name="delivery_man">
+                                    {% for man in employee %}
+                                    {% if man["role"] == "Delivery Man" %}
+                                    <option value="{{ man["employee_id"] }}" >{{ man["name"] }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+        </div>
 
         <div class="row my-2 mx-1 justify-content-center">
           <table class="table table-striped table-borderless">

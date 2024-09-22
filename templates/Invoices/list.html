@@ -12,7 +12,7 @@
         <div class="card">
           <div class="card-header">
             <button type="submit" class="btn btn-primary float-end mx-3">
-              New Dispatch
+              Delivery Nikalo
               <!-- <a href="/dispatch/add" style="color: inherit; text-decoration: none">New Dispatch</a> -->
             </button>
             <button type="button" class="btn btn-primary float-end">
@@ -88,15 +88,6 @@
                     </th>
                     <th scope="col">
                       <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='paid', sort_order='desc' if sort_by == 'paid' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Paid {% if sort_by == 'paid' %} {% if sort_order ==
-                        'asc' %} &#9650; {% else %} &#9660; {% endif %} {% endif
-                        %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
                         href="{{ url_for('invoice.invoicelist', sort_by='revision', sort_order='desc' if sort_by == 'revision' and sort_order == 'asc' else 'asc') }}"
                       >
                         Revision {% if sort_by == 'revision' %} {% if sort_order
@@ -151,7 +142,6 @@
                     <td>{{ user['invoice_id'] }}</td>
                     <td>{{ user['customer_name'] }}</td>
                     <td>{{ user['total'] }}</td>
-                    <td>{{ user['paid'] }}</td>
                     <td>{{ user['revision'] }}</td>
                     <td>{{ user['age'] }} days</td>
                     <td>{{ user['delivery_status'] }}</td>

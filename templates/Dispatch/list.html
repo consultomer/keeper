@@ -30,9 +30,6 @@
                   <th scope="col">Delivery Man</th>
                   <th scope="col">Invoices</th>
                   <th scope="col">Value</th>
-                  <th scope="col">Paid</th>
-                  <th scope="col">Revision</th>
-                  <th scope="col">Credit</th>
                   <th scope="col" class="text-center">Hisaab Kro</th>
                 </tr>
               </thead>
@@ -73,27 +70,6 @@
                     data-target="#collapse{{ dispatch['dispatch_id'] }}"
                   >
                     {{ dispatch['total'] }}
-                  </td>
-                  <td
-                    class="clickable-row"
-                    data-toggle="collapse"
-                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
-                  >
-                    {{ dispatch['paid'] }}
-                  </td>
-                  <td
-                    class="clickable-row"
-                    data-toggle="collapse"
-                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
-                  >
-                    {{ dispatch['revision'] }}
-                  </td>
-                  <td
-                    class="clickable-row"
-                    data-toggle="collapse"
-                    data-target="#collapse{{ dispatch['dispatch_id'] }}"
-                  >
-                    {{ dispatch['remaining'] }}
                   </td>
                   <td class="text-center">
                     <button class="btn btn-outline-primary" type="button">
