@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from Scripts.Database.db import (
     find_total,
-    c_user,
+    initialize_database,
 )
 
 
@@ -21,9 +21,8 @@ def home():
     return render_template("dashboard.html", current=current_user, total=data)
 
 
-# ------------------ Create User ------------------ #
-@route_bp.route("/usercr", methods=["GET"])
+# ------------------ Initialize_Database ------------------ #
+@route_bp.route("/initialize_database", methods=["GET"])
 def ct():
-    res = c_user
+    res = initialize_database()
     return jsonify({"data": res})
-

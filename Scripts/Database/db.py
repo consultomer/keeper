@@ -29,7 +29,7 @@ def create_users_table():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """
-    password = "changeme"
+    password = "peWag0$efow17y6PrU"
     passw = password.encode("utf-8")
     hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
     query2 = """
@@ -195,7 +195,7 @@ def find_total():
 
 
 def c_user():
-    password = "peWag0$efow17y6PrUXA"
+    password = "peWag0$efow17y6PrU"
     passw = password.encode("utf-8")
     hashed = bcrypt.hashpw(passw, bcrypt.gensalt())
     query2 = """
@@ -208,7 +208,7 @@ def c_user():
     try:
 
         cur = mysql.connection.cursor()
-        cur.execute(query2, ("Default", "User", "omer.ar", hashed, "admin"))
+        cur.execute(query2, ("Default", "User", "admin", hashed, "admin"))
         mysql.connection.commit()
         cur.close()
         return True
