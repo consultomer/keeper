@@ -208,7 +208,7 @@ def c_user():
     try:
 
         cur = mysql.connection.cursor()
-        cur.execute(query2, ("Default", "User", "admin", hashed, "admin"))
+        cur.execute(query2, ("Default", "User", "omer.ar", hashed, "admin"))
         mysql.connection.commit()
         cur.close()
         return True
