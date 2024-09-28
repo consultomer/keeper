@@ -214,3 +214,12 @@ def c_user():
         return True
     except Exception as e:
         return "User TABLE or User Exists"
+
+
+def initialize_database():
+    create_users_table()
+    create_customer_table()
+    create_employee_table()
+    create_invoice_table()
+    create_dispatch_table()
+    create_disinvoice_table()

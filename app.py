@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 
-from Scripts.Database.db import init_db
+from Scripts.Database.db import init_db, initialize_database
 from Scripts.extensions import login_manager
 from Routes.customer import customer_bp
 from Routes.employee import employee_bp
@@ -18,6 +18,11 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
 
 init_db(app)
+
+
+@app.before_first_request
+def before_first_request_func():
+    initialize_database()
 
 
 login_manager.login_view = "auth.login"
