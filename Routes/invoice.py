@@ -24,7 +24,33 @@ def invoicelist():
     else:
         sort_order = "asc"
     sort_by = request.args.get("sort_by")
-    data = list_invoices(sort_by, sort_order)
+    status = False
+    data = list_invoices(sort_by, sort_order, status)
+    if data == False:
+        mess = "No Data"
+        flash(mess, category="error")
+        data = []
+        sort_by = ""
+        sort_order = ""
+    return render_template(
+        "Invoices/list.html",
+        current=current_user,
+        data=data,
+        sort_by=sort_by,
+        sort_order=sort_order.lower(),
+    )
+
+
+@invoice_bp.route("/delivered")
+@login_required
+def deinvoicelist():
+    if request.args.get("sort_by") and request.args.get("sort_order"):
+        sort_order = request.args.get("sort_order").upper()
+    else:
+        sort_order = "asc"
+    sort_by = request.args.get("sort_by")
+    status = True
+    data = list_invoices(sort_by, sort_order, status)
     if data == False:
         mess = "No Data"
         flash(mess, category="error")
@@ -106,7 +132,7 @@ def invoiceedit(value):
             "total": data.get("total"),
             "paid": data.get("paid"),
             "company": data.get("company"),
-            "revision": data.get("revision"),
+            "revision": data.get("revision", 0),
             "delivery_status": data.get("delivery_status"),
             "payment_status": data.get("payment_status"),
             "notes": data.get("notes"),

@@ -26,7 +26,7 @@ def add_invoice(data):
         return f"Error adding Invoice: {str(e)}"
 
 
-def list_invoices(sort_by="created_at", sort_order="ASC"):
+def list_invoices(sort_by="created_at", sort_order="ASC", status="Un-delivered"):
     # Validate sort_by and sort_order to prevent SQL injection
     valid_sort_by = [
         "invoice_id",
@@ -69,8 +69,14 @@ def list_invoices(sort_by="created_at", sort_order="ASC"):
     JOIN Employee e1 ON i.booker = e1.employee_id
     LEFT JOIN Employee e2 ON i.delivery_man = e2.employee_id
     JOIN Customers c ON i.customer_id = c.customer_id
-    ORDER BY {sort_by} {sort_order};
     """
+    if status:
+        query += f" WHERE i.delivery_status = 'Delivered'"
+    else:
+        query += f" WHERE i.delivery_status != 'Delivered'"
+
+    # Add sorting
+    query += f" ORDER BY {sort_by} {sort_order}"
     try:
         cur = mysql.connection.cursor()
         cur.execute(query)
@@ -200,7 +206,7 @@ def edit_invoices(invoice_data):
             paid = invoice.get("paid", 0)
             revision = invoice.get("revision", 0)
             notes = invoice.get("notes", "")
-            delivery_status = invoice.get("delivery_status", "Processed")
+            delivery_status = invoice.get("delivery", "Processed")
             invoice_id = invoice["invoice_id"]
 
             cur.execute(query, (paid, revision, notes, delivery_status, invoice_id))

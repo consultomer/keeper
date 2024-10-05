@@ -34,7 +34,6 @@
             <th>Reason</th>
             <th>Credit</th>
             <th>Delivery Status</th>
-            <th>Payment Status</th>
           </tr>
         </thead>
         <tbody>
@@ -85,8 +84,14 @@
             <td class="credit" id="credit_{{ invoice['invoice_id'] }}">
               {{ invoice['remaining'] }}
             </td>
-            <td>{{ invoice['delivery_status'] }}</td>
-            <td>{{ invoice['payment_status'] }}</td>
+            <td>
+              <select name="delivery_status_{{ invoice['invoice_id'] }}" id="delivery_status">
+                <option value="Un-delivered" {% if invoice['delivery_status'] == 'Un-delivered' %}selected{% endif %}>Un-delivered</option>
+                <option value="Delivered" {% if invoice['delivery_status'] == 'Delivered' %}selected{% endif %}>Delivered</option>
+                <option value="Returned" {% if invoice['delivery_status'] == 'Returned' %}selected{% endif %}>Returned</option>
+                <option value="Processing" {% if invoice['delivery_status'] == 'Processing' %}selected{% endif %}>Processing</option>
+              </select>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

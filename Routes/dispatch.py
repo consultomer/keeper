@@ -130,6 +130,7 @@ def dispatchedit(value):
             paid = float(form_data.get(f"paid_{invoice_id}", 0))
             revision = float(form_data.get(f"revision_{invoice_id}", 0))
             notes = form_data.get(f"notes_{invoice_id}", "")
+            status = form_data.get(f"delivery_status_{invoice_id}")
 
             invoices.append(
                 {
@@ -137,6 +138,7 @@ def dispatchedit(value):
                     "paid": paid,
                     "revision": revision,
                     "notes": notes,
+                    "delivery": status,
                 }
             )
 

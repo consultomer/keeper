@@ -104,13 +104,9 @@
                       </a>
                     </th>
                     <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='delivery_status', sort_order='desc' if sort_by == 'delivery_status' and sort_order == 'asc' else 'asc') }}"
-                      >
                         Delivery Status {% if sort_by == 'delivery_status' %} {%
                         if sort_order == 'asc' %} &#9650; {% else %} &#9660; {%
                         endif %} {% endif %}
-                      </a>
                     </th>
                     <th scope="col">
                       <a
