@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 
-from Scripts.Database.db import init_db, c_user
+from Scripts.Database.db import init_db
 from Scripts.extensions import login_manager
 from Routes.customer import customer_bp
 from Routes.employee import employee_bp
