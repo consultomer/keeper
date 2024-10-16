@@ -22,23 +22,30 @@ dispatch_bp = Blueprint("dispatch", __name__)
 @dispatch_bp.route("/")
 @login_required
 def dispatchlist():
-    if request.args.get("sort_by") and request.args.get("sort_order"):
-        sort_order = request.args.get("sort_order").upper()
-    else:
-        sort_order = "asc"
+    # Handle sorting logic based on request arguments, with default sort order being 'ASC'
+    sort_order = request.args.get("sort_order", "asc").upper()
     sort_by = request.args.get("sort_by")
+
+    # Fetch dispatch data, sorted accordingly
     data = list_dispatches(sort_by, sort_order)
+
+    # Iterate through each dispatch to calculate totals, paid amounts, revisions, and remaining amounts
     for dispatch in data:
         if isinstance(dispatch["invoices"], str):
             dispatch["invoices"] = json.loads(dispatch["invoices"])
-        total = sum(invoice["total"] for invoice in dispatch["invoices"])
-        paid = sum(invoice["paid"] for invoice in dispatch["invoices"])
-        revision = sum(invoice["revision"] for invoice in dispatch["invoices"])
+
+        # Calculate total, paid, revision, and remaining amounts
+        total = sum(invoice.get("total", 0) for invoice in dispatch["invoices"])  # Default to 0 if None
+        paid = sum(invoice.get("paid", 0) for invoice in dispatch["invoices"])  # Default to 0 if None
+        revision = sum(invoice.get("revision_sum", 0) for invoice in dispatch["invoices"])  # Using the summed revisions
+
         dispatch["total"] = total
         dispatch["paid"] = paid
         dispatch["revision"] = revision
         dispatch["remaining"] = total - paid + revision
-    if data == False:
+
+    # Handle the case where no data is returned
+    if not data:
         mess = "No Data"
         flash(mess, category="error")
         data = []
@@ -54,6 +61,7 @@ def dispatchlist():
     )
 
 
+
 @dispatch_bp.route("/<value>", methods=["GET", "POST"])
 @login_required
 def singledis(value):
@@ -62,15 +70,17 @@ def singledis(value):
 
     if isinstance(dispatch_data["invoices"], str):
         dispatch_data["invoices"] = json.loads(dispatch_data["invoices"])
+
     total = 0
     for invoice in dispatch_data["invoices"]:
         total_amount = invoice["total"] if invoice["total"] is not None else 0
         paid_amount = invoice["paid"] if invoice["paid"] is not None else 0
-        remain = total_amount - paid_amount
+        remain = total_amount - paid_amount + invoice["revision_sum"]  # Include revision sum in remaining
         invoice["remaining"] = remain
         total += remain
+    
     dispatch_data["total"] = total
-    # return dispatch_data
+
     return render_template(
         "Dispatch/view.html", current=current_user, data=dispatch_data
     )
@@ -128,16 +138,29 @@ def dispatchedit(value):
         invoices = []
         for invoice_id in form_data.getlist("invoice_id"):
             paid = float(form_data.get(f"paid_{invoice_id}", 0))
-            revision = float(form_data.get(f"revision_{invoice_id}", 0))
-            notes = form_data.get(f"notes_{invoice_id}", "")
             status = form_data.get(f"delivery_status_{invoice_id}")
+
+            # Fetch all revision amounts and reasons for the current invoice
+            revision_amounts = form_data.getlist(f"revision_{invoice_id}[]")
+            revision_reasons = form_data.getlist(f"reason_{invoice_id}[]")
+
+            revisions = []
+            for amount, reason in zip(revision_amounts, revision_reasons):
+                if amount and reason:
+                    try:
+                        revisions.append({
+                            "revision": float(amount),
+                            "revision_reason": reason
+                        })
+                    except ValueError:
+                        flash(f"Invalid revision amount for Invoice ID {invoice_id}.", category="error")
+                        return redirect(url_for("dispatch.dispatchedit", value=value))
 
             invoices.append(
                 {
                     "invoice_id": int(invoice_id),
                     "paid": paid,
-                    "revision": revision,
-                    "notes": notes,
+                    "revision": revisions,
                     "delivery": status,
                 }
             )

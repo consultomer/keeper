@@ -58,7 +58,7 @@ def deinvoicelist():
         sort_by = ""
         sort_order = ""
     return render_template(
-        "Invoices/list.html",
+        "Invoices/delivered.html",
         current=current_user,
         data=data,
         sort_by=sort_by,
@@ -70,11 +70,13 @@ def deinvoicelist():
 @login_required
 def singleinv(value):
     val = int(value)
-    inv = sininvoice(val)[0]
+    inv = sininvoice(val)
     if inv:
         total = inv["total"] or 0
         paid = inv["paid"] or 0
-        revision = inv["revision"] or 0
+        revision = 0
+        for rev in inv["revisions"]:
+            revision += rev["revision"]
         inv["remaining"] = total - paid + revision
     return render_template("Invoices/view.html", current=current_user, invoice=inv)
 
@@ -132,10 +134,8 @@ def invoiceedit(value):
             "total": data.get("total"),
             "paid": data.get("paid"),
             "company": data.get("company"),
-            "revision": data.get("revision", 0),
             "delivery_status": data.get("delivery_status"),
             "payment_status": data.get("payment_status"),
-            "notes": data.get("notes"),
         }
         res = edit_invoice(invoice_data)
         if res == True:

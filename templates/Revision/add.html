@@ -1,0 +1,78 @@
+{% extends "base.html" %} 
+{% block title %}Add New Invoice{% endblock %} 
+{% block main %}
+<div class="container mt-5">
+  <h2>Add Revision</h2>
+  <form action="" method="POST" id="invoiceForm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Bill ID</th>
+          <th>Revision</th>
+          <th>Reason</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="invoiceTableBody">
+        <tr>
+          <td>
+            <select class="form-select" name="invoice[]" required>
+              {% for id in data %} 
+              <option value="{{ id['invoice_id'] }}">{{ id['invoice_id'] }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td>
+            <input type="number" class="form-control" name="revision[]" required />
+          </td>
+          <td>
+            <select class="form-select" name="reason[]" required>
+              {% for reason in reasons %}
+              <option value="{{ reason['reason_id'] }}">{{ reason['reason'] }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" onclick="addInvoiceRow()">+</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Add Invoice</button>
+  </form>
+</div>
+
+<script>
+    function addInvoiceRow() {
+      const tableBody = document.getElementById("invoiceTableBody");
+      const lastRow = tableBody.lastElementChild;
+  
+      // Clone the last row
+      const newRow = lastRow.cloneNode(true);
+  
+      // Reset values in the new row
+      newRow.querySelector('select[name="invoice[]"]').value = "";
+      newRow.querySelector('input[name="revision[]"]').value = "";
+      newRow.querySelector('select[name="reason[]"]').value = "";
+  
+      // Update the button cell
+      newRow.querySelector("td:last-child").innerHTML = `
+        <button type="button" class="btn btn-primary" onclick="addInvoiceRow()">+</button>
+        <button type="button" class="btn btn-danger" onclick="removeInvoiceRow(this)">-</button>
+      `;
+  
+      // Add the new row to the table body
+      tableBody.appendChild(newRow);
+    }
+  
+    function removeInvoiceRow(button) {
+      const row = button.parentElement.parentElement;
+      const tableBody = document.getElementById("invoiceTableBody");
+  
+      // Only remove the row if there's more than one row in the table
+      if (tableBody.children.length > 1) {
+        row.remove();
+      }
+    }
+  </script>
+{% endblock %}

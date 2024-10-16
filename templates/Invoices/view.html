@@ -29,7 +29,7 @@ block main %}
               To:
               <span style="color: #5d9fc5">{{ invoice["customer_name"] }}</span>
             </li>
-            <li class="text-muted">Address: {{ invoice["customer_add"] }}</li>
+            <li class="text-muted">Address: {{ invoice["customer_address"] }}</li>
             <li class="text-muted">
               Phone: # +92{{ invoice["customer_phone"] }}
             </li>
@@ -64,18 +64,27 @@ block main %}
               <th scope="col">Total</th>
               <th scope="col">Paid</th>
               <th scope="col">Revision</th>
+              <th scope="col">Reason</th>
               <th scope="col">Remaining</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Bill</td>
-              <td>{{ invoice["total"] }}</td>
-              <td>{{ invoice["paid"] }}</td>
-              <td>{{ invoice["revision"] }}</td>
-              <td>{{ invoice['remaining'] }}</td>
+                <td>Bill</td>
+                <td>{{ invoice["total"] }}</td>
+                <td>{{ invoice["paid"] }}</td>
+                <td>
+                    {% for rev in invoice["revisions"] %}
+                        {{ rev["revision"] }} <br>
+                    {% endfor %}
+                </td>
+                <td> {% for rev in invoice["revisions"] %}
+                  {{ rev["revision_reason"] }} <br>
+              {% endfor %}</td>
+                <td>{{ invoice['remaining'] }}</td>
             </tr>
-          </tbody>
+        </tbody>
+        
         </table>
       </div>
       <div class="row">

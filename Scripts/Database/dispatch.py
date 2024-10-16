@@ -72,8 +72,12 @@ def list_dispatches(sort_by="dispatch_date", sort_order="ASC"):
                 'dsr', i.dsr,
                 'customer_name', c.business_name,
                 'company', i.company,
-                'revision', i.revision,
-                'age', DATEDIFF(CURRENT_DATE, i.created_at)
+                'age', DATEDIFF(CURRENT_DATE, i.created_at),
+                'revision_sum', (
+                    SELECT IFNULL(SUM(r.revision), 0)
+                    FROM Revision r
+                    WHERE r.invoice_id = i.invoice_id
+                )
             )
         ) AS invoices
     FROM Dispatch d
@@ -113,9 +117,12 @@ def view_dispatch(dispatch_id):
                     'booker', b.name,
                     'dsr', i.dsr,
                     'customer_name', c.business_name,
-                    'notes', i.notes,
-                    'revision', i.revision,
-                    'age', DATEDIFF(CURRENT_DATE, i.created_at)
+                    'age', DATEDIFF(CURRENT_DATE, i.created_at),
+                    'revision_sum', (
+                        SELECT IFNULL(SUM(r.revision), 0)
+                        FROM Revision r
+                        WHERE r.invoice_id = i.invoice_id
+                    )
                 )
             ) AS invoices
         FROM Dispatch d
@@ -126,7 +133,7 @@ def view_dispatch(dispatch_id):
         JOIN Customers c ON i.customer_id = c.customer_id
         WHERE d.dispatch_id = %s
         GROUP BY d.dispatch_id, e.name, d.dispatch_date;
-        """
+    """
 
     try:
         cur = mysql.connection.cursor()
@@ -135,7 +142,7 @@ def view_dispatch(dispatch_id):
         cur.close()
         return dispatch_data
     except Exception as e:
-        print(f"Error fetching dispatches: {e}")
+        print(f"Error fetching dispatch: {e}")
         return False
 
 

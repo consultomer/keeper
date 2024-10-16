@@ -1,9 +1,12 @@
-{% extends "base.html" %} {% block link %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='/css/table.css') }}"
-/>
-{% endblock %} {% block title %}Invoices{% endblock %} {% block main %}
+{% extends "base.html" %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/table.css') }}" />
+{% endblock %}
+
+{% block title %}Invoices{% endblock %}
+
+{% block main %}
 <div class="container-fluid m-t70">
   <div class="row">
     <div class="col-md-12">
@@ -13,14 +16,9 @@
           <div class="card-header">
             <button type="submit" class="btn btn-primary float-end mx-3">
               Delivery Nikalo
-              <!-- <a href="/dispatch/add" style="color: inherit; text-decoration: none">New Dispatch</a> -->
             </button>
             <button type="button" class="btn btn-primary float-end">
-              <a
-                href="/invoice/add"
-                style="color: inherit; text-decoration: none"
-                >Add Invoice</a
-              >
+              <a href="/invoice/add" style="color: inherit; text-decoration: none">Add Invoice</a>
             </button>
           </div>
           <div class="card-body">
@@ -30,107 +28,23 @@
                   <tr>
                     <th><input type="checkbox" id="select-all" /></th>
                     <th scope="col">Sr.</th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='created_at', sort_order='desc' if sort_by == 'created_at' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Date {% if sort_by == 'created_at' %} {% if sort_order
-                        == 'asc' %} &#9650;
-                        <!-- Up arrow -->
-                        {% else %} &#9660;
-                        <!-- Down arrow -->
-                        {% endif %} {% endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='booker_name', sort_order='desc' if sort_by == 'booker_name' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Booker {% if sort_by == 'booker_name' %} {% if
-                        sort_order == 'asc' %} &#9650; {% else %} &#9660; {%
-                        endif %} {% endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='dsr', sort_order='desc' if sort_by == 'dsr' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        DSR {% if sort_by == 'dsr' %} {% if sort_order == 'asc'
-                        %} &#9650; {% else %} &#9660; {% endif %} {% endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='invoice_id', sort_order='desc' if sort_by == 'invoice_id' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Bill ID {% if sort_by == 'invoice_id' %} {% if
-                        sort_order == 'asc' %} &#9650; {% else %} &#9660; {%
-                        endif %} {% endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='customer_name', sort_order='desc' if sort_by == 'customer_name' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Customer {% if sort_by == 'customer_name' %} {% if
-                        sort_order == 'asc' %} &#9650; {% else %} &#9660; {%
-                        endif %} {% endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='total', sort_order='desc' if sort_by == 'total' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Value {% if sort_by == 'total' %} {% if sort_order ==
-                        'asc' %} &#9650; {% else %} &#9660; {% endif %} {% endif
-                        %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='revision', sort_order='desc' if sort_by == 'revision' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Revision {% if sort_by == 'revision' %} {% if sort_order
-                        == 'asc' %} &#9650; {% else %} &#9660; {% endif %} {%
-                        endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='age', sort_order='desc' if sort_by == 'age' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Age {% if sort_by == 'age' %} {% if sort_order == 'asc'
-                        %} &#9650; {% else %} &#9660; {% endif %} {% endif %}
-                      </a>
-                    </th>
-                    <th scope="col">
-                        Delivery Status {% if sort_by == 'delivery_status' %} {%
-                        if sort_order == 'asc' %} &#9650; {% else %} &#9660; {%
-                        endif %} {% endif %}
-                    </th>
-                    <th scope="col">
-                      <a
-                        href="{{ url_for('invoice.invoicelist', sort_by='delivery_man', sort_order='desc' if sort_by == 'delivery_man' and sort_order == 'asc' else 'asc') }}"
-                      >
-                        Delivery Man {% if sort_by == 'delivery_man' %} {% if
-                        sort_order == 'asc' %} &#9650; {% else %} &#9660; {%
-                        endif %} {% endif %}
-                      </a>
-                    </th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Booker</th>
+                    <th scope="col">DSR</th>
+                    <th scope="col">Bill ID</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Revisions</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Delivery Status</th>
+                    <th scope="col">Delivery Man</th>
                     <th class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for user in data %}
                   <tr>
-                    <td>
-                      <input
-                        type="checkbox"
-                        name="{{ loop.index }}"
-                        class="select-item"
-                        value="{{ user['invoice_id'] }}"
-                      />
-                    </td>
+                    <td><input type="checkbox" name="{{ loop.index }}" class="select-item" value="{{ user['invoice_id'] }}" /></td>
                     <td>{{ loop.index }}</td>
                     <td>{{ user['created_at'] }}</td>
                     <td>{{ user['booker_name'] }}</td>
@@ -139,30 +53,20 @@
                     <td>{{ user['customer_name'] }}</td>
                     <td>{{ user['total'] }}</td>
                     <td>{{ user['revision'] }}</td>
+                    
                     <td>{{ user['age'] }} days</td>
                     <td>{{ user['delivery_status'] }}</td>
                     <td>
-                      {% if user['delivery_man'] %}{{ user['delivery_man'] }}{%
-                      else %}Un-Assigned{% endif %}
+                      {% if user['delivery_man'] %}{{ user['delivery_man'] }}{% else %}Un-Assigned{% endif %}
                     </td>
                     <td class="text-center">
-                      <a
-                        href="/invoice/{{ user['invoice_id'] }}"
-                        class="btn btn-outline-primary btn-sm"
-                      >
+                      <a href="/invoice/{{ user['invoice_id'] }}" class="btn btn-outline-primary btn-sm">
                         <i class="fas fa-eye"></i>
                       </a>
-                      <a
-                        href="/invoice/edit/{{ user['invoice_id'] }}"
-                        class="btn btn-outline-success btn-sm"
-                      >
+                      <a href="/invoice/edit/{{ user['invoice_id'] }}" class="btn btn-outline-success btn-sm">
                         <i class="fas fa-edit"></i>
                       </a>
-                      <a
-                        href="/invoice/delete/{{ user['invoice_id'] }}"
-                        class="btn btn-outline-danger btn-sm"
-                        onclick="return confirm('Are you sure you want to delete this customer?');"
-                      >
+                      <a href="/invoice/delete/{{ user['invoice_id'] }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this invoice?');">
                         <i class="fas fa-trash"></i>
                       </a>
                     </td>
@@ -176,19 +80,15 @@
       </form>
       <script>
         document.addEventListener("DOMContentLoaded", function () {
-          document
-            .getElementById("select-all")
-            .addEventListener("click", function () {
-              var isChecked = this.checked;
-              document
-                .querySelectorAll(".select-item")
-                .forEach(function (checkbox) {
-                  checkbox.checked = isChecked;
-                });
+          document.getElementById("select-all").addEventListener("click", function () {
+            var isChecked = this.checked;
+            document.querySelectorAll(".select-item").forEach(function (checkbox) {
+              checkbox.checked = isChecked;
             });
+          });
         });
       </script>
-      {% endblock %}
     </div>
   </div>
 </div>
+{% endblock %}

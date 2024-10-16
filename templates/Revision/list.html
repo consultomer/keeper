@@ -1,0 +1,126 @@
+{% extends "base.html" %} {% block link %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='/css/table.css') }}"
+/>
+{% endblock %} {% block title %}Revisions{% endblock %} {% block main %}
+<div class="container-fluid m-t70">
+  <div class="row">
+    <div class="col-md-12">
+      <br />
+      <div class="card">
+        <div class="card-header">
+            <button type="button" class="btn btn-primary float-end">
+              <a href="/revision/add" style="color: inherit; text-decoration: none">Add Revision</a>
+            </button>
+          </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered mb-0 table-centered">
+              <thead class="tHead">
+                <tr>
+                  <th scope="col">Sr.</th>
+                  <th scope="col">Bill ID</th>
+                  <th scope="col">Delivery Man</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Naqad</th>
+                  <th scope="col">Revision</th>
+                  <th scope="col">Current Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for dispatch in data %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['invoice_id'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['delivery_man'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['total'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['paid'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['revision'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['current_value'] }}
+                  </td>
+
+                </tr>
+                <tr class="collapse" id="collapse{{ dispatch['invoice_id'] }}">
+                  <td colspan="6">
+                    <div class="card card-body">
+                      <table class="table table-bordered mb-0 table-centered">
+                        <thead class="">
+                          <tr>
+                            <th>Revision</th>
+                            <th>Reasons</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for rev in revision %} {% if rev["invoice_id"] == dispatch["invoice_id"] %}
+                          
+                          <tr>
+                            <td>{{ rev["revision"] }}</td>
+                            <td>{{ rev["reason"] }}</td>
+                          </tr>
+                          {% endif %} {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var clickableRows = document.querySelectorAll(".clickable-row");
+    clickableRows.forEach(function (row) {
+      row.addEventListener("click", function () {
+        var target = this.getAttribute("data-target");
+        var collapseElement = document.querySelector(target);
+        if (collapseElement) {
+          collapseElement.classList.toggle("show");
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

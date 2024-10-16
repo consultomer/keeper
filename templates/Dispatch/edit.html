@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% block title %}Dispatch{% endblock %} {% block main
-%}
+{% extends "base.html" %}
+{% block title %}Dispatch{% endblock %}
+{% block main %}
 <div class="container-fluid m-t70">
   <div class="row">
     <div class="col-xl-4">
@@ -8,8 +9,7 @@
           <span class="fw-bold">Dispatch Id:</span># {{ data["dispatch_id"] }}
         </li>
         <li class="text-muted m-2">
-          <span class="fw-bold">Creation Date: </span>#{{ data["dispatch_date"]
-          }}
+          <span class="fw-bold">Creation Date: </span>#{{ data["dispatch_date"] }}
         </li>
         <li class="text-muted m-2">
           <span class="fw-bold">Delivery Man: </span>#{{ data["delivery_man"] }}
@@ -30,13 +30,12 @@
             <th>Age</th>
             <th>Value</th>
             <th>Naqad</th>
-            <th>Revision</th>
-            <th>Reason</th>
+            <th>Revisions</th>
             <th>Credit</th>
             <th>Delivery Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="invoiceTableBody">
           {% for invoice in data['invoices'] %}
           <tr>
             <td>{{ invoice['booker'] }}</td>
@@ -44,48 +43,63 @@
             <td>{{ invoice['invoice_id'] }}</td>
             <td>{{ invoice['customer_name'] }}</td>
             <td>{{ invoice['age'] }} days</td>
-            <td
-              class="total"
-              data-total="{{ invoice['total'] }}"
-              id="total_{{ invoice['invoice_id'] }}"
-            >
+            <td class="total" data-total="{{ invoice['total'] }}" id="total_{{ invoice['invoice_id'] }}">
               {{ invoice['total'] }}
             </td>
             <td>
-              <input
-                type="hidden"
-                name="invoice_id"
-                value="{{ invoice['invoice_id'] }}"
-              />
+              <input type="hidden" name="invoice_id" value="{{ invoice['invoice_id'] }}" />
               <input
                 type="number"
                 name="paid_{{ invoice['invoice_id'] }}"
                 value="{{ invoice['paid'] }}"
-                class="paid-field"
+                class="paid-field form-control"
                 data-invoice-id="{{ invoice['invoice_id'] }}"
+                min="0"
+                step="1"
               />
             </td>
             <td>
-              <input
-                type="number"
-                name="revision_{{ invoice['invoice_id'] }}"
-                value="{{ invoice['revision'] }}"
-                class="revision-field"
-                data-invoice-id="{{ invoice['invoice_id'] }}"
-              />
-            </td>
-            <td>
-              <input
-                type="text"
-                name="notes_{{ invoice['invoice_id'] }}"
-                value="{{ invoice['notes'] }}"
-              />
+              <!-- Revisions Container -->
+              <div id="revisions_container_{{ invoice['invoice_id'] }}">
+                <table class="table table-borderless mb-2">
+                  <tbody id="revisionTable_{{ invoice['invoice_id'] }}">
+                    {% for revision in invoice['revisions'] %}
+                    <tr>
+                      <td>
+                        <input
+                          type="number"
+                          step="1"
+                          name="revision_{{ invoice['invoice_id'] }}[]"
+                          value="{{ revision['revision'] }}"
+                          class="revision-field form-control"
+                          data-invoice-id="{{ invoice['invoice_id'] }}"
+                          placeholder="Revision Amount"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          name="reason_{{ invoice['invoice_id'] }}[]"
+                          value="{{ revision['revision_reason'] }}"
+                          class="form-control"
+                          placeholder="Reason"
+                        />
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeRevisionRow(this)">-</button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addRevisionRow('{{ invoice['invoice_id'] }}')">+ Add Revision</button>
+              </div>
             </td>
             <td class="credit" id="credit_{{ invoice['invoice_id'] }}">
               {{ invoice['remaining'] }}
             </td>
             <td>
-              <select name="delivery_status_{{ invoice['invoice_id'] }}" id="delivery_status">
+              <select name="delivery_status_{{ invoice['invoice_id'] }}" class="form-select">
                 <option value="Un-delivered" {% if invoice['delivery_status'] == 'Un-delivered' %}selected{% endif %}>Un-delivered</option>
                 <option value="Delivered" {% if invoice['delivery_status'] == 'Delivered' %}selected{% endif %}>Delivered</option>
                 <option value="Returned" {% if invoice['delivery_status'] == 'Returned' %}selected{% endif %}>Returned</option>
@@ -98,62 +112,112 @@
       </table>
       <div>
         <p class="text-black float-start">
-          <span class="text-black me-3">Total Amount</span
-          ><span style="font-size: 25px" id="grand_total"
-            >{{ data['total'] }}</span
-          >
+          <span class="text-black me-3">Total Amount</span><span style="font-size: 25px" id="grand_total">{{ data['total'] }}</span>
         </p>
-        <button type="submit" class="btn btn-primary float-end">
-          Save Changes
-        </button>
+        <button type="submit" class="btn btn-primary float-end">Save Changes</button>
       </div>
     </div>
   </form>
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const paidFields = document.querySelectorAll(".paid-field");
-    const revisionFields = document.querySelectorAll(".revision-field");
+  // Function to add a revision row
+  function addRevisionRow(invoiceId) {
+      const tableBody = document.getElementById(`revisionTable_${invoiceId}`);
+      const newRow = document.createElement("tr");
 
-    paidFields.forEach((field) => {
-      field.addEventListener("input", updateFields);
-    });
+      newRow.innerHTML = `
+        <td>
+          <input type="number" name="revision_${invoiceId}[]" class="form-control revision-field" placeholder="Revision amount" step="1" />
+        </td>
+        <td>
+          <input type="text" name="reason_${invoiceId}[]" class="form-control" placeholder="Reason" />
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeRevisionRow(this)">-</button>
+        </td>
+      `;
+      
+      tableBody.appendChild(newRow);
 
-    revisionFields.forEach((field) => {
-      field.addEventListener("input", updateFields);
-    });
+      // Attach event listener to the new revision field to update credits
+      const newRevisionField = newRow.querySelector('.revision-field');
+      if (newRevisionField) {
+          newRevisionField.addEventListener('input', updateFields);
+      }
+  }
 
-    function updateFields(event) {
-      const invoiceId = event.target.dataset.invoiceId;
-      const initialTotal =
-        parseFloat(
-          document.getElementById(`total_${invoiceId}`).dataset.total
-        ) || 0;
-      const paid =
-        parseFloat(
-          document.querySelector(`input[name="paid_${invoiceId}"]`).value
-        ) || 0;
-      const revision =
-        parseFloat(
-          document.querySelector(`input[name="revision_${invoiceId}"]`).value
-        ) || 0;
+  // Function to remove a revision row
+  function removeRevisionRow(button) {
+      const row = button.closest('tr');
+      if (row) {
+          // Extract invoice ID from the revision field's name attribute
+          const revisionField = row.querySelector('input[name^="revision_"]');
+          if (revisionField) {
+              const invoiceIdMatch = revisionField.name.match(/revision_(\d+)\[\]/);
+              if (invoiceIdMatch && invoiceIdMatch[1]) {
+                  const invoiceId = invoiceIdMatch[1];
+                  row.remove();
+                  updateFieldsForInvoice(invoiceId);
+              }
+          }
+      }
+  }
 
-      const credit = initialTotal - paid + revision;
-      document.getElementById(`credit_${invoiceId}`).textContent =
-        credit.toFixed(2);
+  // Function to update credit for a specific invoice
+  function updateFieldsForInvoice(invoiceId) {
+      const initialTotal = parseFloat(document.getElementById(`total_${invoiceId}`).dataset.total) || 0;
+      const paidInput = document.querySelector(`input[name="paid_${invoiceId}"]`);
+      const paid = paidInput ? parseFloat(paidInput.value) || 0 : 0;
+
+      const revisionFields = document.querySelectorAll(`input[name="revision_${invoiceId}[]"]`);
+      let totalRevisions = 0;
+      revisionFields.forEach(revision => {
+          totalRevisions += parseFloat(revision.value) || 0;
+      });
+
+      const credit = initialTotal - paid + totalRevisions;
+      document.getElementById(`credit_${invoiceId}`).textContent = credit.toFixed(2);
 
       updateGrandTotal();
-    }
+  }
 
-    function updateGrandTotal() {
+  // Function to handle input changes in revision fields
+  function updateFields(event) {
+      const revisionField = event.target;
+      const invoiceIdMatch = revisionField.name.match(/revision_(\d+)\[\]/);
+      if (invoiceIdMatch && invoiceIdMatch[1]) {
+          const invoiceId = invoiceIdMatch[1];
+          updateFieldsForInvoice(invoiceId);
+      }
+  }
+
+  // Function to update the grand total
+  function updateGrandTotal() {
       let grandTotal = 0;
       document.querySelectorAll(".credit").forEach((totalElement) => {
-        grandTotal += parseFloat(totalElement.textContent) || 0;
+          grandTotal += parseFloat(totalElement.textContent) || 0;
       });
-      document.getElementById("grand_total").textContent =
-        grandTotal.toFixed(2);
-    }
+      document.getElementById("grand_total").textContent = grandTotal.toFixed(2);
+  }
+
+  // Initialize event listeners on DOMContentLoaded
+  document.addEventListener("DOMContentLoaded", function () {
+      const paidFields = document.querySelectorAll(".paid-field");
+      const revisionFields = document.querySelectorAll(".revision-field");
+
+      // Attach event listeners to paid fields to update credits
+      paidFields.forEach((field) => {
+          field.addEventListener("input", function () {
+              const invoiceId = field.dataset.invoiceId;
+              updateFieldsForInvoice(invoiceId);
+          });
+      });
+
+      // Attach event listeners to existing revision fields to update credits
+      revisionFields.forEach((field) => {
+          field.addEventListener("input", updateFields);
+      });
   });
 </script>
 {% endblock %}

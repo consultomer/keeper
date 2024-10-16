@@ -82,3 +82,18 @@ CREATE TABLE IF NOT EXISTS DispatchInvoice (
     FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
 );
 
+-- Create Revision Table
+CREATE TABLE IF NOT EXISTS Revision (
+    revision_id INT PRIMARY KEY AUTO_INCREMENT,
+    invoice_id INT NOT NULL,
+    revision INT NOT NULL,
+    revision_reason INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
+    FOREIGN KEY (revision_reason) REFERENCES Reasons(reason_id)
+);
+-- Create Reasons Table
+CREATE TABLE IF NOT EXISTS Reasons (
+    reason_id INT PRIMARY KEY AUTO_INCREMENT,
+    reason VARCHAR(255) NOT NULL
+);

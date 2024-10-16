@@ -3,7 +3,7 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='/css/table.css') }}"
 />
-{% endblock %} {% block title %}Dispatches{% endblock %} {% block main %}
+{% endblock %} {% block title %}Deliveries{% endblock %} {% block main %}
 <div class="container-fluid m-t70">
   <div class="row">
     <div class="col-md-12">
@@ -123,7 +123,7 @@
                             <td>{{ invoice['customer_name'] }}</td>
                             <td>{{ invoice['total'] }}</td>
                             <td>{{ invoice['company'] }}</td>
-                            <td>{{ invoice['revision'] }}</td>
+                            <td>{{ invoice['revision_sum'] }}</td>
                             <td>{{ invoice['age'] }} days</td>
                             <td>{{ invoice['delivery_status'] }}</td>
                             <td>{{ invoice['payment_status'] }}</td>

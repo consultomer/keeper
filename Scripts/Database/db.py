@@ -164,7 +164,7 @@ def create_disinvoice_table():
     CREATE TABLE IF NOT EXISTS DispatchInvoice (
         dispatch_invoice_id INT PRIMARY KEY AUTO_INCREMENT,
         dispatch_id INT NOT NULL,
-        invoice_id INT NOT NULL,
+        invoice_id INT NOT NULL UNIQUE,
         FOREIGN KEY (dispatch_id) REFERENCES Dispatch(dispatch_id),
         FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
     );
@@ -178,6 +178,45 @@ def create_disinvoice_table():
     except Exception as e:
         return f"DispatchInvoice Table Already Exists {e}"
 
+
+def create_revision_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Revision (
+        revision_id INT PRIMARY KEY AUTO_INCREMENT,
+        invoice_id INT NOT NULL,
+        revision INT NOT NULL,
+        revision_reason INT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
+        FOREIGN KEY (revision_reason) REFERENCES Reasons(reason_id)
+    );
+    """
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return f"Revision Table Already Exists {e}"
+
+
+def create_reason_table():
+    query = """
+    CREATE TABLE IF NOT EXISTS Reasons (
+        reason_id INT PRIMARY KEY AUTO_INCREMENT,
+        revision_reason VARCHAR(255) NOT NULL
+    );
+    """
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        return True
+    except Exception as e:
+        return f"Reasons Table Already Exists {e}"
+    
 
 def find_total():
     totals = {}
@@ -223,3 +262,5 @@ def initialize_database():
     create_invoice_table()
     create_dispatch_table()
     create_disinvoice_table()
+    create_revision_table()
+    return True
