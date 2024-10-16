@@ -22,6 +22,8 @@
                   <th scope="col">Sr.</th>
                   <th scope="col">Bill ID</th>
                   <th scope="col">Delivery Man</th>
+                  <th scope="col">Customer</th>
+                  <th scope="col">Booker</th>
                   <th scope="col">Value</th>
                   <th scope="col">Naqad</th>
                   <th scope="col">Revision</th>
@@ -45,6 +47,20 @@
                     data-target="#collapse{{ dispatch['invoice_id'] }}"
                   >
                     {{ dispatch['delivery_man'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['customer_name'] }}
+                  </td>
+                  <td
+                    class="clickable-row"
+                    data-toggle="collapse"
+                    data-target="#collapse{{ dispatch['invoice_id'] }}"
+                  >
+                    {{ dispatch['booker_name'] }}
                   </td>
                   <td
                     class="clickable-row"

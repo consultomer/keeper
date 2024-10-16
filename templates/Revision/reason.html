@@ -6,7 +6,7 @@
   <!-- Form to add a new reason -->
   <div class="mb-4">
     <h4>Add New Reason</h4>
-    <form action="/add_reason" method="POST" id="addReasonForm">
+    <form action="" method="POST" id="addReasonForm">
       <div class="input-group mb-3">
         <input type="text" name="reason" class="form-control" placeholder="Enter reason" required />
         <button type="submit" class="btn btn-primary">Add Reason</button>
@@ -35,7 +35,11 @@
         <td>
           <button class="btn btn-secondary btn-sm" onclick="toggleEdit(this)">Edit</button>
           <button class="btn btn-success btn-sm" style="display:none" onclick="saveReason(this)">Save</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteReason(this)">Delete</button>
+          <a
+            href="/revision/delete/{{ reason.reason_id }}"
+            class="btn btn-outline-danger btn-sm"
+            onclick="return confirm('Are you sure you want to delete this customer?');"
+          >Delete
         </td>
       </tr>
       {% endfor %}
@@ -70,7 +74,7 @@
     const reasonId = row.getAttribute('data-id');
     const newReason = row.querySelector('.reason-edit').value;
 
-    fetch(`/edit_reason/${reasonId}`, {
+    fetch(`/revision/edit/${reasonId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -88,31 +92,6 @@
       }
     })
     .catch(error => console.error('Error:', error));
-  }
-
-  // Delete a reason
-  function deleteReason(button) {
-    const row = button.closest('tr');
-    const reasonId = row.getAttribute('data-id');
-
-    if (confirm('Are you sure you want to delete this reason?')) {
-      fetch(`/delete_reason/${reasonId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token }}'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          row.remove();
-        } else {
-          alert('Error deleting reason.');
-        }
-      })
-      .catch(error => console.error('Error:', error));
-    }
   }
 </script>
 {% endblock %}

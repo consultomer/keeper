@@ -8,7 +8,7 @@ from Scripts.Database.invoice import (
     list_invoices,
     edit_invoices,
 )
-from Scripts.Database.revision import list_revision, list_reason, add_reason
+from Scripts.Database.revision import add_revision, list_revision, list_reason, add_reason, delete_reason, edit_reason
 from Scripts.Database.dispatch import (
     add_dispatch,
     list_dispatches,
@@ -50,15 +50,24 @@ def revisionlist():
 @login_required
 def addrevision():
     if request.method == "POST":
-        data = request.form
-        invoice_id = data["invoice_id"]
-        revision = data["revision"]
-        reason = data["reason"]
-        created_at = datetime.now()
-        created_by = current_user.employee_id
-        add_dispatch(invoice_id, revision, reason, created_at, created_by)
-        flash("Revision Added", category="success")
+        data = request.form  # Get the form data
+
+        # Get the lists of invoice IDs, revisions, and reasons
+        invoice_ids = data.getlist("invoice[]")
+        revisions = data.getlist("revision[]")
+        reasons = data.getlist("reason[]")
+        # Ensure all lists have the same length
+        if len(invoice_ids) == len(revisions) == len(reasons):
+            res = add_revision(invoice_ids, revisions, reasons)
+            if res:
+                flash("Revisions Added Successfully", category="success")
+            else:
+                flash("Revisions Adding Error", category="error")
+        else:
+            flash("Error: Mismatched input data", category="error")
+
         return redirect(url_for("revision.revisionlist"))
+
     else:
         if request.args.get("sort_by") and request.args.get("sort_order"):
             sort_order = request.args.get("sort_order").upper()
@@ -70,6 +79,8 @@ def addrevision():
 
         reasons = list_reason()
         return render_template("Revision/add.html", current=current_user, data=data, reasons=reasons)
+    
+
     
 
 @revision_bp.route("/reason", methods=["POST", "GET"])
@@ -84,3 +95,30 @@ def reasonlist():
     else:
         reasons = list_reason()
         return render_template("Revision/reason.html", current=current_user, reasons=reasons)
+
+
+@revision_bp.route("/edit/<int:value>", methods=["POST", "GET"])
+@login_required
+def reasonedit(value):
+    if request.method == "POST":
+        data = request.get_json()  
+        reason = data.get("reason")
+        edit_reason(value, reason)
+        flash("Reason Edited", category="success")
+        return redirect(url_for("revision.reasonlist"))
+    else:
+        reasons = list_reason()
+        return render_template("Revision/reason.html", current=current_user, reasons=reasons)
+
+
+@revision_bp.route("/delete/<int:value>", methods=["POST", "GET"])
+@login_required
+def reasondel(value):
+    if request.method == "GET":
+        delete_reason(value)
+        flash("Reason Deleted", category="success")
+        return redirect(url_for("revision.reasonlist"))
+    else:
+        reasons = list_reason()
+        return render_template("Revision/reason.html", current=current_user, reasons=reasons)
+    

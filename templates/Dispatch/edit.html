@@ -58,43 +58,7 @@
                 step="1"
               />
             </td>
-            <td>
-              <!-- Revisions Container -->
-              <div id="revisions_container_{{ invoice['invoice_id'] }}">
-                <table class="table table-borderless mb-2">
-                  <tbody id="revisionTable_{{ invoice['invoice_id'] }}">
-                    {% for revision in invoice['revisions'] %}
-                    <tr>
-                      <td>
-                        <input
-                          type="number"
-                          step="1"
-                          name="revision_{{ invoice['invoice_id'] }}[]"
-                          value="{{ revision['revision'] }}"
-                          class="revision-field form-control"
-                          data-invoice-id="{{ invoice['invoice_id'] }}"
-                          placeholder="Revision Amount"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="reason_{{ invoice['invoice_id'] }}[]"
-                          value="{{ revision['revision_reason'] }}"
-                          class="form-control"
-                          placeholder="Reason"
-                        />
-                      </td>
-                      <td>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeRevisionRow(this)">-</button>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-                <button type="button" class="btn btn-primary btn-sm" onclick="addRevisionRow('{{ invoice['invoice_id'] }}')">+ Add Revision</button>
-              </div>
-            </td>
+            <td> {{ invoice['revision_sum']}}</td>
             <td class="credit" id="credit_{{ invoice['invoice_id'] }}">
               {{ invoice['remaining'] }}
             </td>
@@ -177,7 +141,7 @@
       });
 
       const credit = initialTotal - paid + totalRevisions;
-      document.getElementById(`credit_${invoiceId}`).textContent = credit.toFixed(2);
+      document.getElementById(`credit_${invoiceId}`).textContent = credit.toFixed();
 
       updateGrandTotal();
   }

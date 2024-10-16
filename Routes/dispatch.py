@@ -98,7 +98,7 @@ def invoiceadd():
         }
 
         for d in data.values():
-            inv_daa = sininvoice(int(d))[0]
+            inv_daa = sininvoice(int(d))
             if inv_daa:  # Ensure inv_daa is not None
                 total = inv_daa.get("total", 0) or 0
                 main_data["total"] += total
@@ -160,7 +160,6 @@ def dispatchedit(value):
                 {
                     "invoice_id": int(invoice_id),
                     "paid": paid,
-                    "revision": revisions,
                     "delivery": status,
                 }
             )
@@ -200,7 +199,8 @@ def dispatchedit(value):
         for invoice in dispatch_data["invoices"]:
             total_amount = invoice["total"] if invoice["total"] is not None else 0
             paid_amount = invoice["paid"] if invoice["paid"] is not None else 0
-            remain = total_amount - paid_amount
+            revision_amounts = invoice["revision_sum"] if invoice["revision_sum"] is not None else 0
+            remain = total_amount - paid_amount + revision_amounts
             invoice["remaining"] = remain
             total += remain
         dispatch_data["total"] = total

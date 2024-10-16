@@ -257,15 +257,7 @@ def edit_invoices(invoice_data):
             invoice_id = invoice["invoice_id"]
 
             cur.execute(query, (paid, delivery_status, invoice_id))
-            insert_revision_query = """
-                INSERT INTO Revision (invoice_id, revision, revision_reason)
-                VALUES (%s, %s, %s)
-            """
-            for rev in revisions:
-                print(rev)
-                cur.execute(insert_revision_query, (invoice_id, rev["revision"], rev["revision_reason"]))
-
-
+            
         mysql.connection.commit()
         cur.close()
         return True
